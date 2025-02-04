@@ -1,0 +1,82 @@
+Variable name,Time in Play,Data Point
+Player Position,0:2.95,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:2.95,100
+Player Position,0:5.95,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:5.95,100
+Player Position,0:8.96,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:8.96,100
+Player Position,0:11.97,World Position: (-16.80, -2.43, -65.30)
+PlayerHealth,0:11.97,100
+Player Position,0:14.98,World Position: (-21.66, -2.38, -67.81)
+PlayerHealth,0:14.98,100
+Player Position,0:17.99,World Position: (-9.34, -2.14, -62.60)
+PlayerHealth,0:17.99,100
+Player Position,0:21.31,World Position: (13.72, -2.06, -46.95)
+PlayerHealth,0:21.31,100
+Player Position,0:24.32,World Position: (17.34, -2.06, -52.33)
+PlayerHealth,0:24.32,100
+Player Position,0:27.32,World Position: (28.07, -2.05, -58.76)
+PlayerHealth,0:27.32,100
+Player Position,0:30.32,World Position: (52.13, -2.10, -41.69)
+PlayerHealth,0:30.32,100
+Player Position,0:33.33,World Position: (46.62, -2.07, -26.79)
+PlayerHealth,0:33.33,100
+Player Position,0:36.33,World Position: (45.62, -2.07, -26.16)
+PlayerHealth,0:36.33,100
+Player Position,0:39.33,World Position: (59.93, 0.53, 3.78)
+PlayerHealth,0:39.33,100
+Player Position,0:42.33,World Position: (63.39, 0.53, 16.35)
+PlayerHealth,0:42.33,100
+Player Position,0:45.34,World Position: (63.39, 0.53, 16.35)
+PlayerHealth,0:45.34,100
+Sonar Pulse Triggered,0:45.78,World Position Trigger Point: (62.88, 0.74, 14.96)Sonar Pulse: 1
+Sonar Scanner Clicked,0:46.22,World Position Trigger Point: (64.10, 0.53, 15.94)Sonar Scanner: 1
+Player Position,0:48.34,World Position: (60.60, 0.53, 0.35)
+PlayerHealth,0:48.34,100
+Player Position,0:51.34,World Position: (63.74, 0.53, 15.40)
+PlayerHealth,0:51.34,100
+Player Position,0:54.35,World Position: (64.16, 0.53, 16.12)
+PlayerHealth,0:54.35,100
+Player Position,0:57.36,World Position: (60.47, 0.53, 6.01)
+PlayerHealth,0:57.36,100
+Player Position,1:0.37,World Position: (45.21, -0.35, -7.63)
+PlayerHealth,1:0.37,100
+Sonar Pulse Triggered,1:3.10,World Position Trigger Point: (49.66, -1.44, -17.46)Sonar Pulse: 2
+Sonar Scanner Clicked,1:3.22,World Position Trigger Point: (50.30, -1.62, -18.73)Sonar Scanner: 2
+Player Position,1:3.37,World Position: (50.30, -1.53, -18.13)
+PlayerHealth,1:3.37,100
+Player Position,1:6.38,World Position: (59.64, 0.53, -7.13)
+PlayerHealth,1:6.38,100
+Player Position,1:9.38,World Position: (48.85, -2.08, -32.92)
+PlayerHealth,1:9.38,100
+Player Position,1:12.39,World Position: (43.66, -2.07, -27.41)
+PlayerHealth,1:12.39,100
+Player Position,1:15.40,World Position: (62.67, 0.53, 2.07)
+PlayerHealth,1:15.40,100
+Player Position,1:18.41,World Position: (69.89, 0.53, 28.87)
+PlayerHealth,1:18.41,100
+Sonar Pulse Triggered,1:21.28,World Position Trigger Point: (81.49, 4.21, 37.59)Sonar Pulse: 3
+Player Position,1:21.42,World Position: (82.64, 4.00, 36.52)
+PlayerHealth,1:21.42,100
+Sonar Pulse Triggered,1:22.23,World Position Trigger Point: (81.12, 4.21, 36.88)Sonar Pulse: 4
+Sonar Scanner Clicked,1:22.38,World Position Trigger Point: (82.64, 4.00, 36.52)Sonar Scanner: 3
+Player Position,1:24.65,World Position: (91.52, 4.01, 43.67)
+PlayerHealth,1:24.65,100
+Player Position,1:27.65,World Position: (101.81, 4.01, 40.38)
+PlayerHealth,1:27.65,100
+Player Position,1:30.66,World Position: (99.27, 4.01, 44.63)
+PlayerHealth,1:30.66,100
+Player Position,1:33.66,World Position: (93.46, 0.51, 57.09)
+PlayerHealth,1:33.66,100
+Player Position,1:36.67,World Position: (83.54, 0.51, 58.34)
+PlayerHealth,1:36.67,100
+Player Position,1:39.68,World Position: (73.34, 0.51, 87.14)
+PlayerHealth,1:39.68,100
+Sonar Pulse Triggered,1:39.72,World Position Trigger Point: (71.84, 0.72, 87.06)Sonar Pulse: 5
+Sonar Scanner Clicked,1:39.85,World Position Trigger Point: (73.34, 0.51, 88.04)Sonar Scanner: 4
+Player Position,1:42.68,World Position: (68.02, 0.51, 93.42)
+PlayerHealth,1:42.68,90
+Player Position,1:45.69,World Position: (76.70, 0.51, 105.51)
+PlayerHealth,1:45.69,80
+Player Position,1:48.70,World Position: (81.04, 3.13, 120.63)
+PlayerHealth,1:48.70,8

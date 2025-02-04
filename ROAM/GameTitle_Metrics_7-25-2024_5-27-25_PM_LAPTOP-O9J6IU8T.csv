@@ -1,0 +1,33 @@
+Variable name,Time in Play,Data Point
+Player Position,0:3.00,World Position: (86.78, 0.18, 55.90)
+PlayerHealth,0:3.00,100
+Player Position,0:6.03,World Position: (88.14, 0.18, 56.34)
+PlayerHealth,0:6.03,100
+Player Position,0:9.04,World Position: (88.14, 0.18, 56.34)
+PlayerHealth,0:9.04,100
+Sonar Pulse Triggered,0:10.72,World Position Trigger Point: (89.38, 0.39, 57.08)Sonar Pulse: 1
+Sonar Scanner Clicked,0:10.80,World Position Trigger Point: (88.14, 0.18, 56.34)Sonar Scanner: 1
+Player Position,0:12.04,World Position: (88.14, 0.18, 56.34)
+PlayerHealth,0:12.04,100
+Sonar Pulse Triggered,0:13.82,World Position Trigger Point: (89.03, 0.39, 57.48)Sonar Pulse: 2
+Player Position,0:15.06,World Position: (88.14, 0.18, 56.34)
+PlayerHealth,0:15.06,100
+Sonar Pulse Triggered,0:15.15,World Position Trigger Point: (89.03, 0.39, 57.48)Sonar Pulse: 3
+Sonar Pulse Triggered,0:15.75,World Position Trigger Point: (89.03, 0.39, 57.48)Sonar Pulse: 4
+Sonar Scanner Clicked,0:15.78,World Position Trigger Point: (88.14, 0.18, 56.34)Sonar Scanner: 2
+Sonar Pulse Triggered,0:17.49,World Position Trigger Point: (89.03, 0.39, 57.48)Sonar Pulse: 5
+Sonar Scanner Clicked,0:17.52,World Position Trigger Point: (88.14, 0.18, 56.34)Sonar Scanner: 3
+Player Position,0:18.06,World Position: (88.14, 0.18, 56.34)
+PlayerHealth,0:18.06,100
+Sonar Pulse Triggered,0:19.22,World Position Trigger Point: (89.03, 0.39, 57.48)Sonar Pulse: 6
+Sonar Scanner Clicked,0:19.31,World Position Trigger Point: (88.14, 0.18, 56.34)Sonar Scanner: 4
+Sonar Pulse Triggered,0:20.88,World Position Trigger Point: (89.02, 0.39, 57.48)Sonar Pulse: 7
+Sonar Scanner Clicked,0:20.98,World Position Trigger Point: (88.14, 0.18, 56.34)Sonar Scanner: 5
+Player Position,0:21.08,World Position: (88.14, 0.18, 56.34)
+PlayerHealth,0:21.08,100
+Player Position,0:24.11,World Position: (88.14, 0.18, 56.34)
+PlayerHealth,0:24.11,100
+Player Position,0:27.13,World Position: (88.14, 0.18, 56.34)
+PlayerHealth,0:27.13,100
+Player Position,0:27.51,World Position: (88.14, 0.18, 56.34)
+PlayerHealth,0:27.51,100

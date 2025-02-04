@@ -1,0 +1,50 @@
+Variable name,Time in Play,Data Point
+Player Position,0:2.99,World Position: (-16.15, -2.92, -67.26)
+PlayerHealth,0:2.99,100
+Player Position,0:6.00,World Position: (-16.15, -2.92, -67.26)
+PlayerHealth,0:6.00,100
+Player Position,0:9.01,World Position: (-16.15, -2.92, -67.26)
+PlayerHealth,0:9.01,100
+Player Position,0:12.01,World Position: (-16.15, -2.43, -67.26)
+PlayerHealth,0:12.01,100
+Player Position,0:15.02,World Position: (-16.15, -2.43, -67.26)
+PlayerHealth,0:15.02,100
+Player Position,0:18.03,World Position: (-13.65, -1.86, -65.32)
+PlayerHealth,0:18.03,100
+Player Position,0:21.05,World Position: (1.68, -1.92, -50.82)
+PlayerHealth,0:21.05,100
+Player Position,0:24.06,World Position: (14.98, -2.06, -40.97)
+PlayerHealth,0:24.06,100
+Player Position,0:27.07,World Position: (33.43, -2.07, -27.14)
+PlayerHealth,0:27.07,100
+Player Position,0:30.07,World Position: (51.79, -1.37, -18.02)
+PlayerHealth,0:30.07,100
+Player Position,0:33.09,World Position: (57.79, 0.51, -5.29)
+PlayerHealth,0:33.09,100
+Player Position,0:36.10,World Position: (66.03, 0.51, 9.26)
+PlayerHealth,0:36.10,100
+Sonar Pulse Triggered,0:38.99,World Position Trigger Point: (75.02, 0.72, 25.13)Sonar Pulse: 1
+Player Position,0:39.10,World Position: (73.58, 0.51, 25.28)
+PlayerHealth,0:39.10,100
+Sonar Pulse Triggered,0:41.34,World Position Trigger Point: (81.71, 3.30, 36.51)Sonar Pulse: 2
+Sonar Scanner Clicked,0:41.38,World Position Trigger Point: (80.37, 3.12, 36.08)Sonar Scanner: 1
+Player Position,0:42.12,World Position: (81.86, 3.68, 40.99)
+PlayerHealth,0:42.12,100
+Sonar Pulse Triggered,0:43.25,World Position Trigger Point: (83.00, 3.89, 46.39)Sonar Pulse: 3
+Sonar Scanner Clicked,0:43.32,World Position Trigger Point: (81.56, 3.68, 46.55)Sonar Scanner: 2
+Player Position,0:45.13,World Position: (93.10, 0.18, 55.99)
+PlayerHealth,0:45.13,100
+Player Position,0:48.14,World Position: (96.84, 0.18, 55.99)
+PlayerHealth,0:48.14,100
+Sonar Pulse Triggered,0:50.88,World Position Trigger Point: (107.03, 0.39, 74.74)Sonar Pulse: 4
+Sonar Scanner Clicked,0:50.95,World Position Trigger Point: (105.79, 0.18, 74.12)Sonar Scanner: 3
+Player Position,0:51.35,World Position: (109.79, 0.18, 78.37)
+PlayerHealth,0:51.35,100
+Sonar Pulse Triggered,0:53.63,World Position Trigger Point: (96.21, 0.39, 89.85)Sonar Pulse: 5
+Sonar Scanner Clicked,0:53.68,World Position Trigger Point: (95.37, 0.18, 91.09)Sonar Scanner: 4
+Player Position,0:54.37,World Position: (92.63, 0.18, 91.09)
+PlayerHealth,0:54.37,100
+Player Position,0:57.40,World Position: (91.39, 0.18, 94.11)
+PlayerHealth,0:57.40,50
+Player Position,0:59.44,World Position: (90.03, 0.18, 102.01)
+PlayerHealth,0:59.44,50

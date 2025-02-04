@@ -1,0 +1,93 @@
+Variable name,Time in Play,Data Point
+Player Position,0:2.97,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:2.97,100
+Player Position,0:5.98,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:5.98,100
+Player Position,0:8.98,World Position: (-16.80, -2.43, -65.30)
+PlayerHealth,0:8.98,100
+Player Position,0:11.98,World Position: (-13.13, -2.79, -63.05)
+PlayerHealth,0:11.98,100
+Player Position,0:14.99,World Position: (14.26, -2.06, -47.84)
+PlayerHealth,0:14.99,100
+Player Position,0:17.99,World Position: (34.68, -2.05, -64.16)
+PlayerHealth,0:17.99,100
+Player Position,0:21.00,World Position: (50.08, -2.08, -32.31)
+PlayerHealth,0:21.00,100
+Player Position,0:24.00,World Position: (56.20, 0.45, -8.30)
+PlayerHealth,0:24.00,100
+Player Position,0:27.01,World Position: (63.20, 0.53, 15.77)
+PlayerHealth,0:27.01,100
+Player Position,0:30.01,World Position: (56.43, 0.19, -11.16)
+PlayerHealth,0:30.01,100
+Player Position,0:33.02,World Position: (44.05, -2.07, -28.90)
+PlayerHealth,0:33.02,100
+Player Position,0:36.03,World Position: (71.04, 0.53, 7.18)
+PlayerHealth,0:36.03,100
+Player Position,0:39.03,World Position: (67.19, 0.53, 31.17)
+PlayerHealth,0:39.03,100
+Player Position,0:42.04,World Position: (36.72, 0.01, 40.08)
+PlayerHealth,0:42.04,100
+Player Position,0:45.04,World Position: (27.35, 0.01, 47.47)
+PlayerHealth,0:45.04,100
+Player Position,0:48.04,World Position: (25.76, 10.00, 69.55)
+PlayerHealth,0:48.04,100
+Player Position,0:51.05,World Position: (57.02, 16.01, 74.48)
+PlayerHealth,0:51.05,100
+Player Position,0:54.05,World Position: (83.54, 16.01, 87.14)
+PlayerHealth,0:54.05,100
+Player Position,0:57.06,World Position: (72.74, 16.01, 90.70)
+PlayerHealth,0:57.06,100
+Player Position,1:0.07,World Position: (65.06, 16.01, 83.52)
+PlayerHealth,1:0.07,100
+Sonar Scanner Clicked,1:2.55,World Position Trigger Point: (77.12, 16.01, 86.90)Sonar Scanner: 1
+Player Position,1:3.08,World Position: (79.23, 16.01, 86.90)
+PlayerHealth,1:3.08,100
+Player Position,1:6.09,World Position: (93.42, 16.01, 87.31)
+PlayerHealth,1:6.09,100
+Player Position,1:9.09,World Position: (99.87, 16.01, 95.97)
+PlayerHealth,1:9.09,100
+Sonar Pulse Triggered,1:10.45,World Position Trigger Point: (100.01, 16.22, 91.32)Sonar Pulse: 1
+Sonar Scanner Clicked,1:10.59,World Position Trigger Point: (101.21, 16.01, 90.53)Sonar Scanner: 2
+Player Position,1:12.10,World Position: (95.82, 16.01, 89.31)
+PlayerHealth,1:12.10,100
+Player Position,1:15.11,World Position: (80.59, 15.82, 95.90)
+PlayerHealth,1:15.11,100
+Player Position,1:18.11,World Position: (84.59, 4.01, 131.96)
+PlayerHealth,1:18.11,100
+Player Position,1:21.32,World Position: (83.61, 4.01, 147.25)
+PlayerHealth,1:21.32,100
+Sonar Pulse Triggered,1:21.89,World Position Trigger Point: (79.85, 4.22, 145.57)Sonar Pulse: 2
+Sonar Scanner Clicked,1:22.02,World Position Trigger Point: (81.21, 4.01, 145.27)Sonar Scanner: 3
+Player Position,1:24.33,World Position: (65.95, 4.01, 140.85)
+PlayerHealth,1:24.33,100
+Sonar Pulse Triggered,1:25.47,World Position Trigger Point: (75.15, 4.22, 134.99)Sonar Pulse: 3
+Sonar Scanner Clicked,1:25.61,World Position Trigger Point: (76.81, 4.01, 135.27)Sonar Scanner: 4
+Player Position,1:27.33,World Position: (92.37, 4.01, 131.09)
+PlayerHealth,1:27.33,100
+Player Position,1:30.34,World Position: (81.72, 0.51, 106.53)
+PlayerHealth,1:30.34,100
+Player Position,1:33.34,World Position: (73.79, 0.51, 86.13)
+PlayerHealth,1:33.34,100
+Player Position,1:36.35,World Position: (72.35, 0.51, 65.61)
+PlayerHealth,1:36.35,100
+Sonar Scanner Clicked,1:39.30,World Position Trigger Point: (75.88, 2.19, 57.56)Sonar Scanner: 5
+Player Position,1:39.36,World Position: (76.39, 2.00, 58.23)
+PlayerHealth,1:39.36,100
+Player Position,1:42.37,World Position: (69.54, 4.01, 51.67)
+PlayerHealth,1:42.37,100
+Sonar Scanner Clicked,1:42.89,World Position Trigger Point: (69.14, 4.01, 49.89)Sonar Scanner: 6
+Player Position,1:45.37,World Position: (63.04, 4.01, 50.74)
+PlayerHealth,1:45.37,90
+Sonar Scanner Clicked,1:46.97,World Position Trigger Point: (59.44, 4.01, 50.74)Sonar Scanner: 7
+Player Position,1:48.38,World Position: (59.44, 4.01, 53.66)
+PlayerHealth,1:48.38,90
+Player Position,1:51.38,World Position: (53.39, 4.01, 58.81)
+PlayerHealth,1:51.38,90
+Player Position,1:54.54,World Position: (51.84, -52.96, 49.01)
+PlayerHealth,1:54.54,90
+Player Position,1:57.54,World Position: (51.84, -360.88, 49.01)
+PlayerHealth,1:57.54,90
+Player Position,2:0.54,World Position: (51.84, -939.25, 49.01)
+PlayerHealth,2:0.54,90
+Player Position,2:3.20,World Position: (51.84, -1677.07, 49.01)
+PlayerHealth,2:3.20,90

@@ -1,0 +1,141 @@
+Variable name,Time in Play,Data Point
+PlayerHealth,0:2.33,100
+Player Position,0:2.33,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:5.34,100
+Player Position,0:5.34,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:8.34,100
+Player Position,0:8.34,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:11.35,100
+Player Position,0:11.35,World Position: (-16.80, -2.43, -65.30)
+PlayerHealth,0:14.35,100
+Player Position,0:14.35,World Position: (-18.04, -2.43, -64.94)
+PlayerHealth,0:17.35,100
+Player Position,0:17.35,World Position: (-19.76, -2.24, -64.81)
+PlayerHealth,0:20.36,100
+Player Position,0:20.36,World Position: (-16.62, -1.86, -70.77)
+Sonar Pulse Triggered,0:22.96,World Position Trigger Point: (-20.16, -2.22, -66.83)Sonar Pulse: 1
+PlayerHealth,0:23.36,100
+Player Position,0:23.36,World Position: (-18.62, -2.43, -67.09)
+Sonar Pulse Triggered,0:23.64,World Position Trigger Point: (-20.16, -2.22, -66.83)Sonar Pulse: 2
+PlayerHealth,0:26.36,100
+Player Position,0:26.36,World Position: (-18.10, -2.43, -66.23)
+Sonar Pulse Triggered,0:27.23,World Position Trigger Point: (-19.11, -2.22, -65.03)Sonar Pulse: 3
+PlayerHealth,0:29.37,100
+Player Position,0:29.37,World Position: (-18.10, -2.43, -66.23)
+PlayerHealth,0:32.38,100
+Player Position,0:32.38,World Position: (-19.83, -2.28, -72.79)
+PlayerHealth,0:35.38,100
+Player Position,0:35.38,World Position: (-9.11, -2.28, -77.22)
+PlayerHealth,0:38.39,100
+Player Position,0:38.39,World Position: (-12.84, -1.86, -66.49)
+PlayerHealth,0:41.39,100
+Player Position,0:41.39,World Position: (-7.49, -1.97, -61.26)
+PlayerHealth,0:44.39,100
+Player Position,0:44.39,World Position: (2.89, -1.97, -54.19)
+PlayerHealth,0:47.40,100
+Player Position,0:47.40,World Position: (13.48, -2.06, -46.06)
+PlayerHealth,0:50.41,100
+Player Position,0:50.41,World Position: (17.73, -2.06, -42.52)
+1st PowerCore Picked Up,0:50.49,82.13609
+PlayerHealth,0:53.41,100
+Player Position,0:53.41,World Position: (16.95, -2.06, -41.82)
+PlayerHealth,0:56.41,100
+Player Position,0:56.41,World Position: (17.65, -2.06, -42.42)
+PlayerHealth,0:59.42,100
+Player Position,0:59.42,World Position: (18.50, -2.08, -32.79)
+PlayerHealth,1:2.42,100
+Player Position,1:2.42,World Position: (29.50, -2.07, -28.57)
+PlayerHealth,1:5.43,100
+Player Position,1:5.43,World Position: (41.53, -2.07, -25.55)
+PlayerHealth,1:8.43,100
+Player Position,1:8.43,World Position: (43.24, -2.07, -27.36)
+PlayerHealth,1:11.44,100
+Player Position,1:11.44,World Position: (44.04, -2.07, -25.15)
+PlayerHealth,1:14.44,100
+Player Position,1:14.44,World Position: (47.89, -2.08, -33.18)
+PlayerHealth,1:17.44,100
+Player Position,1:17.44,World Position: (50.68, -2.09, -45.18)
+PlayerHealth,1:20.44,100
+Player Position,1:20.44,World Position: (46.74, -2.06, -55.67)
+PlayerHealth,1:23.44,100
+Player Position,1:23.44,World Position: (43.62, -2.06, -56.49)
+PlayerHealth,1:26.45,100
+Player Position,1:26.45,World Position: (43.11, -2.05, -61.60)
+PlayerHealth,1:29.45,100
+Player Position,1:29.45,World Position: (37.00, -2.05, -67.36)
+PlayerHealth,1:32.46,100
+Player Position,1:32.46,World Position: (24.98, -2.05, -58.38)
+PlayerHealth,1:35.46,100
+Player Position,1:35.46,World Position: (17.25, -2.06, -46.35)
+PlayerHealth,1:38.47,100
+Player Position,1:38.47,World Position: (17.25, -2.06, -39.87)
+PlayerHealth,1:41.47,100
+Player Position,1:41.47,World Position: (25.50, -2.07, -29.42)
+PlayerHealth,1:44.60,100
+Player Position,1:44.60,World Position: (37.05, -2.08, -24.63)
+PlayerHealth,1:47.61,100
+Player Position,1:47.61,World Position: (47.61, -1.51, -16.45)
+PlayerHealth,1:50.61,100
+Player Position,1:50.61,World Position: (55.13, 0.53, -4.44)
+PlayerHealth,1:53.61,100
+Player Position,1:53.61,World Position: (60.84, 0.53, 7.55)
+PlayerHealth,1:56.62,100
+Player Position,1:56.62,World Position: (68.29, 0.53, 19.04)
+1st Generator Charged,1:57.95,149.5946
+PlayerHealth,1:59.62,100
+Player Position,1:59.62,World Position: (64.43, 0.53, 14.74)
+PlayerHealth,2:2.62,100
+Player Position,2:2.62,World Position: (64.30, 0.53, 16.36)
+PlayerHealth,2:5.63,100
+Player Position,2:5.63,World Position: (63.17, 0.53, 11.99)
+PlayerHealth,2:8.63,100
+Player Position,2:8.63,World Position: (47.88, -1.64, -17.53)
+PlayerHealth,2:11.63,100
+Player Position,2:11.63,World Position: (43.90, -1.73, -27.40)
+PlayerHealth,2:14.64,100
+Player Position,2:14.64,World Position: (44.14, -2.07, -26.23)
+1st PowerCore Picked Up,2:17.48,169.1218
+2nd Power Core Picked Up,2:17.48,169.1218
+PlayerHealth,2:17.64,100
+Player Position,2:17.64,World Position: (44.44, -2.07, -54.31)
+PlayerHealth,2:20.64,100
+Player Position,2:20.64,World Position: (47.64, -2.08, -24.13)
+PlayerHealth,2:23.65,100
+Player Position,2:23.65,World Position: (68.32, 0.53, 11.91)
+PlayerHealth,2:26.65,100
+Player Position,2:26.65,World Position: (81.22, 0.53, 13.18)
+Sonar Scanner Clicked,2:28.15,World Position Trigger Point: (76.39, 0.53, 18.48)Sonar Scanner: 1
+PlayerHealth,2:29.65,100
+Player Position,2:29.65,World Position: (70.42, 0.53, 22.88)
+Sonar Scanner Clicked,2:29.82,World Position Trigger Point: (69.71, 0.53, 23.56)Sonar Scanner: 2
+PlayerHealth,2:32.66,100
+Player Position,2:32.66,World Position: (61.99, 0.53, 32.48)
+PlayerHealth,2:35.66,100
+Player Position,2:35.66,World Position: (42.19, 0.53, 31.30)
+Sonar Scanner Clicked,2:37.78,World Position Trigger Point: (36.35, 0.53, 19.34)Sonar Scanner: 3
+PlayerHealth,2:38.67,100
+Player Position,2:38.67,World Position: (36.35, 0.53, 15.80)
+PlayerHealth,2:41.68,100
+Player Position,2:41.68,World Position: (49.77, 0.53, 1.56)
+PlayerHealth,2:44.68,100
+Player Position,2:44.68,World Position: (68.50, 0.53, 3.63)
+PlayerHealth,2:47.69,100
+Player Position,2:47.69,World Position: (83.75, 0.53, 17.65)
+PlayerHealth,2:50.69,100
+Player Position,2:50.69,World Position: (70.15, 0.53, 29.09)
+PlayerHealth,2:53.70,100
+Player Position,2:53.70,World Position: (54.17, 0.53, 36.41)
+PlayerHealth,2:56.70,100
+Player Position,2:56.70,World Position: (40.73, 0.53, 33.77)
+PlayerHealth,2:59.70,100
+Player Position,2:59.70,World Position: (31.04, 0.53, 14.58)
+PlayerHealth,3:2.71,100
+Player Position,3:2.71,World Position: (22.16, -8.57, 8.58)
+PlayerHealth,3:5.71,100
+Player Position,3:5.71,World Position: (22.16, -211.15, 8.58)
+PlayerHealth,3:8.72,100
+Player Position,3:8.72,World Position: (14.02, -685.35, 16.13)
+PlayerHealth,3:11.72,100
+Player Position,3:11.72,World Position: (14.02, -1428.89, 16.13)
+PlayerHealth,3:12.09,100
+Player Position,3:12.09,World Position: (14.02, -1542.16, 16.13)

@@ -1,0 +1,66 @@
+Variable name,Time in Play,Data Point
+PlayerHealth,0:2.98,100
+Player Position,0:2.98,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:5.99,100
+Player Position,0:5.99,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:8.99,100
+Player Position,0:8.99,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:12.00,100
+Player Position,0:12.00,World Position: (-16.80, -2.43, -65.30)
+PlayerHealth,0:15.00,100
+Player Position,0:15.00,World Position: (-18.91, -2.07, -63.98)
+PlayerHealth,0:18.00,100
+Player Position,0:18.00,World Position: (-5.47, -1.97, -59.10)
+1st PowerCore Picked Up,0:20.54,20.54457
+PlayerHealth,0:21.00,100
+Player Position,0:21.00,World Position: (17.06, -2.06, -44.81)
+PlayerHealth,0:24.01,100
+Player Position,0:24.01,World Position: (46.11, -2.06, -56.46)
+PlayerHealth,0:27.01,100
+Player Position,0:27.01,World Position: (45.50, -2.07, -24.91)
+Sonar Pulse Triggered,0:29.62,World Position Trigger Point: (59.11, 0.74, -4.67)Sonar Pulse: 1
+Sonar Scanner Clicked,0:29.76,World Position Trigger Point: (59.12, 0.53, -6.24)Sonar Scanner: 1
+PlayerHealth,0:30.01,100
+Player Position,0:30.01,World Position: (59.12, 0.53, -6.24)
+PlayerHealth,0:33.02,100
+Player Position,0:33.02,World Position: (66.04, 0.53, 10.21)
+1st Generator Charged,0:35.93,35.93483
+1st PowerCore Picked Up,0:35.93,35.93483
+2nd Power Core Picked Up,0:35.93,35.93483
+PlayerHealth,0:36.02,100
+Player Position,0:36.02,World Position: (63.62, 0.53, 16.36)
+PlayerHealth,0:39.02,100
+Player Position,0:39.02,World Position: (63.62, 0.53, 16.36)
+PlayerHealth,0:42.02,100
+Player Position,0:42.02,World Position: (63.48, 0.53, 16.50)
+PlayerHealth,0:45.03,100
+Player Position,0:45.03,World Position: (64.01, 0.53, 31.95)
+PlayerHealth,0:48.04,100
+Player Position,0:48.04,World Position: (70.43, 0.53, 29.62)
+PlayerHealth,0:51.04,100
+Player Position,0:51.04,World Position: (59.37, 0.53, 3.97)
+PlayerHealth,0:54.04,100
+Player Position,0:54.04,World Position: (50.54, -1.44, -17.86)
+PlayerHealth,0:57.05,100
+Player Position,0:57.05,World Position: (53.11, -0.40, -12.58)
+PlayerHealth,1:0.05,100
+Player Position,1:0.05,World Position: (67.66, 0.53, 23.45)
+PlayerHealth,1:3.05,100
+Player Position,1:3.05,World Position: (55.58, 0.53, 36.78)
+PlayerHealth,1:6.05,100
+Player Position,1:6.05,World Position: (44.66, 0.53, 39.78)
+PlayerHealth,1:9.05,100
+Player Position,1:9.05,World Position: (32.65, 0.01, 43.67)
+Sonar Pulse Triggered,1:10.37,World Position Trigger Point: (25.97, 0.22, 46.45)Sonar Pulse: 2
+PlayerHealth,1:12.06,100
+Player Position,1:12.06,World Position: (22.65, 0.01, 50.72)
+Sonar Pulse Triggered,1:13.44,World Position Trigger Point: (31.19, 0.22, 62.78)Sonar Pulse: 3
+PlayerHealth,1:15.06,100
+Player Position,1:15.06,World Position: (37.56, 0.01, 70.17)
+PlayerHealth,1:18.06,100
+Player Position,1:18.06,World Position: (22.53, 0.01, 37.47)
+PlayerHealth,1:21.07,100
+Player Position,1:21.07,World Position: (10.77, 0.01, 47.84)
+PlayerHealth,1:24.07,100
+Player Position,1:24.07,World Position: (22.11, 8.16, 67.29)
+Play
