@@ -2198,6 +2198,51 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &2247074108848390134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7172340043335557581}
+  - component: {fileID: 954958877143745697}
+  m_Layer: 0
+  m_Name: SonarVisual
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7172340043335557581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2247074108848390134}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.19, y: 0.506, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4433091772292418857}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &954958877143745697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2247074108848390134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07333b3e46d7ef84e867b188208cc05c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 46be26a5284af7b4c917bdf289718d7f, type: 2}
 --- !u!1 &2422132250117206083
 GameObject:
   m_ObjectHideFlags: 0
@@ -8609,6 +8654,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7172340043335557581}
   - {fileID: 6471641189901774414}
   - {fileID: 4189517029486988551}
   - {fileID: 8813136863582388627}
@@ -8686,6 +8732,7 @@ MonoBehaviour:
   torsoFollowTarget: {fileID: 0}
   fovController: {fileID: 2848454299991115248}
   scannerRadiusMax: 15
+  Mat_ScanLine: {fileID: 0}
   WeaponCursor: {fileID: 7822282409963098383}
   isScanning: 0
   buttonHeldDown: 0
@@ -8704,6 +8751,7 @@ MonoBehaviour:
   usingForwardMovement: 0
   charMoving: 0
   charSpeed: 0
+  DebugScanner: 0
 --- !u!114 &2848454299991115248
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,5 +1,28 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8281392366383626850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194198e6015c6ee4bb7e792beb452b49, type: 3}
+  m_Name: SonarMask
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    showInSceneView: 1
+    _event: 300
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 1
+    overrideMaterial: {fileID: 0}
+    overrideMaterialPass: 0
+    colorTargetDestinationID: 
+    blitMaterial: {fileID: 0}
 --- !u!114 &-6708043913894918516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10,7 +33,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 194198e6015c6ee4bb7e792beb452b49, type: 3}
-  m_Name: CustomRFMask
+  m_Name: PixelMask
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
@@ -24,30 +47,6 @@ MonoBehaviour:
     overrideMaterialPass: 0
     colorTargetDestinationID: _PixelMaskTarget
     blitMaterial: {fileID: 2100000, guid: f72770de6c5f88b48824963a3cca76b3, type: 2}
---- !u!114 &-2138849386493074090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 194198e6015c6ee4bb7e792beb452b49, type: 3}
-  m_Name: CustomRFMask
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  settings:
-    showInSceneView: 1
-    _event: 400
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 16384
-    overrideMaterial: {fileID: -876546973899608171, guid: 3de047fa6875c8449890f34801947213,
-      type: 3}
-    overrideMaterialPass: 0
-    colorTargetDestinationID: _SonarMaskTarget
-    blitMaterial: {fileID: 2100000, guid: 46be26a5284af7b4c917bdf289718d7f, type: 2}
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,9 +136,9 @@ MonoBehaviour:
   - {fileID: 2904013462030500549}
   - {fileID: -1816820589241774556}
   - {fileID: 7236365097531117514}
-  - {fileID: -2138849386493074090}
   - {fileID: -6708043913894918516}
-  m_RendererFeatureMap: adc0de57c6d2eee54303acbf2e65ce7cc20109b868490bfec5c2478bdb204d2824cea0cd4c5bc9e6ca8f605fb7bb6c6456a504aad04751e28c8692de993de8a2
+  - {fileID: -8281392366383626850}
+  m_RendererFeatureMap: adc0de57c6d2eee54303acbf2e65ce7cc20109b868490bfec5c2478bdb204d2824cea0cd4c5bc9e6ca8f605fb7bb6c648c8692de993de8a29e8512fc8495128d
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
