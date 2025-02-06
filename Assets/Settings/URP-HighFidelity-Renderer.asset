@@ -15,14 +15,15 @@ MonoBehaviour:
   m_Active: 1
   settings:
     showInSceneView: 1
-    _event: 300
+    _event: 400
     layerMask:
       serializedVersion: 2
-      m_Bits: 1
-    overrideMaterial: {fileID: 0}
+      m_Bits: 16384
+    overrideMaterial: {fileID: -876546973899608171, guid: 3de047fa6875c8449890f34801947213,
+      type: 3}
     overrideMaterialPass: 0
-    colorTargetDestinationID: 
-    blitMaterial: {fileID: 0}
+    colorTargetDestinationID: _SonarMask
+    blitMaterial: {fileID: 2100000, guid: 46be26a5284af7b4c917bdf289718d7f, type: 2}
 --- !u!114 &-6708043913894918516
 MonoBehaviour:
   m_ObjectHideFlags: 0
