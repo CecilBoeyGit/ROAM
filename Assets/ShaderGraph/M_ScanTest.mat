@@ -52,15 +52,15 @@ Material:
     m_Floats:
     - _MaskHardness: 0.272
     - _MaskPower: 1
-    - _MaskRadius: 11.16285
+    - _MaskRadius: 0
     - _OUTScanLineIntensity: 5
     - _OUTScanLineP: 5
     - _OUTScanLinePower: 3
-    - _OverallEffect: 0.93023753
+    - _OverallEffect: 0
     - _ScanLinePower: 15
     - _ScanLineRedIntensity: 10
     - _ScanLineSpeed: 2
-    - _ScanLineTiling: 9.302376
+    - _ScanLineTiling: 0
     m_Colors:
     - _OUTScanLineColor: {r: 2.9960785, g: 0.0805694, b: 0, a: 0}
     - _Origin: {r: -16.55, g: 0.506, b: -66.71, a: 0}
