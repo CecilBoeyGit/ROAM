@@ -45,6 +45,8 @@ public class PowerReserveManager : MonoBehaviour
     public Material HPRing;
     public Material PowerRing;
 
+    public bool isConsumingWeaponAmount = false;
+
     [SerializeField] GameObject IntegManager;
 
     bool secondCoreTriggered = false;
@@ -90,18 +92,14 @@ public class PowerReserveManager : MonoBehaviour
     }
     private void Update()
     {
+        //Power Amount
         PowerAmountNullCondition();
-        PowerAmountOverdraw();
+        //PowerAmountOverdraw();
+
+        //Weapon Amount
         WeaponMultiplierAdjustment();
         WeaponStationaryMulti();
-
-        if (!weaponIncrementing)
-        {
-            if (CO_WeaponAmountIncrement != null)
-                StopCoroutine(CO_WeaponAmountIncrement);
-
-            CO_WeaponAmountIncrement = StartCoroutine(WeaponAmountIncrement());
-        }
+        WeaponAmountIncrement();
 
         PowerCoreGraphics.SetActive(currentPowerCore == null? false : true);
         PowerAmountInjection();
@@ -110,6 +108,7 @@ public class PowerReserveManager : MonoBehaviour
 
         CoreLoopStages();
 
+        //Visualizations
         UIRingControls();
     }
     void PowerAmountNullCondition()
@@ -166,37 +165,60 @@ public class PowerReserveManager : MonoBehaviour
             }
         }
     }
-    IEnumerator WeaponAmountIncrement()
+    void WeaponAmountIncrement()
     {
-        weaponIncrementing = true;
+        if (weaponAmountRecharging)
+            return;
 
-        while(true)
+        if (weaponAmount >= weaponAmountMax)
+            weaponAmount = weaponAmountMax;
+        else if (weaponAmount < weaponAmountMax && !isConsumingWeaponAmount)
+            weaponAmount += Time.deltaTime * weaponAmountIncrement * weaponStationaryMultiContainer * weaponMultiplierContainer;
+        if (weaponAmount <= 1.0f)
         {
-            if (weaponAmount >= weaponAmountMax)
-                weaponAmount = weaponAmountMax;
-            else if (weaponAmount < weaponAmountMax)
-                weaponAmount += Time.deltaTime * weaponAmountIncrement * weaponStationaryMultiContainer * weaponMultiplierContainer;
-            else if (weaponAmount <= 0)
-            {
-                weaponAmount = 0;
+            weaponAmount = 0;
 
-                if (IntegManager.activeInHierarchy)
+            if (CO_WeaponAmountRecharging != null)
+                StopCoroutine(CO_WeaponAmountRecharging);
+            StartCoroutine(WeaponAmountRecharge(3.0f));
+
+            if (IntegManager.activeInHierarchy)
+            {
+                if (CLMInstance.Enum_LoopStages == CoreLoopManager.LoopStages.DayOneCycle)
                 {
-                    if (CLMInstance.Enum_LoopStages == CoreLoopManager.LoopStages.DayOneCycle)
+                    AbilitiesEmptyTriggerMetric++;
+                    string playerTransformString = ("World Position Trigger Point: " + transform.position + "Weapon Amount Null: " + AbilitiesEmptyTriggerMetric);
+                    if (MetricManagerScript.instance != null)
                     {
-                        AbilitiesEmptyTriggerMetric++;
-                        string playerTransformString = ("World Position Trigger Point: " + transform.position + "Weapon Amount Null: " + AbilitiesEmptyTriggerMetric);
-                        if (MetricManagerScript.instance != null)
-                        {
-                            MetricManagerScript.instance.LogString("Weapon Amount Empty", playerTransformString.ToString());
-                        }
+                        MetricManagerScript.instance.LogString("Weapon Amount Empty", playerTransformString.ToString());
                     }
                 }
             }
+        }
+    }
+
+    bool weaponAmountRecharging = false;
+    Coroutine CO_WeaponAmountRecharging;
+
+    IEnumerator WeaponAmountRecharge(float duration)
+    {
+        weaponAmountRecharging = true;
+        playerInstance.AbilitiesConstrained = true;
+
+        float time = 0;
+        while(time < duration)
+        {
+            time += Time.deltaTime;
+            float lerpVal = Mathf.InverseLerp(0, duration, time);
+            weaponAmount = lerpVal * weaponAmountMax;
 
             yield return null;
         }
+
+        playerInstance.AbilitiesConstrained = false;
+        weaponAmountRecharging = false;
     }
+
     void CoreLoopStages()
     {
         switch (CLMInstance.Enum_OnboardingStages)

@@ -234,6 +234,9 @@ public class CoreLoopManager : MonoBehaviour
                 switch(Enum_DayStages)
                 {
                     case DayStages.IntegrityActivate:
+                        if (TutorialSeqInstance == null)
+                            return;
+
                         DayRegularBehaviours();
                         break;
                     case DayStages.IntegritySuccess:

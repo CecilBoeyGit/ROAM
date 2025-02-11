@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 using System.Linq;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController controller;
     private Vector3 playerVelocity;
+    private Vector3 pointToLook;
+    private Vector2 directionHolder;
 
     [Header("--- OVERRIDES ---")]
     public bool PlayerConstrained = false;
@@ -23,7 +26,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask groundMask;
     [SerializeField] private bool groundedPlayer;
     [SerializeField] private float walkSpeed = 2.0f;
-    [SerializeField] private float runSpeed = 4.0f;
+    [SerializeField] private float dashSpeed = 20.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float mouseSensitivity = 2.0f;
@@ -43,7 +46,7 @@ public class PlayerController : MonoBehaviour
     public float powerAmount;
     [SerializeField] private float powerAmountMax;
     [SerializeField] private float scannerConsumption;
-    [SerializeField] private float runningConsumption;
+    [SerializeField] private float dashingConsumption;
     [SerializeField] GameObject torsoFollowTarget;
     [SerializeField] FieldOfView fovController;
     [SerializeField] float scannerRadiusMax;
@@ -65,7 +68,7 @@ public class PlayerController : MonoBehaviour
     [Header("--- Timeline ---")]
     [SerializeField] GameObject DeathTimeline;
 
-    [Header("--- Aduio ---")]
+    [Header("--- Audio ---")]
     AudioSource ads;
     [SerializeField] private AudioClip[] adcp = new AudioClip[2];
     bool isPlayingSFX = false;
@@ -76,6 +79,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("--- DEBUG ---")]
     [SerializeField] private bool usingPlaneCast = false;
+    [SerializeField] private bool usingAimUpdated = true;
     [SerializeField] private bool usingForwardMovement = false;
     [SerializeField] private bool charMoving = false;
     [SerializeField] private float charSpeed;
@@ -85,6 +89,9 @@ public class PlayerController : MonoBehaviour
     PowerReserveManager PRMInstance;
     ReloadAllScenes ReloadInstance;
     PowerCoreDrop PCDropInstance;
+    InputSubscriptions _InputSub;
+    GamePadVibrationManager _GamePadVibInstance;
+    //Constants ConstantsInstance;
     public static PlayerController instance;
     private void OnEnable()
     {
@@ -106,6 +113,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = false;
+
         mainCamera = Camera.main;
         vCam.GetComponent<CinemachineVirtualCamera>();
 
@@ -125,6 +134,9 @@ public class PlayerController : MonoBehaviour
         ReloadInstance = ReloadAllScenes.instance;
         PRMInstance = PowerReserveManager.instance;
         PCDropInstance = PowerCoreDrop.instance;
+        _InputSub = InputSubscriptions.instance;
+        _GamePadVibInstance = GamePadVibrationManager.instance;
+        //ConstantsInstance = Constants.instance;
 
         SonarScannerClicked = 0;
 
@@ -133,7 +145,7 @@ public class PlayerController : MonoBehaviour
     void PowerVariableHolder()
     {
         scannerConsumption = PRMInstance.scannerConsumption;
-        runningConsumption = PRMInstance.runningConsumption;
+        dashingConsumption = PRMInstance.runningConsumption;
     }
 
     void Update()
@@ -143,13 +155,12 @@ public class PlayerController : MonoBehaviour
             PowerVariableHolder();
             OnPlayerMove();
             SearchInteractables();
-            if(!AbilitiesConstrained)
+            if(!AbilitiesConstrained) //Abilities Locked ---
                 ScannerControls();
 
             RunningCameraBehaviors();
 
             RunningSFX();
-            RunningConsumption();
             if(anim != null)
                 AnimationStates();
 
@@ -162,13 +173,13 @@ public class PlayerController : MonoBehaviour
         int PowerCoreLayer = LayerMask.GetMask("PowerCore");
         int PowerSocketLayer = LayerMask.GetMask("PowerSocket");
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (_InputSub.InteractInput)
         {       
             Collider[] colliders = Physics.OverlapSphere(transform.position, pickUpRadius, PowerCoreLayer);//Only search for PowerCores that are instantiated
             Collider[] collidersSockets = Physics.OverlapSphere(transform.position, pickUpRadius, PowerSocketLayer);//Only search for PowerSockets
             var NewSocketsList = collidersSockets.Select(col => col.GetComponent<PowerSockets>()).Where(socket => socket != null && socket.PlayerInZone).ToList();
             var NewGenSocketsList = collidersSockets.Select(col => col.GetComponent<GeneratorSocket>()).Where(socket => socket != null && socket.PlayerInZone).ToList();
-            print(NewGenSocketsList.Count);
+            //print(NewGenSocketsList.Count);
             if (NewSocketsList.Count == 0 && NewGenSocketsList.Count == 0)
             {
                 if (PRMInstance.currentPowerCore != null)
@@ -210,7 +221,7 @@ public class PlayerController : MonoBehaviour
     }
     void ScannerControls()
     {
-        if(Input.GetMouseButtonUp(1) && PRMInstance.weaponAmount >= scannerConsumption && !buttonHeldDown && !PRMInstance.isHeldDown)
+        if(_InputSub.SonarInput && PRMInstance.weaponAmount >= scannerConsumption)
         {
             print(isScanning + "isScanning Condition ---");
             if(!isScanning)
@@ -237,9 +248,12 @@ public class PlayerController : MonoBehaviour
         isScanning = true;
 
         PRMInstance.weaponAmount -= scannerConsumption;
+        PRMInstance.isConsumingWeaponAmount = true;
 
         ads.clip = adcp[2];
         ads.Play();
+
+        _GamePadVibInstance.Rumble(scanTime, 0.25f, 1.0f);
 
         float timer = 0;
         while(timer < scanTime)
@@ -255,15 +269,17 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
+        ads.Stop();
         fovController.viewRadius = 0;
         isScanning = false;
+        PRMInstance.isConsumingWeaponAmount = false;
 
         ScanLineConfigDefault(0);
     }
-    void RunningConsumption()
+    void DashingConsumption()
     {
-        if (InRunningState() && SufficientRunningPower())
-            PRMInstance.weaponAmount -= runningConsumption;
+        PRMInstance.weaponAmount -= dashingConsumption;
+        PRMInstance.isConsumingWeaponAmount = true;
     }
     void RunningCameraBehaviors()
     {
@@ -287,11 +303,11 @@ public class PlayerController : MonoBehaviour
     }
     bool SufficientRunningPower()
     {
-        return PRMInstance.weaponAmount >= runningConsumption;
+        return PRMInstance.weaponAmount >= dashingConsumption;
     }
     bool InRunningState()
     {
-        return velocity != 0 && charSpeed == runSpeed;
+        return velocity != 0 && charSpeed == dashSpeed;
     }
     void RunningSFX()
     {
@@ -332,7 +348,7 @@ public class PlayerController : MonoBehaviour
 
         if (isMoving)
         {
-            if (charSpeed == runSpeed)
+            if (charSpeed == dashSpeed)
                 anim.SetFloat("RunningSpeed", 2.0f);
             else
                 anim.SetFloat("RunningSpeed", 1.0f);
@@ -340,43 +356,100 @@ public class PlayerController : MonoBehaviour
     }
     void OnPlayerMove()
     {
-        Aim();
-
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
-        {
-            playerVelocity.y = 0f;
-        }
+        if(!usingAimUpdated)
+            Aim();
+        else
+            AimUpdated();
 
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveZ = Input.GetAxisRaw("Vertical");
         Vector3 move1 = (transform.forward * moveZ) + (transform.right * moveX);
-        Vector3 move2 = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        //Vector3 move2 = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        Vector3 move2 = new Vector3(_InputSub.MoveInput.x, 0, _InputSub.MoveInput.y);
         Vector3 move = usingForwardMovement ? move1 : move2;
-        if (Input.GetKey(KeyCode.LeftShift))
+        
+        controller.Move(move * Time.deltaTime * walkSpeed * movementMasterControl);
+
+        if (_InputSub.DashInput && SufficientRunningPower() && canDash)
         {
-            charSpeed = SufficientRunningPower() ? runSpeed : walkSpeed;
-            vCamNoise.m_FrequencyGain = 0.1f;
+            if (AbilitiesConstrained) //Abilities Locked ---
+                return;
+            
+            Dash(move);
         }
         else
         {
-            charSpeed = walkSpeed;
-            if(!buttonHeldDown)
-                vCamNoise.m_FrequencyGain = 0;
-        }
-        controller.Move(move * Time.deltaTime * charSpeed * movementMasterControl);
-
-        if (Input.GetButtonDown("Jump") && groundedPlayer)
-        {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            vCamNoise.m_FrequencyGain = 0;
         }
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        Jump();
 
         current_pos = transform.position;
         velocity = (current_pos - last_pos).magnitude / Time.deltaTime;
         last_pos = current_pos;
+    }
+
+    [Header("--- DASH PARAMETERS ---")]
+    [SerializeField] private float dashDuration = 0.6f;
+    [SerializeField] private float dashCooldown = 2f;
+    private bool isDashing = false;
+    private bool canDash = true;
+
+    Coroutine CO_Dashing;
+
+    void Dash(Vector3 dashDirection)
+    {
+        vCamNoise.m_FrequencyGain = 0.1f;
+
+        if (CO_Dashing != null)
+            StopCoroutine(CO_Dashing);
+        CO_Dashing = StartCoroutine(Dashing(dashDirection));
+    }
+    IEnumerator Dashing(Vector3 dashDirection)
+    {
+        //print("Is Dashing ---");
+
+        isDashing = true;
+        canDash = false;
+
+        DashingConsumption();
+
+        _GamePadVibInstance.Rumble(dashDuration, 0.1f, 1.0f);
+
+        float elapsedTime = 0f;
+        while (elapsedTime < dashDuration)
+        {
+            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        isDashing = false;
+        PRMInstance.isConsumingWeaponAmount = false;
+
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
+
+    void Jump()
+    {
+        /*if (Input.GetButtonDown("Jump") && groundedPlayer)
+        {
+            playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+        }*/
+
+        groundedPlayer = controller.isGrounded;
+        if (groundedPlayer)
+        {
+            if (playerVelocity.y <= 0)
+            playerVelocity.y = 0f;
+        }
+        else 
+        { 
+            playerVelocity.y += gravityValue * Time.deltaTime;
+        }
+
+        controller.Move(playerVelocity * Time.deltaTime);
     }
     private void Aim()
     {
@@ -394,6 +467,29 @@ public class PlayerController : MonoBehaviour
 
         Debug.DrawLine(transform.position, position, Color.red);
     }
+
+    Vector2 smoothedDirection = Vector2.zero;
+    private void AimUpdated()
+    {
+        Vector2 direction2d = _InputSub.CursorInput;
+        if (direction2d == Vector2.zero)
+        {
+            direction2d = directionHolder;
+        }
+
+        smoothedDirection = Vector2.Lerp(smoothedDirection, direction2d.normalized, Time.deltaTime * 3f);
+
+        Vector3 temp = smoothedDirection.x * Constants.RIGHTDIR + smoothedDirection.y * Constants.UPDIR;
+        pointToLook = transform.position + temp;
+
+        if(pointToLook != transform.position)
+        {
+            transform.rotation = Quaternion.LookRotation(pointToLook - transform.position);
+        }
+
+        directionHolder = smoothedDirection;
+    }
+
     void TorsoRotation(Vector3 direction)
     {
         //Converting the torso rotation into local space to distinguish the rotation from its parent 
@@ -403,7 +499,11 @@ public class PlayerController : MonoBehaviour
     }
     private (bool success, Vector3 position) GetMousePosition()
     {
-        var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Vector3 mousePos = _InputSub.CursorInput;
+        mousePos.z = mainCamera.nearClipPlane;
+        var ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        //print("CursorInput: " + _InputSub.CursorInput);
+        //var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
         if (!usingPlaneCast)
         {

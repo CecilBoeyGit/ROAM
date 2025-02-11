@@ -30,14 +30,29 @@ public class WeaponBaseControl : MonoBehaviour
 
     PowerReserveManager PRMInstance;
     PlayerController pcInstance;
+    InputSubscriptions _InputSub;
 
     public static Action<float> PowerDecrement; 
     public static Action GunFired;
 
+    GamePadVibrationManager _GamePadVibInstance;
+
+    public static WeaponBaseControl instance;
+
+
+    private void Awake()
+    {
+        if (instance != null)
+            Destroy(gameObject);
+        else
+            instance = this;
+    }
     private void Start()
     {
         PRMInstance = PowerReserveManager.instance;
         pcInstance = PlayerController.instance;
+        _InputSub = InputSubscriptions.instance;
+        _GamePadVibInstance = GamePadVibrationManager.instance;
 
         ads = GetComponent<AudioSource>();
         laserPointer = fireDir.GetComponent<LineRenderer>();
@@ -46,23 +61,28 @@ public class WeaponBaseControl : MonoBehaviour
     private void Update()
     {
         PowerVariableHolder();
-        if (!pcInstance.PlayerConstrained)
+        if (pcInstance.PlayerConstrained || pcInstance.AbilitiesConstrained)
+            return;
+
+        if (PRMInstance.weaponAmount >= shootingConsumption)
         {
-            if (!pcInstance.AbilitiesConstrained)
+            if (_InputSub.FireInput && Time.time >= nextFireTime)
             {
-                if (PRMInstance.weaponAmount >= shootingConsumption)
-                {
-                    if (Input.GetMouseButton(0) && Time.time >= nextFireTime && !PRMInstance.isHeldDown)
-                    {
-                        WeaponFireShots();
-                        PRMInstance.weaponAmount -= shootingConsumption;
-                        nextFireTime = Time.time + 1.0f / fireRate;
-                    }
-                }
+                WeaponFireShots();
+                PRMInstance.isConsumingWeaponAmount = true;
+                PRMInstance.weaponAmount -= shootingConsumption;
+                nextFireTime = Time.time + 1.0f / fireRate;
             }
         }
+
         //DebugSection();
     }
+
+    public void FireInputCanceled()
+    {
+        PRMInstance.isConsumingWeaponAmount = false;
+    }
+
     private void FixedUpdate()
     {
         LaserPointerPositions();
@@ -74,6 +94,8 @@ public class WeaponBaseControl : MonoBehaviour
     void WeaponFireShots()
     {
         GunFired?.Invoke();
+
+        _GamePadVibInstance.Rumble(0.1f, 0.1f, 1.0f);
 
         ads.Play();
 

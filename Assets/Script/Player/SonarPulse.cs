@@ -51,12 +51,12 @@ public class SonarPulse : MonoBehaviour
     }
     private void Update()
     {
-        pulseConsumption = PRMInstance.pulseConsumption;
+/*        pulseConsumption = PRMInstance.pulseConsumption;
         if (!playerInstance.PlayerConstrained)
         {
             if(!playerInstance.AbilitiesConstrained)
                 SonarPulseControls();
-        }
+        }*/
     }
 
     void SonarPulseControlsDEPRE()

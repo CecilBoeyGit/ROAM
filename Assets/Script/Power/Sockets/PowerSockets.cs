@@ -35,6 +35,7 @@ public class PowerSockets : MonoBehaviour
 
     protected PowerReserveManager PRMInstance;
     protected PlayerController playerInstance;
+    protected InputSubscriptions _InputSub;
 
     enum SocketType
     {
@@ -63,6 +64,7 @@ public class PowerSockets : MonoBehaviour
 
         PRMInstance = PowerReserveManager.instance;
         playerInstance = PlayerController.instance;
+        _InputSub = InputSubscriptions.instance;
     }
     protected virtual void Update()
     {
@@ -103,7 +105,7 @@ public class PowerSockets : MonoBehaviour
     }
     public virtual void PlayerInZoneActions()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (_InputSub.InteractInput)
         {
             if (powerCoreChild.isActiveAndEnabled && PRMInstance.currentPowerCore == null)
             {
