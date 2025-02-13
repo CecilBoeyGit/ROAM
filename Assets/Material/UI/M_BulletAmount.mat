@@ -65,7 +65,7 @@ Material:
     - _RingWidth: 0.006
     - _SegmentCount: 20
     - _SegmentWidth: 0.01
-    - _SliceCoverage: 1
+    - _SliceCoverage: 0.75
     - _UseCounterClockwise: 0
     m_Colors:
     - _RingColor: {r: 1.4980392, g: 1.3207598, b: 0.6431373, a: 0}
