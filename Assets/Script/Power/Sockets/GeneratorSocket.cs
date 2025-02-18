@@ -24,63 +24,54 @@ public class GeneratorSocket : PowerSockets
     protected override void Update()
     {
         base.Update();
-        if(powerCoreChild.isActiveAndEnabled)
-        {
-            if (powerCoreChild._powerAmount <= 0)
-                generatorParent.isCharging = false;
-        }
 
         float GenLerp = Mathf.InverseLerp(0, generatorParent.GeneratorMaxAmount, generatorParent.GeneratorPowerAmount);
         BarMaterial.SetFloat("_SliceCoverage", GenLerp);
     }
     public override void PlayerInZoneActions()
     {
-        if(Input.GetKeyDown(KeyCode.E))
+        if (_InputSub.InteractInput)
         {
-            print("E Pressed");
-            isHeldDown = true;
-            holdTime = Time.time;
-        }
-        if (Input.GetKeyUp(KeyCode.E)) // When the key is pressed
-        {
-            if (isHeldDown)
+            if (!powerCoreChild.isActiveAndEnabled) //If the generator has no PowerCore charging
             {
-                print("E Released");
-                if (powerCoreChild.isActiveAndEnabled && PRMInstance.currentPowerCore == null)
+                if (PRMInstance.currentPowerCore != null && PRMInstance.currentPowerCore.isEquiped) //If the player is equiped with a PowerCore
                 {
-                    if (powerCoreChild.isCharging)
-                    {
-                        PRMInstance.currentPowerCore = powerCoreChild;
-                        PRMInstance.powerAmount = powerCoreChild._powerAmount;
-                        powerCoreChild.Equipped();
-                        ads.clip = adcp[0];
-                        ads.Play();
-                        powerCoreChild.gameObject.SetActive(false);
-                        generatorParent.isCharging = false;
-                    }
+                    powerCoreChild.gameObject.SetActive(true);
+                    ads.clip = adcp[1];
+                    ads.Play();
+                    PRMInstance.currentPowerCore = null;
+                    generatorParent.isCharging = true;
+
+                    if (CO_GeneratorCharing != null)
+                        StopCoroutine(CO_GeneratorCharing);
+                    CO_GeneratorCharing = StartCoroutine(PowerCoreCharging(2.0f));
                 }
-                else if (!powerCoreChild.isActiveAndEnabled && PRMInstance.currentPowerCore != null)
-                {
-                    if (PRMInstance.currentPowerCore != null && PRMInstance.currentPowerCore.isEquiped)
-                    {
-                        powerCoreChild.gameObject.SetActive(true);
-                        powerCoreChild.Charging();
-                        ads.clip = adcp[1];
-                        ads.Play();
-                        powerCoreChild._powerAmount = PRMInstance.powerAmount;
-                        PRMInstance.currentPowerCore = null;
-                        generatorParent.isCharging = true;
-                    }
-                }
-            }
-            else
-            {
-                generatorParent.isCharging = false;
             }
         }     
     }
 
-    private void HeldDownActions()
+    Coroutine CO_GeneratorCharing;
+    IEnumerator PowerCoreCharging(float duration)
+    {
+        float time = 0;
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            //float normalizedLerp = Mathf.InverseLerp(0, duration, time);
+            generatorParent.GeneratorPowerAmount += Time.deltaTime * generatorParent.PowerIncrementMultiplier;
+
+            //Placeholder for animations and effects while the generator is charging
+
+            yield return null;
+        }
+
+        generatorParent.isCharging = false;
+        ads.clip = adcp[0];
+        ads.Play();
+        powerCoreChild.gameObject.SetActive(false);
+    }
+
+    /*private void HeldDownActions()
     {
         if (Input.GetKey(KeyCode.E) && Time.time - holdTime >= holdThreshold) // When the key is held down
         {
@@ -92,5 +83,5 @@ public class GeneratorSocket : PowerSockets
                 PRMInstance.powerAmount -= Time.deltaTime * PRMInstance.currentPowerCore.ChargingDecrement;
             }
         }
-    }
+    }*/
 }

@@ -8,8 +8,7 @@ public class Generators : MonoBehaviour
 {
 
     public bool isCharging = false;
-    float powerDecre;
-    [SerializeField] float PowerIncrementMultiplier;
+    public float PowerIncrementMultiplier;
     [SerializeField] public float GeneratorPowerAmount;
     [SerializeField] public float GeneratorMaxAmount;
     [SerializeField] float PowerDecrement;
@@ -48,8 +47,8 @@ public class Generators : MonoBehaviour
             GeneratorPowerAmount = 0;
         }
 
-        powerDecre = isCharging ? PowerIncrementMultiplier : 0;
-        GeneratorPowerAmount += Time.deltaTime * (-PowerDecrement + powerDecre);
+        if (!isCharging)
+            GeneratorPowerAmount += Time.deltaTime * -PowerDecrement;
 
         GeneratorThreshold();
         CoreLoopStages();
@@ -59,7 +58,7 @@ public class Generators : MonoBehaviour
         if (DEBUG_UI)
             UI_Debug();
     }
-    void GeneratorThreshold()
+    void GeneratorThreshold() //Triggering the Defensive Sonar Towers
     {
         float percentile = Mathf.Lerp(0, GeneratorMaxAmount, SonarBeamThreshold);
         if (GeneratorPowerAmount >= percentile)

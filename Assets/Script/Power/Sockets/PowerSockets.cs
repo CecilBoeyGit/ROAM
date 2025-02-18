@@ -5,6 +5,10 @@ using UnityEngine;
 public class PowerSockets : MonoBehaviour
 {
     private bool _playerInZone;
+    private bool socketEmpty = false;
+    private bool socketSpawningPowerCore = false;
+    [SerializeField] float socketSpawntime = 3.5f;
+    float socketSpawntimer = 0;
     public bool PlayerInZone
     {
         get { 
@@ -72,9 +76,48 @@ public class PowerSockets : MonoBehaviour
         PlayerInZone = CheckPlayerInZone();
         if (_playerInZone)
             PlayerInZoneActions();
+        PowerCoreStatus();
+
         UIGroupManager();
         if (transform.gameObject.name.Contains("Power"))
             SocketTextIndicator();
+    }
+    void PowerCoreStatus()
+    {
+        if (socketSpawntimer >= socketSpawntime)
+        {
+            if (CO_SpawningPowerCore != null)
+                StopCoroutine(CO_SpawningPowerCore);
+            CO_SpawningPowerCore = StartCoroutine(PowerCoreSpawning(2.0f));
+        }
+
+        if (socketEmpty)
+            socketSpawntimer += Time.deltaTime;
+        else
+            socketSpawntimer = 0;
+
+    }
+    Coroutine CO_SpawningPowerCore;
+    IEnumerator PowerCoreSpawning(float duration)
+    {
+        socketSpawningPowerCore = true;
+        socketEmpty = false;
+
+        float time = 0;
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+
+            //Placeholder for animations and effects while the PowerCore is spawning
+
+            yield return null;
+        }
+
+        powerCoreChild.gameObject.SetActive(true);
+        powerCoreChild.BackToSocket();
+        ads.clip = adcp[1];
+        ads.Play();
+        socketSpawningPowerCore = false;
     }
     protected void SocketTextIndicator()
     {
@@ -103,36 +146,41 @@ public class PowerSockets : MonoBehaviour
     {
         powerCoreChild = transform.Find("PowerCore")?.GetComponent<PowerCores>();
     }
+
     public virtual void PlayerInZoneActions()
     {
+        if (socketSpawningPowerCore)
+            return;
+
         if (_InputSub.InteractInput)
         {
             if (powerCoreChild.isActiveAndEnabled && PRMInstance.currentPowerCore == null)
             {
-                if (!powerCoreChild.isEquiped && !powerCoreChild.isDropped && !powerCoreChild.isCharging)
+                if (!powerCoreChild.isEquiped && !powerCoreChild.isDropped)
                 {
                     PRMInstance.currentPowerCore = powerCoreChild;
-                    PRMInstance.powerAmount = powerCoreChild._powerAmount;
                     powerCoreChild.Equipped();
                     ads.clip = adcp[0];
                     ads.Play();
                     powerCoreChild.gameObject.SetActive(false);
+                    socketEmpty = true;
                 }
             }
             else if (!powerCoreChild.isActiveAndEnabled && PRMInstance.currentPowerCore != null)
             {
-                if (PRMInstance.currentPowerCore != null && PRMInstance.currentPowerCore.isEquiped && !PRMInstance.currentPowerCore.isDropped)
+                if (PRMInstance.currentPowerCore.isEquiped)
                 {
+                    socketEmpty = false;
                     powerCoreChild.gameObject.SetActive(true);
                     powerCoreChild.BackToSocket();
                     ads.clip = adcp[1];
                     ads.Play();
-                    powerCoreChild._powerAmount = PRMInstance.powerAmount;
                     PRMInstance.currentPowerCore = null;
                 }
             }
         }   
     }
+
     bool CheckPlayerInZone()
     {
         float zoneThreshold = Vector3.Dot(playerForwardTransform.forward, -socketForwardTransform.forward);

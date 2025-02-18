@@ -174,7 +174,9 @@ public class PlayerController : MonoBehaviour
         int PowerSocketLayer = LayerMask.GetMask("PowerSocket");
 
         if (_InputSub.InteractInput)
-        {       
+        {
+            print("Interact Input triggered ---");
+
             Collider[] colliders = Physics.OverlapSphere(transform.position, pickUpRadius, PowerCoreLayer);//Only search for PowerCores that are instantiated
             Collider[] collidersSockets = Physics.OverlapSphere(transform.position, pickUpRadius, PowerSocketLayer);//Only search for PowerSockets
             var NewSocketsList = collidersSockets.Select(col => col.GetComponent<PowerSockets>()).Where(socket => socket != null && socket.PlayerInZone).ToList();
@@ -184,16 +186,20 @@ public class PlayerController : MonoBehaviour
             {
                 if (PRMInstance.currentPowerCore != null)
                 {
+                    print("PowerCore dropped actions ---");
                     PCDropInstance.PowerCoreActions();
                     return;
                 }
-                if (colliders.Length > 0)
+                else 
                 {
+                    if (colliders.Length == 0)
+                        return;
+
                     Collider closestCollider = FindClosestCollider(colliders);
                     IPlayerInterface interactable = closestCollider.GetComponent<IPlayerInterface>();
                     if (interactable != null)
                     {
-                        //print("Interactable Interacted");
+                        print("colliders interacted ---");
                         interactable.Interact();
                     }
                 }

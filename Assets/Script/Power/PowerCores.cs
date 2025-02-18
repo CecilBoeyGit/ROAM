@@ -7,12 +7,10 @@ using System;
 [RequireComponent(typeof(PowerCores))]
 public class PowerCores : MonoBehaviour, IPlayerInterface
 {
-    [Header("MAIN AMOUNTS")]
-    public float _powerAmount;
 
     [Header("VARIABLES")]
-    public float ChargingIncrement = 1;
-    public float ChargingDecrement;
+    //public float ChargingIncrement = 1;
+    //public float ChargingDecrement;
     public float pickRadius = 5;
 
     [Header("--- REFEREBCES ---")]
@@ -23,21 +21,8 @@ public class PowerCores : MonoBehaviour, IPlayerInterface
     PowerCorePooling poolInstance;
     PowerReserveManager PRMInstance;
 
-    public float PowerAmount
-    {
-        get
-        {
-            return _powerAmount;
-        }
-        set
-        {
-            _powerAmount = value;
-        }
-    }
-
     public bool isEquiped;
     public bool isDropped;
-    public bool isCharging;
 
     public enum PowerCoreState
     {
@@ -47,13 +32,12 @@ public class PowerCores : MonoBehaviour, IPlayerInterface
         Dropped
     }
 
-    PowerCoreState PCStates;
+    public PowerCoreState PCStates;
 
     private void Awake()
     {
         isEquiped = false;
         isDropped = false;
-        isCharging = false;
     }
     private void Start()
     {
@@ -65,18 +49,13 @@ public class PowerCores : MonoBehaviour, IPlayerInterface
     }
     private void Update()
     {
-        PowerAmountSetLimit();
         HandlePowerCoreState(PCStates);
         LiquidVisuals();
     }
     void LiquidVisuals()
     {
-        float LiquidFillVal = Mathf.InverseLerp(0, PRMInstance.powerAmountMax, _powerAmount);
+        float LiquidFillVal = 1; //PLACEHOLDER VALUE
         LiquidMat.SetFloat("_PowerFill", LiquidFillVal);
-    }
-    void PowerAmountSetLimit()
-    {
-        PowerAmount = _powerAmount >= PRMInstance.powerAmountMax ? PRMInstance.powerAmountMax : _powerAmount;
     }
     bool CheckPlayerDistance()
     {
@@ -85,16 +64,14 @@ public class PowerCores : MonoBehaviour, IPlayerInterface
     }
     public void Interact()
     {
-        if (PRMInstance.currentPowerCore == null)
-        {
-            if (CheckPlayerDistance())
-            {
-                PRMInstance.currentPowerCore = this;
-                PRMInstance.powerAmount = _powerAmount;
-                Equipped();
-                poolInstance.ReturnPowerCore(gameObject);
-            }
-        }
+        if (!isDropped)
+            return;
+
+        print("PowerCore picked up ---");
+
+        Equipped();
+        PRMInstance.currentPowerCore = this;
+        poolInstance.ReturnPowerCore(gameObject);
     }
     public void HandlePowerCoreState(PowerCoreState state)
     {
@@ -104,16 +81,13 @@ public class PowerCores : MonoBehaviour, IPlayerInterface
 
                 break;
             case PowerCoreState.BackToSocket:
-                PowerAmount += Time.deltaTime * ChargingIncrement;
+
                 break;
             case PowerCoreState.Dropped:
-                //Interact();
+
                 break;
             case PowerCoreState.Charging:
-                if (_powerAmount <= 0)
-                    PowerAmount = 0;
-                else
-                    PowerAmount -= Time.deltaTime * ChargingDecrement;
+
                 break;
             default:
                 Debug.LogWarning("Invalid power core state: " + state);
@@ -124,28 +98,24 @@ public class PowerCores : MonoBehaviour, IPlayerInterface
     {
         isEquiped = true;
         isDropped = false;
-        isCharging = false;
         PCStates = PowerCoreState.Equipped;
     }
     public void BackToSocket()
     {
         isEquiped = false;
         isDropped = false;
-        isCharging = false;
         PCStates = PowerCoreState.BackToSocket;
     }
     public void Dropped()
     {
         isEquiped = false;
         isDropped = true;
-        isCharging = false;
         PCStates = PowerCoreState.Dropped;
     }
     public void Charging()
     {
         isEquiped = false;
         isDropped = false;
-        isCharging = true;
         PCStates = PowerCoreState.Charging;
     }
 }

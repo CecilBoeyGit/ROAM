@@ -118,8 +118,8 @@ public class InputSubscriptions : MonoBehaviour
         _Input.PlayerInputs.Dash.canceled += SetDash;
 
         //Interact input ---
-        _Input.PlayerInputs.Interact.started += SetInteract;
-        _Input.PlayerInputs.Interact.canceled += SetInteract;
+        //_Input.PlayerInputs.Interact.started += SetInteract;
+        //_Input.PlayerInputs.Interact.canceled += SetInteract;
     }
     private void OnDisable()
     {
@@ -141,8 +141,8 @@ public class InputSubscriptions : MonoBehaviour
         _Input.PlayerInputs.Dash.started -= SetDash;
         _Input.PlayerInputs.Dash.canceled -= SetDash;
 
-        _Input.PlayerInputs.Interact.started -= SetInteract;
-        _Input.PlayerInputs.Interact.canceled -= SetInteract;
+        //_Input.PlayerInputs.Interact.started -= SetInteract;
+        //_Input.PlayerInputs.Interact.canceled -= SetInteract;
 
         _Input.PlayerInputs.Disable();
     }

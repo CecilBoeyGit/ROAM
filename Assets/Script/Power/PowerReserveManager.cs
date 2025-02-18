@@ -11,8 +11,6 @@ public class PowerReserveManager : MonoBehaviour
     PlayerController playerInstance;
 
     [Header("MAIN AMOUNTS")]
-    public float powerAmount;
-    public float powerAmountMax;
     public float weaponAmount;
     public float weaponAmountMax;
     [SerializeField] float weaponAmountIncrement;
@@ -22,8 +20,6 @@ public class PowerReserveManager : MonoBehaviour
     private float weaponStationaryMultiContainer;
 
     public bool isEquiped;
-    public bool isDropped;
-    public bool isCharging;
 
     [Header("DEPLETION VARIABLES")]
     public float scannerConsumption;
@@ -86,15 +82,15 @@ public class PowerReserveManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.P))
         {
-            powerAmount = 100;
             weaponAmount = 100;
         }
     }
     private void Update()
     {
         //Power Amount
-        PowerAmountNullCondition();
         //PowerAmountOverdraw();
+
+        PowerCoreStatus();
 
         //Weapon Amount
         WeaponMultiplierAdjustment();
@@ -102,34 +98,24 @@ public class PowerReserveManager : MonoBehaviour
         WeaponAmountIncrement();
 
         PowerCoreGraphics.SetActive(currentPowerCore == null? false : true);
-        PowerAmountInjection();
         DEBUG_INVINCIBLE();
-        playerInstance.powerAmount = powerAmount;
 
         CoreLoopStages();
 
         //Visualizations
         UIRingControls();
     }
-    void PowerAmountNullCondition()
-    {
-        if (powerAmount <= 0)
-        {
-            powerAmount = 0;       
-        }
-    }
-    void PowerAmountInjection()
-    {
-        if (currentPowerCore == null)
-            powerAmount = 0;
-    }
     float WeaponMultiplierAdjustment()
     {
-        return weaponMultiplierContainer = powerAmount > 0 ? weaponAmountPowerMultiplier : 1;
+        return weaponMultiplierContainer = 1; //PLACEHOLDER VALUE
     }
     float WeaponStationaryMulti()
     {
         return weaponStationaryMultiContainer = playerInstance.velocity <= 0 ? weaponAmountStationaryMultiplier : 1;
+    }
+    void PowerCoreStatus()
+    {
+        isEquiped = currentPowerCore == null ? false : true;
     }
     void PowerAmountOverdraw() //Timer is implemented to prevent other functions with MouseButtons to trigger
     {
@@ -140,12 +126,6 @@ public class PowerReserveManager : MonoBehaviour
                 isHeldDown = true;
             else
                 isHeldDown = false;
-
-            if (powerAmount >= 0)
-            {
-                powerAmount -= Time.deltaTime * overdrawConsumption;
-                weaponAmount += Time.deltaTime * overdrawConsumption;
-            }
         }
         else
         {
@@ -174,7 +154,8 @@ public class PowerReserveManager : MonoBehaviour
             weaponAmount = weaponAmountMax;
         else if (weaponAmount < weaponAmountMax && !isConsumingWeaponAmount)
             weaponAmount += Time.deltaTime * weaponAmountIncrement * weaponStationaryMultiContainer * weaponMultiplierContainer;
-        if (weaponAmount <= 1.0f)
+
+        if (weaponAmount < 5.0f)
         {
             weaponAmount = 0;
 
@@ -251,7 +232,6 @@ public class PowerReserveManager : MonoBehaviour
         float ScanPercentile = Mathf.Floor(weaponAmountMax / scannerConsumption);
         float ScanLerpVal = Mathf.InverseLerp(0, ScanPercentile, Mathf.Floor(weaponAmount / scannerConsumption));
         float HPPercentile = Mathf.InverseLerp(0, 100, playerInstance.healthPoint);
-        float PowerLerpVal = Mathf.InverseLerp(0, powerAmountMax, powerAmount);
 
         WeaponRing.SetFloat("_SliceCoverage", WeaponAmountLerpVal);
 
@@ -262,7 +242,5 @@ public class PowerReserveManager : MonoBehaviour
         ScanRing.SetFloat("_SliceCoverage", ScanLerpVal);
 
         HPRing.SetFloat("_SliceCoverage", HPPercentile);
-
-        PowerRing.SetFloat("_SliceCoverage", PowerLerpVal);
     }
 }

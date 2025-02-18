@@ -62,10 +62,10 @@ Material:
     - _RingRadius: 0.85
     - _RingSlice: 0.5
     - _RingSlotsIntensity: 0.465
-    - _RingWidth: 0.02
+    - _RingWidth: 1
     - _SegmentCount: 1
     - _SegmentWidth: 0.01
-    - _SliceCoverage: 0.70159066
+    - _SliceCoverage: 0.9762455
     - _UseCounterClockwise: 0
     m_Colors:
     - _RingColor: {r: 1, g: 1, b: 1, a: 0}
