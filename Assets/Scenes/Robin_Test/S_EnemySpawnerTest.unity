@@ -408,10 +408,20 @@ PrefabInstance:
       propertyPath: zeroOffsetHeight.z
       value: -0.31285858
       objectReference: {fileID: 0}
+    - target: {fileID: 3056398023497325284, guid: 9b314de42fa922d4a9287e2aa04f368b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4015966670248225675, guid: 9b314de42fa922d4a9287e2aa04f368b,
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4015966670248225675, guid: 9b314de42fa922d4a9287e2aa04f368b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4433091772292418857, guid: 9b314de42fa922d4a9287e2aa04f368b,
         type: 3}
@@ -598,8 +608,8 @@ Transform:
   m_GameObject: {fileID: 595283413}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1940780713}
   m_RootOrder: -1
@@ -628,7 +638,7 @@ MonoBehaviour:
   - {fileID: 11095689}
   currentEnemyCount: 0
   maxEnemyCount: 5
-  enemyCountRecoveryRate: 10
+  enemyCountRecoveryRate: 3
   triggerZone: {fileID: 0}
 --- !u!65 &595283416
 BoxCollider:
@@ -649,7 +659,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 50, y: 30, z: 50}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &642661287
 GameObject:
@@ -970,7 +980,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5d7ec34d621223044b2ffbc7f1879c31, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

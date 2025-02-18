@@ -60,9 +60,14 @@ public class EnemySpawnerNew : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // 玩家离开Trigger Zone时，销毁所有敌人
+            // 记录当前 Trigger Zone 中的敌人数量
+            currentEnemyCount = CountEnemiesInTriggerZone();
+            Debug.Log("Enemies in zone before destruction: " + currentEnemyCount);
+
+            // 销毁所有敌人
             DestroyAllEnemiesInTriggerZone();
-            
+
+            // 启动恢复敌人计数的协程
             if (CO_RecoverEnemyCount != null)
                 StopCoroutine(CO_RecoverEnemyCount);
             CO_RecoverEnemyCount = StartCoroutine(RecoverEnemyCount());
@@ -83,16 +88,12 @@ public class EnemySpawnerNew : MonoBehaviour
 
     private IEnumerator RecoverEnemyCount()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(enemyCountRecoveryRate);
-
-            // 恢复敌人计数，直到达到上限
-            if (currentEnemyCount < maxEnemyCount)
+            while (currentEnemyCount < maxEnemyCount)
+            {
+                yield return new WaitForSeconds(enemyCountRecoveryRate);
                 currentEnemyCount++;
-            else
-                break;
-        }
+                Debug.Log("Recovered enemy count: " + currentEnemyCount);
+            }
     }
 
     private List<Transform> GetRandomSpawnPoints(int count)
@@ -122,7 +123,7 @@ public class EnemySpawnerNew : MonoBehaviour
                 enemyCount++;
             }
         }
-
+        
         return enemyCount;
     }
     
@@ -135,7 +136,6 @@ public class EnemySpawnerNew : MonoBehaviour
             if (collider.CompareTag("Enemy"))
             {
                 Destroy(collider.gameObject);
-                currentEnemyCount--;
             }
         }
     }
