@@ -84,7 +84,7 @@ MonoBehaviour:
   m_PivotOffset: {x: 0, y: 0, z: 0}
   m_AmplitudeGain: 1
   m_FrequencyGain: 1
-  mNoiseOffsets: {x: 0, y: 0, z: 0}
+  mNoiseOffsets: {x: 654.06824, y: 677.6001, z: 803.63464}
 --- !u!1 &7941443436276114727
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,8 +112,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7941443436276114727}
-  m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: -22.064375, y: 4.3026614, z: -65.581955}
+  m_LocalRotation: {x: 0.38128194, y: -0.0002605513, z: -0.00018803282, w: 0.9244588}
+  m_LocalPosition: {x: -7.371881, y: 4.703563, z: -53.53955}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -153,7 +153,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 60
   orthographic: 0
   orthographic size: 8
   m_Depth: -1
@@ -391,5 +391,5 @@ Transform:
   - {fileID: 8830404634044900608}
   - {fileID: 2698967587666680931}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
