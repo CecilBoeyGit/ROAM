@@ -779,7 +779,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1553013426388209439
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1153,7 +1153,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7885285166489766071
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1993,6 +1993,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3807405346553423258}
+  - component: {fileID: 6394998215535463816}
   m_Layer: 5
   m_Name: MonitorUIBase
   m_TagString: Untagged
@@ -2044,6 +2045,18 @@ RectTransform:
   m_AnchoredPosition: {x: -880.5, y: 321.7}
   m_SizeDelta: {x: 45.391846, y: 2.525879}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &6394998215535463816
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4725412234837499155}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &5335541857899132320
 GameObject:
   m_ObjectHideFlags: 0
@@ -2600,7 +2613,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4399674445286870545
 RectTransform:
   m_ObjectHideFlags: 0
