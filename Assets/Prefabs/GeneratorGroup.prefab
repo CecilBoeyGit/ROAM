@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCharging: 0
-  PowerIncrementMultiplier: 7
+  PowerIncrementMultiplier: 100
   GeneratorPowerAmount: 200
   GeneratorMaxAmount: 200
   PowerDecrement: 3
@@ -1357,6 +1357,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: SonarBeam
       objectReference: {fileID: 0}
+    - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
+        type: 3}
+      propertyPath: zeroOffsetHeight.x
+      value: 46.717476
+      objectReference: {fileID: 0}
+    - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
+        type: 3}
+      propertyPath: zeroOffsetHeight.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
+        type: 3}
+      propertyPath: zeroOffsetHeight.z
+      value: 21.10026
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1435,6 +1450,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SonarBeam (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
+        type: 3}
+      propertyPath: groundRayHitPos.x
+      value: 30.297276
+      objectReference: {fileID: 0}
+    - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
+        type: 3}
+      propertyPath: groundRayHitPos.y
+      value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
+        type: 3}
+      propertyPath: groundRayHitPos.z
+      value: 31.790571
+      objectReference: {fileID: 0}
+    - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
+        type: 3}
+      propertyPath: zeroOffsetHeight.x
+      value: 30.297276
+      objectReference: {fileID: 0}
+    - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
+        type: 3}
+      propertyPath: zeroOffsetHeight.y
+      value: 0.3001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
+        type: 3}
+      propertyPath: zeroOffsetHeight.z
+      value: 31.790575
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
