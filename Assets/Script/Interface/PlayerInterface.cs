@@ -6,3 +6,8 @@ public interface IPlayerInterface
 {
     void Interact();
 }
+
+public interface IWeaponSoundInterface
+{
+    void WeaponSoundTriggered();
+}
