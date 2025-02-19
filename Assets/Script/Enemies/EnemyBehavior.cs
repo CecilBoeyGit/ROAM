@@ -55,7 +55,8 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         IdleState,
         RegularState,
         AttackState,
-        StunnedState
+        StunnedState,
+        DeathState
     }
 
     [SerializeField] enemyStates enemyStateControl;
@@ -127,17 +128,39 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
             case enemyStates.StunnedState:
                 StunnedBehaviors();
                 break;
+            case enemyStates.DeathState:
+                DeathBehaviors();
+                break;
         }
     }
     void IdleBehaviors()
     {
         if (nmAgent.remainingDistance <= nmAgent.stoppingDistance && !nmAgent.pathPending)
         {
-            if(!TutorialBot)
-                SetRandomPatrolPoint();
+            if (!TutorialBot)
+            {
+                if (switchingPatrolPoint)
+                    return;
+
+                if (CO_RandomPatrolPoints != null)
+                    StopCoroutine(RandomPatrolWithCooldown(0));
+                CO_RandomPatrolPoints = StartCoroutine(RandomPatrolWithCooldown(PatrolWaitDuration));
+            }
         }
         if (!masterVisibilityToggle)
             Dissolve(true, 0.5f);
+    }
+    public float PatrolWaitDuration = 8.0f;
+    bool switchingPatrolPoint = false;
+    Coroutine CO_RandomPatrolPoints;
+    IEnumerator RandomPatrolWithCooldown(float waitDuration)
+    {
+        switchingPatrolPoint = true;
+
+        yield return new WaitForSeconds(waitDuration);
+
+        SetRandomPatrolPoint();
+        switchingPatrolPoint = false;
     }
     void SetRandomPatrolPoint()
     {
@@ -179,16 +202,16 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 
             if (!isAttacking)
             {
-                if (CO_AttackSpool != null)
-                    StopCoroutine(CO_AttackSpool);
-
-                CO_AttackSpool = StartCoroutine(AttackSpool(0.8f));
+                
             }
         }
     }
     void AttackBehaviors()
     {
+        if (CO_AttackSpool != null)
+            StopCoroutine(CO_AttackSpool);
 
+        CO_AttackSpool = StartCoroutine(AttackSpool(0.8f));
     }
 
     void StunnedBehaviors()
@@ -208,7 +231,10 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         attackRangeTrigger.localScale = Vector3.zero;
         isAttacking = false;
     }
+    void DeathBehaviors()
+    {
 
+    }
     IEnumerator AttackSpool(float spoolTime)
     {
         isAttacking = true;
@@ -288,7 +314,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
                 }
             }
         }
-        #region
+        #region Out of range behaviors
         /*        else
                 {
                     if (playerInRange && !idleRangeSpooling && !isAttacking && !isStunned)
