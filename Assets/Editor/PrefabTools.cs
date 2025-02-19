@@ -87,7 +87,8 @@ public class PrefabTools : EditorWindow
         GUI.backgroundColor = Color.red;
         if (GUILayout.Button("Delete Selected GameObjects From Prefab"))
         {
-            RemoveChangedToPrefab();
+            RemoveAt();
+            //RemoveChangedToPrefab();
         }
         GUI.backgroundColor = Color.white;
     }
@@ -162,16 +163,66 @@ public class PrefabTools : EditorWindow
         }
 
         GameObject prefabObj = PrefabUtility.GetNearestPrefabInstanceRoot(selectedPrefabInstance);
+        string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(selectedPrefabInstance);
+        //GameObject loadedPath = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+        GameObject prefabContents = PrefabUtility.LoadPrefabContents(prefabPath);
 
         foreach (GameObject obj in removableObjects)
         {
+            //PrefabUtility.ApplyRemovedGameObject(obj, prefabContents, InteractionMode.UserAction);
             DestroyImmediate(obj);
-            PrefabUtility.ApplyRemovedGameObject(obj, prefabObj, InteractionMode.UserAction);
+
+            Debug.Log(prefabPath);
         }
 
-        PrefabUtility.ApplyPrefabInstance(prefabObj, InteractionMode.UserAction);
+        //PrefabUtility.ApplyObjectOverride(prefabObj, prefabPath, InteractionMode.UserAction);
+        //PrefabUtility.ApplyPrefabInstance(prefabContents, InteractionMode.UserAction);
+
+        PrefabUtility.SaveAsPrefabAsset(prefabContents, prefabPath);
+        PrefabUtility.UnloadPrefabContents(prefabContents);
+
+
         Debug.Log($"Removed objects from prefab: {selectedPrefabInstance.name}");
         removableObjects.Clear();
+    }
+
+    private void RemoveAt()
+    {
+        string prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(selectedPrefabInstance);
+
+        // Load the prefab as a GameObject
+        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+        if (prefab == null)
+        {
+            Debug.LogError("Prefab not found at path: " + prefabPath);
+            return;
+        }
+
+        // Create an instance of the prefab to modify
+        GameObject prefabInstance = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+        if (prefabInstance == null)
+        {
+            Debug.LogError("Failed to instantiate prefab.");
+            return;
+        }
+
+        foreach (GameObject obj in removableObjects)
+        {
+            Transform childtemp = prefabInstance.transform.Find(obj.name);
+            if (childtemp != null)
+            {
+                Undo.DestroyObjectImmediate(childtemp.gameObject);
+            }
+            else
+            {
+                Debug.LogWarning("Child not found: " + obj.name);
+            }
+        }
+
+        PrefabUtility.SaveAsPrefabAsset(prefabInstance, prefabPath);
+        DestroyImmediate(prefabInstance);
+
+        Debug.Log("Child removed from prefab and saved.");
     }
 }
 #endif
