@@ -8,7 +8,7 @@ public class Generators : MonoBehaviour
 {
 
     public bool isCharging = false;
-    public float PowerIncrementMultiplier;
+    public float PowerIncrementMultiplier = 100;
     [SerializeField] public float GeneratorPowerAmount;
     [SerializeField] public float GeneratorMaxAmount;
     [SerializeField] float PowerDecrement;

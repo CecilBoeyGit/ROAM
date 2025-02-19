@@ -33,7 +33,7 @@ public class PowerSockets : MonoBehaviour
     bool isPlayingSFX = false;
 
     [Header("--- UI ---")]
-    [SerializeField] GameObject UI_Group;
+    [SerializeField] public GameObject UI_Group;
     [SerializeField] float offsetY; [SerializeField] float offsetX; [SerializeField] float offsetZ;
     [SerializeField] GameObject UI_Empty; [SerializeField] GameObject UI_Charging;
 
@@ -132,7 +132,7 @@ public class PowerSockets : MonoBehaviour
             UI_Charging.SetActive(false);
         }
     }
-    void UIGroupManager()
+    public virtual void UIGroupManager()
     {
         if(_playerInZone)
         {
@@ -158,8 +158,8 @@ public class PowerSockets : MonoBehaviour
             {
                 if (!powerCoreChild.isEquiped && !powerCoreChild.isDropped)
                 {
-                    PRMInstance.currentPowerCore = powerCoreChild;
                     powerCoreChild.Equipped();
+                    PRMInstance.currentPowerCore = powerCoreChild;
                     ads.clip = adcp[0];
                     ads.Play();
                     powerCoreChild.gameObject.SetActive(false);
@@ -183,11 +183,12 @@ public class PowerSockets : MonoBehaviour
 
     bool CheckPlayerInZone()
     {
+        //Conditions to check if the player is facing the socket or not
         float zoneThreshold = Vector3.Dot(playerForwardTransform.forward, -socketForwardTransform.forward);
-
+        //Conditions to check if the player is within the distance of the socket or not
         float dist = Vector3.Distance(playerForwardTransform.position, socketForwardTransform.position);
 
-        if (dist < distanceThreshold && zoneThreshold < -playerInZoneThreshold || dist < distanceThreshold && zoneThreshold > playerInZoneThreshold)
+        if (dist < distanceThreshold)
         {
             //print("Threshold: " + zoneThreshold + " Distance: " + dist + " InZone: " + _playerInZone);
             return true;

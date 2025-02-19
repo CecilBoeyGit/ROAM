@@ -34,7 +34,7 @@ public class GeneratorSocket : PowerSockets
         {
             if (!powerCoreChild.isActiveAndEnabled) //If the generator has no PowerCore charging
             {
-                if (PRMInstance.currentPowerCore != null && PRMInstance.currentPowerCore.isEquiped) //If the player is equiped with a PowerCore
+                if (PRMInstance.currentPowerCore != null && PRMInstance.isEquiped) //If the player is equiped with a PowerCore
                 {
                     powerCoreChild.gameObject.SetActive(true);
                     ads.clip = adcp[1];
@@ -69,6 +69,19 @@ public class GeneratorSocket : PowerSockets
         ads.clip = adcp[0];
         ads.Play();
         powerCoreChild.gameObject.SetActive(false);
+    }
+
+    public override void UIGroupManager()
+    {
+        if (generatorParent.isCharging)
+        {
+            UI_Group.SetActive(false);
+            return;
+        }
+        else
+        {
+            base.UIGroupManager();
+        }
     }
 
     /*private void HeldDownActions()

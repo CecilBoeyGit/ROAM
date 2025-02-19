@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 
-public class EnemyBehavior : MonoBehaviour
+public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 {
 
     PlayerController pcInstance;
@@ -32,7 +32,7 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField] float attackDistanceThreshold = 5.0f;
     [SerializeField] float rangeThreshold = 10.0f;
     bool idleRangeSpooling = false;
-    bool playerInRange = false;
+    bool attackRange = false;
     bool isAttacking = false;
     bool isChasing = true;
     bool isStunned = false;
@@ -54,6 +54,7 @@ public class EnemyBehavior : MonoBehaviour
     {
         IdleState,
         RegularState,
+        AttackState,
         StunnedState
     }
 
@@ -106,6 +107,10 @@ public class EnemyBehavior : MonoBehaviour
         DistanceToPlayer();
         EnemyStatesMachine();
     }
+    public void WeaponSoundTriggered()
+    {
+        enemyStateControl = enemyStates.RegularState; //Immediately change to chasing behaviors when triggered by weapon firing sound
+    }
     void EnemyStatesMachine()
     {
         switch(enemyStateControl)
@@ -115,6 +120,9 @@ public class EnemyBehavior : MonoBehaviour
                 break;
             case enemyStates.RegularState:
                 RegularBehaviors();
+                break;
+            case enemyStates.AttackState:
+                AttackBehaviors();
                 break;
             case enemyStates.StunnedState:
                 StunnedBehaviors();
@@ -177,6 +185,10 @@ public class EnemyBehavior : MonoBehaviour
                 CO_AttackSpool = StartCoroutine(AttackSpool(0.8f));
             }
         }
+    }
+    void AttackBehaviors()
+    {
+
     }
 
     void StunnedBehaviors()
@@ -261,11 +273,11 @@ public class EnemyBehavior : MonoBehaviour
         //print("Distance: " + dist);
         if(dist <= rangeThreshold)
         {
-            if (dist <= attackDistanceThreshold && !playerInRange)
-                enemyStateControl = enemyStates.RegularState; //Instantly changing to RegularState when the player is too close to the enemy --- NEEDS FIXING ---
+            if (dist <= attackDistanceThreshold && !attackRange)
+                enemyStateControl = enemyStates.RegularState; //Instantly changing to chasing when the player is too close to the enemy
             else
             {
-                if (!playerInRange && !idleRangeSpooling)
+                if (!attackRange && !idleRangeSpooling)
                 {
                     if (CO_IdleRange != null)
                     {
@@ -276,20 +288,22 @@ public class EnemyBehavior : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            if (playerInRange && !idleRangeSpooling && !isAttacking && !isStunned)
-            {
-                if (CO_IdleRange != null)
+        #region
+        /*        else
                 {
-                    StopCoroutine(CO_IdleRange);
-                    idleRangeSpooling = false;
-                }
-                CO_IdleRange = StartCoroutine(RangeBoolean(detectionTime, false, enemyStates.IdleState));
-            }
-        }
+                    if (playerInRange && !idleRangeSpooling && !isAttacking && !isStunned)
+                    {
+                        if (CO_IdleRange != null)
+                        {
+                            StopCoroutine(CO_IdleRange);
+                            idleRangeSpooling = false;
+                        }
+                        CO_IdleRange = StartCoroutine(RangeBoolean(detectionTime, false, enemyStates.IdleState));
+                    }
+                }*/
+        #endregion
 
-        if (playerInRange)
+        if (attackRange)
         {
             float attaclDistanceHolder = TutorialBot ? TutorialDistanceThreshold : attackDistanceThreshold;
             isChasing = dist <= attaclDistanceHolder ? false : true;
@@ -307,7 +321,7 @@ public class EnemyBehavior : MonoBehaviour
             yield return null;
         }
 
-        playerInRange = condition;
+        attackRange = condition;
         enemyStateControl = state;
         idleRangeSpooling = false;
     }

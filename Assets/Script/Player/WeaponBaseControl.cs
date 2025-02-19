@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Linq;
 
+[ExecuteInEditMode]
 public class WeaponBaseControl : MonoBehaviour
 {
 
@@ -12,13 +14,14 @@ public class WeaponBaseControl : MonoBehaviour
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Transform firePos;
     [SerializeField] GameObject fireDir;
+    [SerializeField] float fireSoundRange = 10.0f;
     [SerializeField] float bulletSpeed = 10f;
     [SerializeField] float fireRate = 0.2f;
     LineRenderer laserPointer;
 
     float nextFireTime = 0f;
 
-    [Header("Aduio")]
+    [Header("Audio")]
     AudioSource ads;
     [SerializeField] private AudioClip[] adcp = new AudioClip[2];
     bool isPlayingSFX = false;
@@ -60,6 +63,13 @@ public class WeaponBaseControl : MonoBehaviour
 
     private void Update()
     {
+        if (!Application.isPlaying)
+        {
+            DrawCircle(transform.parent.position, fireSoundRange, 20, Color.red);
+            return;
+        }
+
+
         PowerVariableHolder();
         if (pcInstance.PlayerConstrained || pcInstance.AbilitiesConstrained)
             return;
@@ -69,6 +79,7 @@ public class WeaponBaseControl : MonoBehaviour
             if (_InputSub.FireInput && Time.time >= nextFireTime)
             {
                 WeaponFireShots();
+                WeaponSound();
                 PRMInstance.isConsumingWeaponAmount = true;
                 PRMInstance.weaponAmount -= shootingConsumption;
                 nextFireTime = Time.time + 1.0f / fireRate;
@@ -106,6 +117,19 @@ public class WeaponBaseControl : MonoBehaviour
         if (bulletRB != null)
             bulletRB.AddForce(bullets.transform.forward * bulletSpeed, ForceMode.VelocityChange);
     }
+    void WeaponSound()
+    {
+        int PowerCoreLayer = LayerMask.GetMask("Enemies");
+        Collider[] colliders = Physics.OverlapSphere(transform.position, fireSoundRange, PowerCoreLayer);//Search for enemies within range
+        var NewEnemyList = colliders.Select(col => col.GetComponent<EnemyBehavior>()).Where(socket => socket != null).ToList();
+        foreach(EnemyBehavior enemy in NewEnemyList)
+        {
+            IWeaponSoundInterface _weaponSoundInterface = enemy.GetComponent<IWeaponSoundInterface>();
+            if (_weaponSoundInterface == null)
+                return;
+            _weaponSoundInterface.WeaponSoundTriggered();
+        }
+    }
     void LaserPointerPositions()
     {
         //firePos.LookAt(fireDir.transform.position);
@@ -131,5 +155,19 @@ public class WeaponBaseControl : MonoBehaviour
         UI_WeaponAmount.GetComponent<Slider>();
         float hpLerpVal = Mathf.InverseLerp(0, PRMInstance.weaponAmountMax, PRMInstance.weaponAmount);
         UI_WeaponAmount.value = hpLerpVal;
+    }
+    void DrawCircle(Vector3 center, float radius, int segments, Color color)
+    {
+        float angleStep = 360f / segments;
+        Vector3 prevPoint = center + new Vector3(radius, 0, 0);
+
+        for (int i = 1; i <= segments; i++)
+        {
+            float angle = i * angleStep * Mathf.Deg2Rad;
+            Vector3 newPoint = center + new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
+
+            Debug.DrawLine(prevPoint, newPoint, color);
+            prevPoint = newPoint;
+        }
     }
 }
