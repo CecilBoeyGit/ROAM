@@ -59,7 +59,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     public static event Action TutorialBotKilled;
     public static Action OnDeathTriggered;
 
-    enum enemyStates
+    public enum enemyStates
     {
         IdleState,
         ChaseState,
@@ -68,7 +68,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         DeathState
     }
 
-    [SerializeField] enemyStates enemyStateControl;
+    public enemyStates enemyStateControl;
 
     // Start is called before the first frame update
     void Start()
