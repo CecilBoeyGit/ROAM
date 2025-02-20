@@ -105,7 +105,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     }
     void FindNearestPatrolPoints()
     {
-        patrolPointsGroup = GameObject.Find("PatrolPoints").transform;
+        patrolPointsGroup = GameObject.Find("SpawnPoints").transform;
         print(patrolPointsGroup);
     }
 

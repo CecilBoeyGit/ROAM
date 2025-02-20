@@ -171,7 +171,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 36e0131b264f8df49ae0b6626c8e3b05, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72fb2da4579b2b3418deaa3ed6e9c367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mat: {fileID: 0}
+  mat: {fileID: 2100000, guid: 36e0131b264f8df49ae0b6626c8e3b05, type: 2}
   ExploParticles: {fileID: 6047301952661158562, guid: 8ff0be4825cd64045aacbd122f482ace,
     type: 3}
   healthPoint: 3
@@ -220,7 +220,7 @@ MonoBehaviour:
   particleEmissionTime: 1.2
   StatusText: {fileID: 4162336440442903523}
   DEBUGBot: 0
-  DEBUGSTATUS: 0
+  DEBUGSTATUS: 1
   TutorialBot: 0
   TutorialDistanceThreshold: 10
   enemyStateControl: 0

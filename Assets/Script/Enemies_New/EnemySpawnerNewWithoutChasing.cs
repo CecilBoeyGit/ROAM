@@ -7,8 +7,9 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
     [Header("--- ENEMY REFERENCES ---")] [SerializeField]
     GameObject enemyPrefab;
 
-    [Header("--- SPAWN POINTS ---")] [SerializeField]
-    List<Transform> spawnPoints = new List<Transform>(); // 生成点
+    [Header("--- SPAWN POINTS ---")]
+    [SerializeField] Transform spawnPointsParent;
+    [SerializeField] List<Transform> spawnPoints = new List<Transform>();
 
     [Header("--- PLAYER ENEMY COUNT ---")] [SerializeField]
     int currentEnemyCount; // 当前房间敌人计数 X
@@ -21,8 +22,28 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
     private bool isSpawning = false;
     private Coroutine CO_RecoverEnemyCount;
 
+    void PopulateSpawnPoints()
+    {
+        foreach(Transform child in gameObject.transform)
+        {
+            if (child.name.Equals("SpawnPoints"))
+            {
+                spawnPointsParent = child;
+            }
+        }
+
+        if (spawnPointsParent != null)
+        {
+            foreach (Transform child in spawnPointsParent)
+            {
+                spawnPoints.Add(child);
+            }
+        }
+    }
     private void Start()
     {
+        PopulateSpawnPoints();
+        
         triggerZone = GetComponentInChildren<BoxCollider>();
         if (triggerZone == null)
             Debug.LogError("No Trigger Zone (Box Collider) found in children!");
