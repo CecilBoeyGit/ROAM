@@ -14,13 +14,18 @@ public class InjuredVolumeManager : MonoBehaviour
     private void OnEnable()
     {
         MeleeAttackTrigger.Attacked += AttackTriggered;
-        WeaponBaseControl.GunFired += WeaponTriggered;
+        //WeaponBaseControl.GunFired += WeaponTriggered;
+        //EnemyBehavior.OnDeathTriggered += WeaponTriggered;
+        Bullets.OnHitTriggered += WeaponTriggered;
     }
     private void OnDisable()
     {
         MeleeAttackTrigger.Attacked -= AttackTriggered;
-        WeaponBaseControl.GunFired -= WeaponTriggered;
+        //WeaponBaseControl.GunFired -= WeaponTriggered;
+        //EnemyBehavior.OnDeathTriggered -= WeaponTriggered;
+        Bullets.OnHitTriggered -= WeaponTriggered;
     }
+
 
     private void Start()
     {

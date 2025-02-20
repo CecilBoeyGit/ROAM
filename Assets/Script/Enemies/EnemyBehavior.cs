@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.AI;
 using System;
 
+[ExecuteInEditMode]
 public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 {
 
@@ -15,7 +17,6 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     [Header("--- References ---")]
     [SerializeField] Material mat;
     [SerializeField] GameObject ExploParticles;
-    ParticleSystem DeathExplosionParticles;
 
     [Header("--- EnemyProperties ---")]
     public float healthPoint = 2.0f;
@@ -24,19 +25,19 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     [SerializeField] Transform patrolPointsGroup;
     private List<Transform> patrolPoints = new List<Transform>();
     private int currentPatrolIndex = -1;
-    [SerializeField] float detectionTime = 0.5f;
+    [SerializeField] float detectionTime = 0.1f;
     [SerializeField] float VisibilityDelayTime = 1.0f;
 
     [Header("--- AttackParameters ---")]
     [SerializeField] float attackColliderRadius = 5.0f;
     [SerializeField] float attackDistanceThreshold = 5.0f;
-    [SerializeField] float rangeThreshold = 10.0f;
+    [SerializeField] float chaseDistanceThreshold = 10.0f;
     bool idleRangeSpooling = false;
     bool attackRange = false;
     bool isAttacking = false;
     bool isChasing = true;
     bool isStunned = false;
-    bool masterVisibilityToggle = false;
+    [HideInInspector] public bool forcedVisibilityToggle = false;
 
     [Header("--- ParticleSystems ---")]
     [SerializeField] ParticleSystem detectionParticles;
@@ -45,15 +46,23 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 
     Coroutine CO_AttackSpool, CO_Attacking, CO_IdleRange, CO_RevealSpool;
 
+    [Header("--- UI ---")]
+    public Text StatusText;
+
+    GamePadVibrationManager _GamePadVibInstance;
+
     [Header("--- SPECIAL CASES ---")]
+    [SerializeField] bool DEBUGBot = false;
+    [SerializeField] bool DEBUGSTATUS = false;
     [SerializeField] bool TutorialBot = false;
     [SerializeField] float TutorialDistanceThreshold = 10.0f;
     public static event Action TutorialBotKilled;
+    public static Action OnDeathTriggered;
 
     enum enemyStates
     {
         IdleState,
-        RegularState,
+        ChaseState,
         AttackState,
         StunnedState,
         DeathState
@@ -65,9 +74,18 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     void Start()
     {
         pcInstance = PlayerController.instance;
+        _GamePadVibInstance = GamePadVibrationManager.instance;
         attackRangeTrigger = transform.Find("AttackRange");
         attackRangeTrigger.localScale = Vector3.zero;
 
+        nmAgent = GetComponent<NavMeshAgent>();        
+        mrd = GetComponent<MeshRenderer>();
+        detectionParticles.GetComponent<ParticleSystem>();
+
+        ResetDefaultState();
+    }
+    public void ResetDefaultState()
+    {
         enemyStateControl = enemyStates.IdleState;
 
         FindNearestPatrolPoints();
@@ -76,10 +94,14 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
             patrolPoints.Add(child);
         }
 
-        nmAgent = GetComponent<NavMeshAgent>();
-        mrd = GetComponent<MeshRenderer>();
-        mat = mrd.material;
-        detectionParticles.GetComponent<ParticleSystem>();
+        if (nmAgent != null)
+            nmAgent.SetDestination(transform.position);
+
+        if (!Application.isPlaying)
+            mat = mrd.sharedMaterial;
+        else
+            mat = mrd.material;
+        mat.SetFloat("_Dissolve", 1);
     }
     void FindNearestPatrolPoints()
     {
@@ -91,26 +113,65 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     {
         if (healthPoint <= 0)
         {
-            if (TutorialBot)
-            {
-                TutorialElementPlayScript.isPlayingAudio = false;
-                TutorialBotKilled?.Invoke();
-            }
-            nmAgent = null;
-            Destroy(gameObject);
+            enemyStateControl = enemyStates.DeathState;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!Application.isPlaying)
+        {
+            DrawCircle(transform.position, chaseDistanceThreshold, 20, Color.yellow);
+            DrawCircle(transform.position, attackColliderRadius, 20, Color.red);
+            return;
+        }
+        else
+        {
+            if (DEBUGBot)
+            {
+                DrawCircle(transform.position, chaseDistanceThreshold, 20, Color.yellow);
+                DrawCircle(transform.position, attackColliderRadius, 20, Color.red);
+            }
+
+            if (DEBUGSTATUS)
+            {
+                if (StatusText == null)
+                    return;
+
+                StatusText.gameObject.SetActive(true);
+                StatusText.text = enemyStateControl.ToString();
+
+                DrawCircle(transform.position, chaseDistanceThreshold, 20, Color.yellow);
+                DrawCircle(transform.position, attackColliderRadius, 20, Color.red);
+            }
+            else
+            {
+                if (StatusText == null)
+                    return;
+
+                StatusText.text = null;
+                StatusText.gameObject.SetActive(false);
+            }
+        }
+
+        print(DissolveTime);
         DeathCondition();
         DistanceToPlayer();
         EnemyStatesMachine();
     }
     public void WeaponSoundTriggered()
     {
-        enemyStateControl = enemyStates.RegularState; //Immediately change to chasing behaviors when triggered by weapon firing sound
+        if (enemyStateControl == enemyStates.ChaseState || 
+            enemyStateControl == enemyStates.AttackState ||
+            enemyStateControl == enemyStates.DeathState) //If enemy is ALREADY chasing or attacking or dead while WeaponSound is triggered, skip this function entirely
+            return;
+
+        print("Weapong Sound Triggered");
+        if (_GamePadVibInstance != null)
+            _GamePadVibInstance.Rumble(1.2f, 0.1f, 0.5f);
+        forcedVisibilityToggle = true; //If enemy is triggerd by WeaponSound, visibility is turned ON during the ChaseState
+        enemyStateControl = enemyStates.ChaseState; //Immediately change to chasing behaviors when triggered by weapon firing sound
     }
     void EnemyStatesMachine()
     {
@@ -119,8 +180,8 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
             case enemyStates.IdleState:
                 IdleBehaviors();
                 break;
-            case enemyStates.RegularState:
-                RegularBehaviors();
+            case enemyStates.ChaseState:
+                ChaseBehaviors();
                 break;
             case enemyStates.AttackState:
                 AttackBehaviors();
@@ -135,6 +196,18 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     }
     void IdleBehaviors()
     {
+        //print("Idling");
+
+        if (DEBUGBot)
+        {
+            forcedVisibilityToggle = true;
+            Dissolve(false, 0.1f);
+            return;
+        }
+
+        if(!forcedVisibilityToggle)
+            Dissolve(true, 0.3f);
+
         if (nmAgent.remainingDistance <= nmAgent.stoppingDistance && !nmAgent.pathPending)
         {
             if (!TutorialBot)
@@ -147,8 +220,6 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
                 CO_RandomPatrolPoints = StartCoroutine(RandomPatrolWithCooldown(PatrolWaitDuration));
             }
         }
-        if (!masterVisibilityToggle)
-            Dissolve(true, 0.5f);
     }
     public float PatrolWaitDuration = 8.0f;
     bool switchingPatrolPoint = false;
@@ -178,14 +249,23 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
             Debug.LogWarning("No patrol points assigned to the enemy.");
         }
     }
-    void RegularBehaviors()
+    void ChaseBehaviors()
     {
-        //print("Enemy Behaviors REGULAR");
+        //print("Chasing");
+
+        if (DEBUGBot)
+        {
+            forcedVisibilityToggle = true;
+            Dissolve(false, 0.1f);
+        }
+
+        if(forcedVisibilityToggle)
+            Dissolve(false, 0.3f);
 
         if (isChasing && !isAttacking)
         {
-            if (!masterVisibilityToggle)
-                Dissolve(true, 0.5f);
+            if (!forcedVisibilityToggle)
+                Dissolve(true, 0.3f);
             if (nmAgent == null)
                 return;
             if (!TutorialBot)
@@ -193,8 +273,8 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         }
         else
         {
-            if (!masterVisibilityToggle)
-                Dissolve(false, 0.5f);
+            if (!forcedVisibilityToggle)
+                Dissolve(false, 0.3f);
             if (nmAgent == null)
                 return;
             nmAgent.destination = transform.position;
@@ -202,16 +282,24 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 
             if (!isAttacking)
             {
-                
+                enemyStateControl = enemyStates.AttackState;
             }
         }
     }
+
+    public float AttackSpoolTime = 0.3f;
+
     void AttackBehaviors()
     {
+        //print("Attacking");
+
+        if (isAttacking)
+            return;
+
         if (CO_AttackSpool != null)
             StopCoroutine(CO_AttackSpool);
 
-        CO_AttackSpool = StartCoroutine(AttackSpool(0.8f));
+        CO_AttackSpool = StartCoroutine(AttackSpool(AttackSpoolTime));
     }
 
     void StunnedBehaviors()
@@ -233,15 +321,32 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     }
     void DeathBehaviors()
     {
+        //print("Death");
 
+        MaterialDefault();
+        Instantiate(ExploParticles, transform.position, Quaternion.identity);
+        if (TutorialBot)
+        {
+            TutorialElementPlayScript.isPlayingAudio = false;
+            TutorialBotKilled?.Invoke();
+        }
+        nmAgent = null;
+        OnDeathTriggered?.Invoke();
+
+        if (_GamePadVibInstance != null)
+            _GamePadVibInstance.Rumble(0.1f, 0.1f, 0.3f);
+
+        Destroy(gameObject);
     }
     IEnumerator AttackSpool(float spoolTime)
     {
         isAttacking = true;
+        forcedVisibilityToggle = false;
 
         float timer = 0;
         while(timer < spoolTime)
         {
+            Dissolve(false, 0.3f);
             AttackEffects(timer, spoolTime);
             timer += Time.deltaTime;
             yield return null;
@@ -250,14 +355,13 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         if (CO_Attacking != null)
             StopCoroutine(CO_Attacking);
 
-        CO_Attacking = StartCoroutine(Attacking(0.5f));
+        CO_Attacking = StartCoroutine(Attacking(0.2f));
     }  
     IEnumerator Attacking(float attackTime)
     {
         float timer = 0;
         while (timer < attackTime)
-        {
-           
+        {         
             timer += Time.deltaTime;
 
             AttackingEffects(timer, attackTime);
@@ -266,10 +370,8 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 
         //Attack after expansion warning, and wait for n second to allow the sphere trigger to register
         attackRangeTrigger.localScale = Vector3.one * attackColliderRadius;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         isAttacking = false;
-
-        MaterialDefault();
 
         if (TutorialBot)
         {
@@ -283,24 +385,23 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         }
         else
         {
-            Instantiate(ExploParticles, transform.position, Quaternion.identity);
-            Destroy(this.gameObject);
+            enemyStateControl = enemyStates.DeathState; //Switch to DeathState
         }
     }
     IEnumerator RevealDelay(float duration)
     {
-        masterVisibilityToggle = true; Dissolve(false, 0.5f);
+        forcedVisibilityToggle = true; Dissolve(false, 0.5f);
         yield return new WaitForSeconds(duration);
-        masterVisibilityToggle = false;
+        forcedVisibilityToggle = false;
     }
     void DistanceToPlayer()
     {
         float dist = Vector3.Distance(transform.position, pcInstance.transform.position);
         //print("Distance: " + dist);
-        if(dist <= rangeThreshold)
+        if(dist <= chaseDistanceThreshold)
         {
             if (dist <= attackDistanceThreshold && !attackRange)
-                enemyStateControl = enemyStates.RegularState; //Instantly changing to chasing when the player is too close to the enemy
+                enemyStateControl = enemyStates.ChaseState; //Instantly changing to chasing when the player is too close to the enemy
             else
             {
                 if (!attackRange && !idleRangeSpooling)
@@ -310,7 +411,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
                         StopCoroutine(CO_IdleRange);
                         idleRangeSpooling = false;
                     }
-                    CO_IdleRange = StartCoroutine(RangeBoolean(detectionTime, true, enemyStates.RegularState));
+                    CO_IdleRange = StartCoroutine(RangeBoolean(detectionTime, true, enemyStates.ChaseState));
                 }
             }
         }
@@ -340,12 +441,8 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     IEnumerator RangeBoolean(float spoolDuration, bool condition, enemyStates state)
     {
         idleRangeSpooling = true;
-        float time = 0;
-        while(time < spoolDuration)
-        {
-            time += Time.deltaTime;
-            yield return null;
-        }
+
+        yield return new WaitForSeconds(spoolDuration);
 
         attackRange = condition;
         enemyStateControl = state;
@@ -354,14 +451,36 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 
     public void ScannedBehaviors()
     {
-        if(!detectionParticles.isEmitting && isChasing)
-        {
-            if (CO_DetectionParticles != null)
-                detectionParticles.Stop();
-            
-            CO_DetectionParticles = StartCoroutine(DetectionParticlesEmission(2.0f));
-        }
+        if (forcedVisibilityToggle || DEBUGBot)
+            return;
+
+        if (CO_DetectionParticles != null)
+            detectionParticles.Stop();
+
+        CO_DetectionParticles = StartCoroutine(ScannedEffects(2.0f));
     }
+
+    private bool beingScanned = false;
+    IEnumerator ScannedEffects(float time)
+    {
+        beingScanned = true;
+
+        //detectionParticles.Play(); //print(gameObject.name + "VFX Playing");
+        mat.SetFloat("_Dissolve", 0.6f);
+        forcedVisibilityToggle = true;
+        float timer = 0;
+        while (timer < time)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        forcedVisibilityToggle = false;
+        //detectionParticles.Stop();
+
+        beingScanned = false;
+    }
+
     public void PulseScannedBehaviors()
     {
         if (CO_StunnedPhase != null)
@@ -371,7 +490,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     }
     public void SonarBeamScannedBehaviors()
     {
-        masterVisibilityToggle = true; Dissolve(false, 0.5f);
+        forcedVisibilityToggle = true; Dissolve(false, 0.5f);
     }
     public void SonarBeamExitBehaviors()
     {
@@ -381,20 +500,6 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
             StopCoroutine(CO_RevealSpool);
 
         CO_RevealSpool = StartCoroutine(RevealDelay(VisibilityDelayTime));
-    }
-
-    IEnumerator DetectionParticlesEmission(float time)
-    {
-        detectionParticles.Play(); //print(gameObject.name + "VFX Playing");
-        float timer = 0;
-
-        while(timer < time)
-        {
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        detectionParticles.Stop();
     }
     IEnumerator StunnedPhase(float time)
     {
@@ -417,13 +522,14 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         }
         CO_RevealSpool = StartCoroutine(RevealDelay(VisibilityDelayTime));
         isStunned = false;
-        enemyStateControl = enemyStates.RegularState;
+        enemyStateControl = enemyStates.ChaseState;
     }
 
     // --- MATERIAL FUNCTIONS ---
 
     void MaterialDefault()
     {
+        Dissolve(true, 1.0f);
         mat.SetFloat("_NoiseStrength", 0.4f);
         mat.SetFloat("_EmissiveIntensity", 2);
         mat.SetFloat("_NoiseSize", 2);
@@ -461,5 +567,20 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         float lerpVal = Mathf.InverseLerp(0, duration, timer);
         float EffectsLerp = Mathf.Lerp(0.4f, 3, lerpVal);
         mat.SetFloat("_NoiseStrength", EffectsLerp);
+    }
+
+    void DrawCircle(Vector3 center, float radius, int segments, Color color)
+    {
+        float angleStep = 360f / segments;
+        Vector3 prevPoint = center + new Vector3(radius, 0, 0);
+
+        for (int i = 1; i <= segments; i++)
+        {
+            float angle = i * angleStep * Mathf.Deg2Rad;
+            Vector3 newPoint = center + new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
+
+            Debug.DrawLine(prevPoint, newPoint, color);
+            prevPoint = newPoint;
+        }
     }
 }

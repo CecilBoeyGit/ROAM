@@ -7,6 +7,7 @@ using System.Linq;
 using Cinemachine;
 using UnityEngine.InputSystem;
 
+[ExecuteInEditMode]
 public class PlayerController : MonoBehaviour
 {
     private Camera mainCamera;
@@ -150,6 +151,12 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!Application.isPlaying)
+        {
+            DrawCircle(transform.position, scannerRadiusMax, 20, Color.green);
+            return;
+        }
+
         if (!PlayerConstrained)
         {
             PowerVariableHolder();
@@ -550,5 +557,19 @@ public class PlayerController : MonoBehaviour
         UI_powerAmount.GetComponent<Slider>();
         float powerLerpVal = Mathf.InverseLerp(0, powerAmountMax, powerAmount);
         UI_powerAmount.value = powerLerpVal;
+    }
+    void DrawCircle(Vector3 center, float radius, int segments, Color color)
+    {
+        float angleStep = 360f / segments;
+        Vector3 prevPoint = center + new Vector3(radius, 0, 0);
+
+        for (int i = 1; i <= segments; i++)
+        {
+            float angle = i * angleStep * Mathf.Deg2Rad;
+            Vector3 newPoint = center + new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
+
+            Debug.DrawLine(prevPoint, newPoint, color);
+            prevPoint = newPoint;
+        }
     }
 }

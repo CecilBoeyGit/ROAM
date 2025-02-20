@@ -42,7 +42,7 @@ MonoBehaviour:
     _event: 400
     layerMask:
       serializedVersion: 2
-      m_Bits: 19200
+      m_Bits: 4294967295
     overrideMaterial: {fileID: -876546973899608171, guid: 3de047fa6875c8449890f34801947213,
       type: 3}
     overrideMaterialPass: 0

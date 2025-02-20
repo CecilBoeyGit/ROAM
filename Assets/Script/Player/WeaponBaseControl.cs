@@ -18,6 +18,7 @@ public class WeaponBaseControl : MonoBehaviour
     [SerializeField] float bulletSpeed = 10f;
     [SerializeField] float fireRate = 0.2f;
     LineRenderer laserPointer;
+    ObjectsPoolingDefault BulletsPool;
 
     float nextFireTime = 0f;
 
@@ -59,6 +60,8 @@ public class WeaponBaseControl : MonoBehaviour
 
         ads = GetComponent<AudioSource>();
         laserPointer = fireDir.GetComponent<LineRenderer>();
+
+        BulletsPool = GameObject.Find("BulletsPool")?.GetComponent<ObjectsPoolingDefault>();
     }
 
     private void Update()
@@ -110,8 +113,11 @@ public class WeaponBaseControl : MonoBehaviour
 
         ads.Play();
 
-        GameObject bullets = Instantiate(bulletPrefab, firePos.position, firePos.rotation);
+        //GameObject bullets = Instantiate(bulletPrefab, firePos.position, firePos.rotation);
+        if (BulletsPool == null)
+            return;
 
+        GameObject bullets = BulletsPool.GetPooledObject(firePos.position, firePos.rotation);
         Rigidbody bulletRB = bullets.GetComponent<Rigidbody>();
 
         if (bulletRB != null)
