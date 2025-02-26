@@ -8641,7 +8641,7 @@ MonoBehaviour:
   dashingConsumption: 0
   torsoFollowTarget: {fileID: 0}
   fovController: {fileID: 2848454299991115248}
-  scannerRadiusMax: 15
+  scannerRadiusMax: 20
   Mat_ScanLine: {fileID: 2100000, guid: 46be26a5284af7b4c917bdf289718d7f, type: 2}
   WeaponCursor: {fileID: 7822282409963098383}
   isScanning: 0
@@ -8664,7 +8664,7 @@ MonoBehaviour:
   charSpeed: 0
   DebugScanner: 0
   dashDuration: 0.25
-  dashCooldown: 2
+  dashCooldown: 1.2
 --- !u!114 &2848454299991115248
 MonoBehaviour:
   m_ObjectHideFlags: 0

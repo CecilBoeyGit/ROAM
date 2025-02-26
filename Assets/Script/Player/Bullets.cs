@@ -44,7 +44,7 @@ public class Bullets : MonoBehaviour
     {
         if(enemyLayer == (enemyLayer | 1 << collision.gameObject.layer))
         {
-            if (!collision.gameObject.GetComponent<EnemyBehavior>().forcedVisibilityToggle)
+            if (!collision.gameObject.GetComponent<EnemyBehavior>().forcedVisibilityToggle && !collision.gameObject.GetComponent<EnemyBehavior>().beingScanned)
                 return;
 
             collision.gameObject.GetComponent<EnemyBehavior>().healthPoint -= 1;

@@ -205,7 +205,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
             return;
         }
 
-        if(!forcedVisibilityToggle)
+        if(!forcedVisibilityToggle && !beingScanned)
             Dissolve(true, 0.3f);
 
         if (nmAgent.remainingDistance <= nmAgent.stoppingDistance && !nmAgent.pathPending)
@@ -264,7 +264,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 
         if (isChasing && !isAttacking)
         {
-            if (!forcedVisibilityToggle)
+            if (!forcedVisibilityToggle && !beingScanned)
                 Dissolve(true, 0.3f);
             if (nmAgent == null)
                 return;
@@ -451,7 +451,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 
     public void ScannedBehaviors()
     {
-        if (forcedVisibilityToggle || DEBUGBot)
+        if (forcedVisibilityToggle || DEBUGBot || beingScanned)
             return;
 
         if (CO_DetectionParticles != null)
@@ -460,14 +460,13 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         CO_DetectionParticles = StartCoroutine(ScannedEffects(2.0f));
     }
 
-    private bool beingScanned = false;
+    public bool beingScanned = false;
     IEnumerator ScannedEffects(float time)
     {
         beingScanned = true;
 
         //detectionParticles.Play(); //print(gameObject.name + "VFX Playing");
         mat.SetFloat("_Dissolve", 0.6f);
-        forcedVisibilityToggle = true;
         float timer = 0;
         while (timer < time)
         {
@@ -475,7 +474,6 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
             yield return null;
         }
 
-        forcedVisibilityToggle = false;
         //detectionParticles.Stop();
 
         beingScanned = false;

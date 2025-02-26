@@ -37,6 +37,7 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
             foreach (Transform child in spawnPointsParent)
             {
                 spawnPoints.Add(child);
+                child.gameObject.SetActive(false);
             }
         }
     }
