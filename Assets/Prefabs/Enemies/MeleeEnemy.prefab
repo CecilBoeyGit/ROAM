@@ -224,8 +224,9 @@ MonoBehaviour:
   TutorialBot: 0
   TutorialDistanceThreshold: 10
   enemyStateControl: 0
-  PatrolWaitDuration: 8
+  PatrolWaitDuration: 15
   AttackSpoolTime: 0.3
+  beingScanned: 0
   DissolveTime: 0
 --- !u!136 &2675795064877396532
 CapsuleCollider:

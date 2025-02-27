@@ -11,6 +11,7 @@ public class GeneratorSocket : PowerSockets
     float holdTime = 0f;
 
     [Header("--- UI ---")]
+    [SerializeField] Image AmountIndicatorUI;
     [SerializeField] Image BarImage;
     Material BarMaterial;
 
@@ -19,6 +20,7 @@ public class GeneratorSocket : PowerSockets
         base.Start();
 
         generatorParent = GetComponentInParent<Generators>();
+        AmountIndicatorUI.GetComponent<Image>();
         BarMaterial = BarImage.GetComponent<Image>().material;
     }
     protected override void Update()
@@ -27,6 +29,8 @@ public class GeneratorSocket : PowerSockets
 
         float GenLerp = Mathf.InverseLerp(0, generatorParent.GeneratorMaxAmount, generatorParent.GeneratorPowerAmount);
         BarMaterial.SetFloat("_SliceCoverage", GenLerp);
+        if(AmountIndicatorUI != null)
+            AmountIndicatorUI.fillAmount = GenLerp;
     }
     public override void PlayerInZoneActions()
     {

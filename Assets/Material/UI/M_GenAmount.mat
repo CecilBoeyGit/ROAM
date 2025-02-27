@@ -55,18 +55,20 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _ChargingPulseSpeed: 5
     - _Float: 1
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _RingCharging: 0
     - _RingCoverage: 0.295
-    - _RingRadius: 0.85
+    - _RingRadius: 0.835
     - _RingSlice: 0.5
     - _RingSlotsIntensity: 0.465
-    - _RingWidth: 1
+    - _RingWidth: 0.218
     - _SegmentCount: 1
     - _SegmentWidth: 0.01
-    - _SliceCoverage: 0.9762455
+    - _SliceCoverage: 0.9594182
     - _UseCounterClockwise: 0
     m_Colors:
-    - _RingColor: {r: 1, g: 1, b: 1, a: 0}
+    - _RingColor: {r: 1.2455202, g: 2.3941567, b: 2.4150944, a: 0}
   m_BuildTextureStacks: []

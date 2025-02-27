@@ -57,6 +57,9 @@ public class ObjectsPoolingDefault : MonoBehaviour
                     Rigidbody Rbd = child.GetComponent<Rigidbody>();
                     Rbd.isKinematic = false;
                 }
+                
+                //child.GetComponent<EnemyBehavior>()?.ResetDefaultState();
+
                 return child;
             }
         }

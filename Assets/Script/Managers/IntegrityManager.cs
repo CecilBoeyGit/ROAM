@@ -68,11 +68,11 @@ public class IntegrityManager : MonoBehaviour
         CountDownManager();
         CountDownNull();
     }
-    void ConvertSeconds(float seconds, out int minutes, out int secondsRemain, out int microseconds)
+    void ConvertSeconds(float seconds, out int minutes, out int secondsRemain)
     {
         minutes = (int)(seconds / 60);
         secondsRemain = (int)(seconds % 60);
-        microseconds = (int)((seconds - Mathf.Floor(seconds)) * 100);
+        //microseconds = (int)((seconds - Mathf.Floor(seconds)) * 100);
     }
     void CountDownManager()
     {
@@ -82,8 +82,8 @@ public class IntegrityManager : MonoBehaviour
             TimerMax = 0;
 
         int minutes, secondsRemain, microseconds;
-        ConvertSeconds(TimerMax, out minutes, out secondsRemain, out microseconds);
-        UI_CountDown.text = string.Format("{0:00}:{1:00}.{2:000}", minutes, secondsRemain, microseconds);
+        ConvertSeconds(TimerMax, out minutes, out secondsRemain);
+        UI_CountDown.text = string.Format("{0:00}:{1:00}", minutes, secondsRemain);
     }
     void CountDownNull()
     {

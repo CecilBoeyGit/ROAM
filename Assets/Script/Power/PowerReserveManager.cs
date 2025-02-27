@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class PowerReserveManager : MonoBehaviour
@@ -40,6 +41,8 @@ public class PowerReserveManager : MonoBehaviour
     public Material ScanRing;
     public Material HPRing;
     public Material PowerRing;
+    public GameObject PowerCoreIndicatorUI;
+    Material PowerCoreIndicator;
 
     public bool isConsumingWeaponAmount = false;
 
@@ -77,6 +80,8 @@ public class PowerReserveManager : MonoBehaviour
         CLMInstance = CoreLoopManager.Instance;
         
         AbilitiesEmptyTriggerMetric = 0;
+
+        WeaponRing.SetFloat("_RingCharging", 0);
     }
     void DEBUG_INVINCIBLE() 
     {
@@ -97,7 +102,7 @@ public class PowerReserveManager : MonoBehaviour
         WeaponStationaryMulti();
         WeaponAmountIncrement();
 
-        PowerCoreGraphics.SetActive(currentPowerCore == null? false : true);
+        EmptyPowerCoreBehaviors();
         DEBUG_INVINCIBLE();
 
         CoreLoopStages();
@@ -116,6 +121,24 @@ public class PowerReserveManager : MonoBehaviour
     void PowerCoreStatus()
     {
         isEquiped = currentPowerCore == null ? false : true;
+    }
+    void EmptyPowerCoreBehaviors()
+    {
+        PowerCoreGraphics.SetActive(currentPowerCore == null ? false : true);
+
+        if (PowerCoreIndicatorUI == null)
+            return;
+        if (currentPowerCore != null)
+            PowerCoreIndicatorUI.SetActive(false);
+        else
+            PowerCoreIndicatorUI.SetActive(true);
+
+        /* if (PowerCoreIndicator == null)
+             return;
+         if (currentPowerCore != null)
+             PowerCoreIndicator.EnableKeyword("USE_FLICKER");
+         else
+             PowerCoreIndicator.DisableKeyword("USE_FLICKER");*/
     }
     void PowerAmountOverdraw() //Timer is implemented to prevent other functions with MouseButtons to trigger
     {
@@ -185,6 +208,7 @@ public class PowerReserveManager : MonoBehaviour
     {
         weaponAmountRecharging = true;
         playerInstance.AbilitiesConstrained = true;
+        WeaponRing.SetFloat("_RingCharging", 1);
 
         float time = 0;
         while(time < duration)
@@ -196,6 +220,7 @@ public class PowerReserveManager : MonoBehaviour
             yield return null;
         }
 
+        WeaponRing.SetFloat("_RingCharging", 0);
         playerInstance.AbilitiesConstrained = false;
         weaponAmountRecharging = false;
     }
@@ -231,7 +256,7 @@ public class PowerReserveManager : MonoBehaviour
         float BulletLerpVal = Mathf.InverseLerp(0, BulletPercentile, Mathf.Floor(weaponAmount / shootingConsumption));
         float ScanPercentile = Mathf.Floor(weaponAmountMax / scannerConsumption);
         float ScanLerpVal = Mathf.InverseLerp(0, ScanPercentile, Mathf.Floor(weaponAmount / scannerConsumption));
-        float HPPercentile = Mathf.InverseLerp(0, 100, playerInstance.healthPoint);
+        float HPPercentile = Mathf.InverseLerp(0, playerInstance.maxHealthPoint, playerInstance.healthPoint);
 
         WeaponRing.SetFloat("_SliceCoverage", WeaponAmountLerpVal);
 

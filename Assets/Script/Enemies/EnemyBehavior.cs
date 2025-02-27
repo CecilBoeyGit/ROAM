@@ -4,13 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
 using System;
+using System.Linq;
 
 [ExecuteInEditMode]
 public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 {
 
     PlayerController pcInstance;
-    NavMeshAgent nmAgent;
+    public NavMeshAgent nmAgent;
     MeshRenderer mrd;
     Transform attackRangeTrigger;
 
@@ -22,8 +23,9 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     public float healthPoint = 2.0f;
 
     [Header("--- BehaviorProperties ---")]
+    public EnemySpawnerNewWithoutChasing enemySpawnerTracker;
     [SerializeField] Transform patrolPointsGroup;
-    private List<Transform> patrolPoints = new List<Transform>();
+    public List<Transform> patrolPoints = new List<Transform>();
     private int currentPatrolIndex = -1;
     [SerializeField] float detectionTime = 0.1f;
     [SerializeField] float VisibilityDelayTime = 1.0f;
@@ -59,6 +61,8 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     public static event Action TutorialBotKilled;
     public static Action OnDeathTriggered;
 
+    ObjectsPoolingDefault EnemiesPool;
+
     public enum enemyStates
     {
         IdleState,
@@ -69,33 +73,48 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     }
 
     public enemyStates enemyStateControl;
-
+    private void OnEnable()
+    {
+        ResetDefaultState();
+    }
     // Start is called before the first frame update
     void Start()
     {
-        pcInstance = PlayerController.instance;
-        _GamePadVibInstance = GamePadVibrationManager.instance;
-        attackRangeTrigger = transform.Find("AttackRange");
-        attackRangeTrigger.localScale = Vector3.zero;
-
-        nmAgent = GetComponent<NavMeshAgent>();        
-        mrd = GetComponent<MeshRenderer>();
-        detectionParticles.GetComponent<ParticleSystem>();
-
-        ResetDefaultState();
-    }
-    public void ResetDefaultState()
-    {
-        enemyStateControl = enemyStates.IdleState;
-
-        FindNearestPatrolPoints();
-        foreach (Transform child in patrolPointsGroup)
-        {
-            patrolPoints.Add(child);
-        }
+        //print("IN START ---");
 
         if (nmAgent != null)
             nmAgent.SetDestination(transform.position);
+    }
+    public void ResetDefaultState()
+    {
+        //print("IN ResetDefaultState ---");
+
+        pcInstance = PlayerController.instance;
+        _GamePadVibInstance = GamePadVibrationManager.instance;
+
+        mrd = GetComponent<MeshRenderer>();
+        nmAgent = GetComponent<NavMeshAgent>();
+
+        healthPoint = 3.0f;
+        BooleanCollection();
+
+        attackRangeTrigger = transform.Find("AttackRange");
+        attackRangeTrigger.localScale = Vector3.zero;
+
+        detectionParticles.GetComponent<ParticleSystem>();
+
+        EnemiesPool = GameObject.Find("EnemiesPool")?.GetComponent<ObjectsPoolingDefault>();
+
+        enemyStateControl = enemyStates.IdleState;
+
+        if (DEBUGBot)
+        {
+            FindNearestPatrolPoints();
+            foreach (Transform child in patrolPointsGroup)
+            {
+                patrolPoints.Add(child);
+            }
+        }
 
         if (!Application.isPlaying)
             mat = mrd.sharedMaterial;
@@ -103,10 +122,20 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
             mat = mrd.material;
         mat.SetFloat("_Dissolve", 1);
     }
+    void BooleanCollection()
+    {
+        idleRangeSpooling = false;
+        attackRange = false;
+        isAttacking = false;
+        isChasing = true;
+        isStunned = false;
+        forcedVisibilityToggle = false;
+        beingScanned = false;
+    }
     void FindNearestPatrolPoints()
     {
         patrolPointsGroup = GameObject.Find("SpawnPoints").transform;
-        print(patrolPointsGroup);
+        //print(patrolPointsGroup);
     }
 
     void DeathCondition()
@@ -155,7 +184,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
             }
         }
 
-        print(DissolveTime);
+        //print(DissolveTime);
         DeathCondition();
         DistanceToPlayer();
         EnemyStatesMachine();
@@ -219,7 +248,12 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
                     StopCoroutine(RandomPatrolWithCooldown(0));
                 CO_RandomPatrolPoints = StartCoroutine(RandomPatrolWithCooldown(PatrolWaitDuration));
             }
+
+            return;
         }
+
+        if (!nmAgent.hasPath)
+            nmAgent.SetDestination(transform.position);
     }
     public float PatrolWaitDuration = 8.0f;
     bool switchingPatrolPoint = false;
@@ -230,7 +264,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 
         yield return new WaitForSeconds(waitDuration);
 
-        SetRandomPatrolPoint();
+        SetRandomPatrolPointNew();
         switchingPatrolPoint = false;
     }
     void SetRandomPatrolPoint()
@@ -248,6 +282,50 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         {
             Debug.LogWarning("No patrol points assigned to the enemy.");
         }
+    }
+    static HashSet<int> takenPatrolPoints = new HashSet<int>(); // Tracks occupied patrol points
+
+    void SetRandomPatrolPointNew()
+    {
+        if (patrolPoints.Count == 0)
+        {
+            Debug.LogWarning("No patrol points assigned to the enemy.");
+            return;
+        }
+
+        if(currentPatrolIndex != -1)
+            MarkPatrolPointAvailable(currentPatrolIndex);
+
+        List<int> availablePoints = Enumerable.Range(0, patrolPoints.Count)
+                                              .Where(i => !takenPatrolPoints.Contains(i)) // Exclude taken points
+                                              .ToList();
+
+        if (availablePoints.Count == 0)
+        {
+            Debug.LogWarning("No available patrol points. Staying at the current position.");
+            return;
+        }
+
+        int newPatrolIndex = availablePoints[UnityEngine.Random.Range(0, availablePoints.Count)];
+
+        MarkPatrolPointTaken(newPatrolIndex);
+        currentPatrolIndex = newPatrolIndex;
+        nmAgent.SetDestination(patrolPoints[currentPatrolIndex].position);
+    }
+
+    // Call this to mark a patrol point as occupied
+    void MarkPatrolPointTaken(int index)
+    {
+        if (!takenPatrolPoints.Contains(index))
+        {
+            takenPatrolPoints.Add(index);
+        }
+    }
+
+    // Call this when a patrol point becomes available
+    void MarkPatrolPointAvailable(int index)
+    {
+        takenPatrolPoints.Remove(index);
     }
     void ChaseBehaviors()
     {
@@ -336,7 +414,10 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         if (_GamePadVibInstance != null)
             _GamePadVibInstance.Rumble(0.1f, 0.1f, 0.3f);
 
-        Destroy(gameObject);
+        enemySpawnerTracker = null;
+
+        if (EnemiesPool != null)
+            EnemiesPool.ReturnPooledObject(this.gameObject);
     }
     IEnumerator AttackSpool(float spoolTime)
     {

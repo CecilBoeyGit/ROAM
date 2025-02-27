@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
     Coroutine CO_SonarScanning;
 
     public float healthPoint;
+    public float maxHealthPoint;
 
     [Header("--- INTERFACE ---")]
     [SerializeField] private float pickUpRadius = 5.0f;
@@ -103,6 +104,9 @@ public class PlayerController : MonoBehaviour
 
 
         fovController = GetComponent<FieldOfView>();
+
+        healthPoint = 150;
+        maxHealthPoint = healthPoint;
     }
 
     void ScanLineConfigDefault(float defaultVal)

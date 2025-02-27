@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Linq;
 
 public class EnemySpawnerNewWithoutChasing : MonoBehaviour
 {
+    [Header("--- SPAWNER ID ---")]
+    public int spawnerID;
+
     [Header("--- ENEMY REFERENCES ---")] [SerializeField]
     GameObject enemyPrefab;
 
@@ -18,6 +23,7 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
 
     [Header("--- REFERENCES ---")] [SerializeField]
     BoxCollider triggerZone; // Trigger Zone 的 Box Collider
+    ObjectsPoolingDefault EnemiesPool;
 
     private bool isSpawning = false;
     private Coroutine CO_RecoverEnemyCount;
@@ -43,11 +49,13 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
     }
     private void Start()
     {
+        EnemiesPool = GameObject.Find("EnemiesPool")?.GetComponent<ObjectsPoolingDefault>();
+        
         PopulateSpawnPoints();
         
-        triggerZone = GetComponentInChildren<BoxCollider>();
+        triggerZone = GetComponent<BoxCollider>();
         if (triggerZone == null)
-            Debug.LogError("No Trigger Zone (Box Collider) found in children!");
+            Debug.LogError("No Trigger Zone!");
 
         // Init 初始化
         currentEnemyCount = maxEnemyCount;
@@ -123,7 +131,15 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
         
         foreach (Transform spawnPoint in selectedSpawnPoints)
         {
-            GameObject enemyObj = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+            //GameObject enemyObj = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+            if (EnemiesPool == null)
+                return;
+
+            GameObject spawnedEnemy = EnemiesPool.GetPooledObject(spawnPoint.position, spawnPoint.rotation);
+            spawnedEnemy.GetComponent<EnemyBehavior>().patrolPoints 
+                = new List<Transform>(spawnPoints);
+            spawnedEnemy.GetComponent<EnemyBehavior>().enemySpawnerTracker 
+                = gameObject.GetComponent<EnemySpawnerNewWithoutChasing>();
         }
     }
 
@@ -143,7 +159,7 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
         
         for (int i = 0; i < count; i++)
         {
-            int randomIndex = Random.Range(0, spawnPoints.Count);
+            int randomIndex = UnityEngine.Random.Range(0, spawnPoints.Count);
             selectedPoints.Add(spawnPoints[randomIndex]);
         }
 
@@ -152,15 +168,18 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
 
     private List<GameObject> GetEnemiesInTriggerZone()
     {
-        Collider[] colliders = Physics.OverlapBox(triggerZone.center, triggerZone.size / 2, triggerZone.transform.rotation);
+        EnemyBehavior[] remainingEnemies = FindObjectsOfType<EnemyBehavior>();
+        var remainEnemiesHolder = remainingEnemies
+            .Where(enemy => enemy != null &&
+                            enemy.enemySpawnerTracker != null &&
+                            enemy.enemySpawnerTracker == this.gameObject.GetComponent<EnemySpawnerNewWithoutChasing>())
+            .ToList();
+        //Collider[] colliders = Physics.OverlapBox(triggerZone.center, triggerZone.size / 2, triggerZone.transform.rotation);
         List<GameObject> enemies = new List<GameObject>();
 
-        foreach (Collider collider in colliders)
+        foreach (var child in remainEnemiesHolder)
         {
-            if (collider.CompareTag("Enemy"))
-            {
-                enemies.Add(collider.gameObject);
-            }
+            enemies.Add(child.gameObject);
         }
 
         return enemies;
@@ -168,16 +187,23 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
 
     private int CountEnemiesInTriggerZone()
     {
-        Collider[] colliders = Physics.OverlapBox(triggerZone.center, triggerZone.size / 2, triggerZone.transform.rotation);
-        int enemyCount = 0;
+        EnemyBehavior[] remainingEnemies = FindObjectsOfType<EnemyBehavior>(); 
+        var remainEnemiesHolder = remainingEnemies
+            .Where(enemy => enemy != null &&
+                            enemy.enemySpawnerTracker != null &&
+                            enemy.enemySpawnerTracker == this.gameObject.GetComponent<EnemySpawnerNewWithoutChasing>())
+            .ToList();
 
-        foreach (Collider collider in colliders)
+        //Collider[] colliders = Physics.OverlapBox(triggerZone.center, triggerZone.size / 2, triggerZone.transform.rotation);
+        int enemyCount = remainEnemiesHolder.Count;
+
+/*        foreach (Collider collider in colliders)
         {
             if (collider.CompareTag("Enemy"))
             {
                 enemyCount++;
             }
-        }
+        }*/
         
         return enemyCount;
     }
@@ -186,7 +212,11 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
     {
         foreach (GameObject enemy in enemies)
         {
-            Destroy(enemy);
+            if (EnemiesPool == null)
+                return;
+
+            enemy.GetComponent<EnemyBehavior>().enemySpawnerTracker = null;
+            EnemiesPool.ReturnPooledObject(enemy);
         }
     }
 }
