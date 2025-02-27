@@ -1,0 +1,37 @@
+Variable name,Time in Play,Data Point
+PlayerHealth,0:2.99,100
+Player Position,0:2.99,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:5.99,100
+Player Position,0:5.99,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:8.99,100
+Player Position,0:8.99,World Position: (-16.80, -2.60, -65.30)
+PlayerHealth,0:11.99,100
+Player Position,0:11.99,World Position: (-16.80, -2.51, -65.30)
+PlayerHealth,0:14.99,100
+Player Position,0:14.99,World Position: (-16.80, -2.51, -65.30)
+PlayerHealth,0:18.00,100
+Player Position,0:18.00,World Position: (-16.80, -2.51, -65.30)
+PlayerHealth,0:21.00,100
+Player Position,0:21.00,World Position: (-14.11, -2.51, -65.63)
+PlayerHealth,0:24.00,100
+Player Position,0:24.00,World Position: (-4.35, -1.92, -59.69)
+PlayerHealth,0:27.00,100
+Player Position,0:27.00,World Position: (5.66, -1.92, -52.69)
+PlayerHealth,0:30.01,100
+Player Position,0:30.01,World Position: (13.67, -2.06, -40.98)
+PlayerHealth,0:33.01,100
+Player Position,0:33.01,World Position: (23.11, -2.08, -29.89)
+PlayerHealth,0:36.01,100
+Player Position,0:36.01,World Position: (36.85, -2.07, -26.83)
+1st PowerCore Picked Up,0:36.96,36.95765
+PlayerHealth,0:39.01,100
+Player Position,0:39.01,World Position: (47.68, -2.08, -22.48)
+PlayerHealth,0:42.01,100
+Player Position,0:42.01,World Position: (56.88, 0.13, -11.28)
+PlayerHealth,0:45.02,100
+Player Position,0:45.02,World Position: (61.06, 0.51, 2.00)
+1st Generator Charged,0:46.94,46.93929
+PlayerHealth,0:48.02,100
+Player Position,0:48.02,World Position: (65.26, 0.51, 13.64)
+PlayerHealth,0:50.01,100
+Player Position,0:50.01,World Position: (72.56, 0.51, 17.67)
