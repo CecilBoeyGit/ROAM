@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectsToSpawn: {fileID: 4784617903284688168, guid: 6822aa5fead1892448d416e5fc768314,
     type: 3}
-  poolSize: 50
+  poolSize: 20
   KinematicObjects: 0

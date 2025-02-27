@@ -8624,7 +8624,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundedPlayer: 0
-  walkSpeed: 5
+  walkSpeed: 7
   dashSpeed: 25
   jumpHeight: 1
   gravityValue: -30
@@ -8646,7 +8646,8 @@ MonoBehaviour:
   WeaponCursor: {fileID: 7822282409963098383}
   isScanning: 0
   buttonHeldDown: 0
-  healthPoint: 100
+  healthPoint: 150
+  maxHealthPoint: 150
   pickUpRadius: 9
   facingSockets: 0
   anim: {fileID: 0}
@@ -8664,7 +8665,7 @@ MonoBehaviour:
   charSpeed: 0
   DebugScanner: 0
   dashDuration: 0.25
-  dashCooldown: 1.2
+  dashCooldown: 1
 --- !u!114 &2848454299991115248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10462,6 +10463,7 @@ MonoBehaviour:
   ScanRing: {fileID: 2100000, guid: e5bea49f00b57d44e941442a4fe43805, type: 2}
   HPRing: {fileID: 2100000, guid: a2ebc3f11346f544295a1366e33c5b73, type: 2}
   PowerRing: {fileID: 2100000, guid: 780db81c1127b0d46bb58c45a178a5b2, type: 2}
+  PowerCoreIndicatorUI: {fileID: 0}
   isConsumingWeaponAmount: 0
   IntegManager: {fileID: 0}
 --- !u!1 &6590727886744315155
