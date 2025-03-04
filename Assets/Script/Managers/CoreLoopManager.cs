@@ -37,9 +37,9 @@ public class CoreLoopManager : MonoBehaviour
     [SerializeField] bool hasPickedUpPowerCore = false;
 
     [Header("--- REFERENCES ---")]
-    [SerializeField] GameObject HullIntegrity, IntegrityUI, GenIndicatorGroup;
+    [SerializeField] GameObject HullIntegrity, IntegrityUI; //GenIndicatorGroup;
     [SerializeField] GameObject Callisto01, Callisto02, Callisto03;
-    [SerializeField] GameObject GenIndicator01, GenIndicator02, GenIndicator03;
+    //[SerializeField] GameObject GenIndicator01, GenIndicator02, GenIndicator03;
     [SerializeField] public int FirstTutorialGeneratorID, SecondTutorialGeneratorID;
     public static event Action SecondPowerCorePickedUp;
     public static event Action GeneratorCharged;
@@ -108,12 +108,12 @@ public class CoreLoopManager : MonoBehaviour
             Enum_OnboardingStages = OnboardingStages.Intro;
             Enum_DayStages = DayStages.IntegrityActivate;
 
-            GenIndicator01.SetActive(false); GenIndicator02.SetActive(false); GenIndicator03.SetActive(false);
+            //GenIndicator01.SetActive(false); GenIndicator02.SetActive(false); GenIndicator03.SetActive(false);
         }
 
         HullIntegrity.SetActive(false);
         IntegrityUI.SetActive(false);
-        GenIndicatorGroup.SetActive(false);
+        //GenIndicatorGroup.SetActive(false);
 
         Callisto01.SetActive(false);
         Callisto02.SetActive(false);
@@ -255,7 +255,7 @@ public class CoreLoopManager : MonoBehaviour
         {
             HullIntegrity.SetActive(true);
             IntegrityUI.SetActive(true);
-            GenIndicatorGroup.SetActive(true); GenIndicator02.SetActive(false);
+            //GenIndicatorGroup.SetActive(true); GenIndicator02.SetActive(false);
             TutorialSeqInstance.DayLoop();
         }
     }
@@ -271,19 +271,19 @@ public class CoreLoopManager : MonoBehaviour
         TutorialSeqInstance.PickUpPowerCore1();
         HullIntegrity.SetActive(true);
         IntegrityUI.SetActive(true);
-        GenIndicatorGroup.SetActive(true);
+        //GenIndicatorGroup.SetActive(true);
     }
     void Onboarding_Generator01()
     {
         TutorialSeqInstance.InsertPowerCore1_1();
-        GenIndicator01.SetActive(true);
+        //GenIndicator01.SetActive(true);
     }
     void Onboarding_ScanEnemy()
     {
         if (PlayerPickedUpSecondPowerCore)
         {
             TutorialSeqInstance.PickUpPowerCore2_2();
-            GenIndicator03.SetActive(true);
+            //GenIndicator03.SetActive(true);
         }
         else
         {
