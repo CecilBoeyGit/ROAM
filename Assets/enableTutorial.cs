@@ -1,18 +1,28 @@
 using UnityEngine;
+using System.Collections.Generic;
 
-public class enableTutorial : MonoBehaviour
+public class EnableTutorial : MonoBehaviour
 {
-    // The GameObject to enable when the player enters the trigger area
-    [SerializeField] private GameObject objectToEnable;
+    private Dictionary<string, bool> tutorialParameters = new Dictionary<string, bool>();
+    [SerializeField] private GameObject objectToEnable; // The object to show
 
-    // This method is called when another collider enters the trigger attached to this GameObject
-    private void OnTriggerEnter(Collider other)
+    // Method to set tutorial parameter
+    public void SetTutorialParameter(string parameterName, bool value)
     {
-        // Check if the colliding object is tagged as "Player"
-        if (other.CompareTag("Player"))
+        tutorialParameters[parameterName] = value;
+        CheckTutorialState();
+    }
+
+    // Check if the tutorial should be enabled
+    private void CheckTutorialState()
+    {
+        if (tutorialParameters.ContainsValue(true))
         {
-            // Enable the specified object
             objectToEnable.SetActive(true);
+        }
+        else
+        {
+            objectToEnable.SetActive(false);
         }
     }
 }

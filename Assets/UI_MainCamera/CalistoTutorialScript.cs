@@ -3,46 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Video;
-using UnityEngine.UI;
 using System.Reflection;
 
 public class CalistoTutorialScript : MonoBehaviour
 {
-
+    [Header("UI Elements")]
     public TextMeshProUGUI ObjectTypeText;
     public TextMeshProUGUI TutorialText1;
     public TextMeshProUGUI TutorialText2;
     public TextMeshProUGUI TutorialText3;
-   
 
+    [Header("Tutorial Data")]
     public string[] Category;
     public string[] Tutorial1;
     public string[] Tutorial2;
     public string[] Tutorial3;
 
-    public List<VideoClip> videoClips = new List<VideoClip>(); 
-    //public RenderTexture[] renderTextures; 
-    [SerializeField] VideoPlayer videoPlayer1;
-    [SerializeField] VideoPlayer videoPlayer2;
-    [SerializeField] VideoPlayer videoPlayer3;
+    [Header("Video Players & Clips")]
+    public List<VideoPlayer> videoPlayers = new List<VideoPlayer>(); // Supports multiple VideoPlayers
+    public List<VideoClip> videoClips = new List<VideoClip>(); // Stores tutorial clips
 
-    [SerializeField] string methodName;
-   
+    [SerializeField] private string methodName;
+    [SerializeField] private GameObject CalistoUI; // Assign the tutorial UI panel
 
-   [SerializeField] GameObject CalistoUI;
-
-    public VideoPlayer videoPlayer;
-
-    // Update is called once per frame
-    void Start()
+    private void Start()
     {
-        videoPlayer1 = GetComponent<VideoPlayer>();
-        videoPlayer2 = GetComponent<VideoPlayer>();
-        videoPlayer3 = GetComponent<VideoPlayer>();
         InvokeMethodByName(methodName);
     }
 
-    void InvokeMethodByName(string methodName)
+    private void InvokeMethodByName(string methodName)
     {
         MethodInfo method = GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
         if (method != null)
@@ -55,69 +44,55 @@ public class CalistoTutorialScript : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void CloseTutorial()
     {
-        if (gameObject.activeSelf)
+        gameObject.SetActive(false); // Deactivates this object
+    }
+
+    private void PlayVideos(int startIndex)
+    {
+        for (int i = 0; i < videoPlayers.Count; i++)
         {
-            Time.timeScale = 0f;
-            videoPlayer.Pause();
+            if (startIndex + i < videoClips.Count)
+            {
+                videoPlayers[i].clip = videoClips[startIndex + i];
+                videoPlayers[i].Play();
+            }
         }
     }
-    
 
-    public void Resume()
+    private void StopAllVideos()
     {
-        CalistoUI.SetActive(false);
-        Time.timeScale = 1f;
+        foreach (var vp in videoPlayers)
+        {
+            vp.Stop();
+        }
     }
+
+    private void SetupTutorial(string category, string[] tutorialText, int videoStartIndex)
+    {
+        CalistoUI.SetActive(true);
+        ObjectTypeText.text = category;
+        TutorialText1.text = tutorialText.Length > 0 ? tutorialText[0] : "";
+        TutorialText2.text = tutorialText.Length > 1 ? tutorialText[1] : "";
+        TutorialText3.text = tutorialText.Length > 2 ? tutorialText[2] : "";
+
+        StopAllVideos(); // Stop any running videos before starting new ones
+        PlayVideos(videoStartIndex);
+    }
+
     void Countdown()
     {
-        CalistoUI.SetActive(true);
-        ObjectTypeText.text = Category[0];
-
-        TutorialText1.text = Tutorial1[0];
-        TutorialText2.text = Tutorial1[1];
-        TutorialText3.text = Tutorial1[2];
-
-/*        videoPlayer1.clip = videoClips[0];
-        videoPlayer2.clip = videoClips[1];
-        videoPlayer3.clip = videoClips[2];*/
-
-/*        videoPlayer1.Play();
-        videoPlayer2.Play();
-        videoPlayer3.Play();*/
+        SetupTutorial(Category[0], Tutorial1, 0);
     }
+
     void SonarTower()
     {
-        CalistoUI.SetActive(true);
-        ObjectTypeText.text = Category[1];
-        TutorialText1.text = Tutorial2[0];
-        TutorialText2.text = Tutorial2[1];
-        TutorialText3.text = Tutorial2[2];
-
-/*        videoPlayer1.clip = videoClips[3];
-        videoPlayer2.clip = videoClips[4];
-        videoPlayer3.clip = videoClips[5];*/
-/*
-        videoPlayer1.Play();
-        videoPlayer2.Play();
-        videoPlayer3.Play();*/
+        SetupTutorial(Category[1], Tutorial2, 3);
     }
+
     void PowerExplained()
     {
-        CalistoUI.SetActive(true);
-        ObjectTypeText.text = Category[2];
-        TutorialText1.text = Tutorial3[0];
-        TutorialText2.text = Tutorial3[1];
-        TutorialText3.text = Tutorial3[2];
-
-/*
-        videoPlayer1.clip = videoClips[6];
-        videoPlayer2.clip = videoClips[7];
-        videoPlayer3.clip = videoClips[8];*/
-/*
-        videoPlayer1.Play();
-        videoPlayer2.Play();
-        videoPlayer3.Play();*/
+        SetupTutorial(Category[2], Tutorial3, 6);
     }
 }
