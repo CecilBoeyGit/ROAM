@@ -129,9 +129,14 @@ public class PowerReserveManager : MonoBehaviour
         if (PowerCoreIndicatorUI == null)
             return;
         if (currentPowerCore != null)
+        {
             PowerCoreIndicatorUI.SetActive(false);
+        }
         else
+        {
             PowerCoreIndicatorUI.SetActive(true);
+            PowerCoreIndicatorUI.GetComponent<Image>().material.SetFloat("_UseFlicker", 1);
+        }
 
         /* if (PowerCoreIndicator == null)
              return;

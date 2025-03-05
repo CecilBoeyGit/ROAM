@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Linq;
 
 public class IntegrityManager : MonoBehaviour
 {
@@ -20,9 +21,11 @@ public class IntegrityManager : MonoBehaviour
     float MeterDecreAllHolder;
     [SerializeField] float MeterIncrementMulti;
     float MeterIncrementHolder;
+    public bool RundownSuccess = false;
 
     [Header("--- VARIABLES COUNTDOWN ---")]
-    [SerializeField] float TimerMax;
+    public float TimerInitial;
+    public float TimerMax;
     [SerializeField] float TimerDecrementMulti = 1.0f;
 
     [Header("--- VISUALS ---")]
@@ -32,11 +35,23 @@ public class IntegrityManager : MonoBehaviour
     [Header("--- DEBUG ---")]
     [SerializeField] bool usingDEBUG = false;
 
+    ObjectsPoolingDefault EnemiesPool;
+
     public static event Action MeterNull;
+    public static event Action RundownSuccessAction;
 
     CoreLoopManager CLMInstance;
     ReloadAllScenes ReloadInstance;
 
+    public static IntegrityManager instance;
+
+    private void Awake()
+    {
+        if (instance != null)
+            Destroy(instance);
+        else
+            instance = this;
+    }
     private void OnEnable()
     {
         GeneratorManager.GenAnyEmpty += MeterEmptyStage01;
@@ -49,6 +64,9 @@ public class IntegrityManager : MonoBehaviour
     }
     private void Start()
     {
+        RundownSuccess = false;
+        EnemiesPool = GameObject.Find("EnemiesPool")?.GetComponent<ObjectsPoolingDefault>();
+
         UI_IntegrityMeter.GetComponent<Image>();
 
         CLMInstance = CoreLoopManager.Instance;
@@ -58,9 +76,14 @@ public class IntegrityManager : MonoBehaviour
             TimerMax = 5940f;
         else
             TimerMax = 300f;
+
+        TimerInitial = TimerMax;
     }
     private void Update()
     {
+        if (RundownSuccess)
+            return;
+
         MeterDecrement();
         MeterAmountRemap();
         MeterNullActions();
@@ -81,15 +104,49 @@ public class IntegrityManager : MonoBehaviour
         else
             TimerMax = 0;
 
-        int minutes, secondsRemain, microseconds;
+        int minutes, secondsRemain;
         ConvertSeconds(TimerMax, out minutes, out secondsRemain);
         UI_CountDown.text = string.Format("{0:00}:{1:00}", minutes, secondsRemain);
     }
     void CountDownNull()
     {
-        if(TimerMax <= 0)
+        if(TimerMax <= 0 && MeterAmount > 0)
         {
-            MeterNullActions();
+            if (RundownSuccess)
+                return;
+
+            RundownSuccess = true;
+
+            if (CO_RundownSuccessBuffer != null)
+                StopCoroutine(CO_RundownSuccessBuffer);
+            CO_RundownSuccessBuffer = StartCoroutine(RundownSuccessBuffer(1f));
+        }
+    }
+
+    Coroutine CO_RundownSuccessBuffer;
+
+    IEnumerator RundownSuccessBuffer(float duration)
+    {
+        RundownSuccessAction?.Invoke();
+
+        var allRemainingEnemies = FindObjectsByType<EnemyBehavior>(FindObjectsSortMode.None)
+            .Where(g => g.isActiveAndEnabled)
+            .ToList();
+        foreach(EnemyBehavior enemy in allRemainingEnemies)
+        {
+            enemy.enemyStateControl = EnemyBehavior.enemyStates.DeathState;
+        }
+
+        float time = 0;
+        while(time < duration)
+        {
+            time += Time.deltaTime;
+            float meterLerpVal = Mathf.Lerp(MeterAmount, MeterMax, time / duration);
+            MeterAmount = meterLerpVal;
+            float meterRemap = Mathf.InverseLerp(0, MeterMax, MeterAmount);
+            UI_IntegrityMeter.fillAmount = meterRemap;
+            UI_IntegrityMeter.color = MaxColor;
+            yield return null;
         }
     }
     void MeterAmountRemap()
@@ -127,7 +184,7 @@ public class IntegrityManager : MonoBehaviour
     }
     void MeterNullActions()
     {
-        if (MeterAmount <= 0)
+        if (MeterAmount <= 0 && TimerMax > 0)
         {
             if (!usingDEBUG)
                 MeterNull?.Invoke();

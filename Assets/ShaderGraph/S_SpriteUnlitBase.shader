@@ -37,14 +37,20 @@ Shader "Custom/Sprite-Unlit-Base"
 
             #pragma vertex UnlitBaseVertex
             #pragma fragment UnlitBaseFragment
-
+            #pragma multi_compile_instancing // Enable GPU Instancing
             #pragma multi_compile_fragment _ DEBUG_DISPLAY
 
-        // Constant buffer to hold shader properties
-            CBUFFER_START(UnityPerMaterial)
-                float _UseFlicker;
-                float _FlickerFrequency;
-            CBUFFER_END
+        //// Constant buffer to hold shader properties
+        //    CBUFFER_START(UnityPerMaterial)
+        //        float _UseFlicker;
+        //        float _FlickerFrequency;
+        //    CBUFFER_END
+
+        // Instance-specific float
+            UNITY_INSTANCING_BUFFER_START(Props)
+               UNITY_DEFINE_INSTANCED_PROP(float, _UseFlicker)
+               UNITY_DEFINE_INSTANCED_PROP(float, _FlickerFrequency)
+            UNITY_INSTANCING_BUFFER_END(Props)
 
             struct Attributes
             {
@@ -88,9 +94,13 @@ Shader "Custom/Sprite-Unlit-Base"
 
             float4 UnlitBaseFragment(Varyings i) : SV_Target
             {
+                UNITY_SETUP_INSTANCE_ID(i);
+                float useFlicker = UNITY_ACCESS_INSTANCED_PROP(Props, _UseFlicker);
+                float flickerFreq = UNITY_ACCESS_INSTANCED_PROP(Props, _FlickerFrequency);
+
                 float4 mainTex = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-                float Flickering = (sin(_Time.y * _FlickerFrequency) + 1.0) * 0.5;
-                float alphaLerpVal = lerp(1.0, Flickering, _UseFlicker);
+                float Flickering = (sin(_Time.y * flickerFreq) + 1.0) * 0.5;
+                float alphaLerpVal = lerp(1.0, Flickering, useFlicker);
                 mainTex.a *= alphaLerpVal;
 
                 #if defined(DEBUG_DISPLAY)

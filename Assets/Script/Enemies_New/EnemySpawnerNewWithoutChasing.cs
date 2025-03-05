@@ -19,6 +19,7 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
     [Header("--- PLAYER ENEMY COUNT ---")] [SerializeField]
     int currentEnemyCount; // 当前房间敌人计数 X
     [SerializeField] int maxEnemyCount = 10; // 当前房间敌人计数上限
+    [SerializeField] int maxInitialEnemyCount;
     [SerializeField] float enemyCountRecoveryRate = 5f; // X每z秒+1的恢复速率
 
     [Header("--- REFERENCES ---")] [SerializeField]
@@ -27,6 +28,8 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
 
     private bool isSpawning = false;
     private Coroutine CO_RecoverEnemyCount;
+
+    IntegrityManager IntegrityInstance;
 
     void PopulateSpawnPoints()
     {
@@ -49,6 +52,8 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
     }
     private void Start()
     {
+        IntegrityInstance = IntegrityManager.instance;
+
         EnemiesPool = GameObject.Find("EnemiesPool")?.GetComponent<ObjectsPoolingDefault>();
         
         PopulateSpawnPoints();
@@ -58,7 +63,9 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
             Debug.LogError("No Trigger Zone!");
 
         // Init 初始化
-        currentEnemyCount = maxEnemyCount;
+        maxEnemyCount = spawnPoints.Count();
+        maxInitialEnemyCount = maxEnemyCount;
+        currentEnemyCount = EnemyCountProgressionByGameTime();
         triggerZone.isTrigger = true;
     }
 
@@ -68,7 +75,6 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
         {
             // 检查当前 Trigger Zone 中的敌人数量
             int enemiesInZone = CountEnemiesInTriggerZone();
-
             // 计算需要生成的敌人数量
             int enemiesToSpawn = currentEnemyCount - enemiesInZone;
 
@@ -81,6 +87,32 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
             // 停止恢复敌人计数的协程
             if (CO_RecoverEnemyCount != null)
                 StopCoroutine(CO_RecoverEnemyCount);
+        }
+    }
+    int EnemyCountProgressionByGameTime()
+    {
+        int NullBufferCount = Mathf.CeilToInt(IntegrityInstance.TimerInitial - 10f);
+        int FirstProgressCount = Mathf.CeilToInt(IntegrityInstance.TimerInitial * (2f / 3f));
+        int SecondProgressCount = Mathf.CeilToInt(IntegrityInstance.TimerInitial * 0.5f);
+        if (IntegrityInstance.TimerMax > NullBufferCount)
+        {
+            return 0;
+        }
+        else if (IntegrityInstance.TimerMax <= NullBufferCount && IntegrityInstance.TimerMax > FirstProgressCount)
+        {
+            return Mathf.FloorToInt(maxInitialEnemyCount * (1f / 3f));
+        }
+        else if (IntegrityInstance.TimerMax <= FirstProgressCount && IntegrityInstance.TimerMax > SecondProgressCount)
+        {
+            return Mathf.FloorToInt(maxInitialEnemyCount * (1f / 2f));
+        }
+        else if (IntegrityInstance.TimerMax <= SecondProgressCount && IntegrityInstance.TimerMax > 0)
+        {
+            return Mathf.FloorToInt(maxInitialEnemyCount);
+        }
+        else
+        {
+            return maxInitialEnemyCount;
         }
     }
 
@@ -118,7 +150,9 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
 
             // 销毁不处于 ChaseState 和 AttackState 的敌人
             DestroyEnemies(enemiesToDestroy);
-            
+
+            maxEnemyCount = EnemyCountProgressionByGameTime();
+
             if (CO_RecoverEnemyCount != null)
                 StopCoroutine(CO_RecoverEnemyCount);
             CO_RecoverEnemyCount = StartCoroutine(RecoverEnemyCount());
@@ -145,6 +179,12 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
 
     private IEnumerator RecoverEnemyCount()
     {
+        if (currentEnemyCount <= 1)
+        {
+            currentEnemyCount = maxEnemyCount;
+            yield return null;
+        }
+
         while (currentEnemyCount < maxEnemyCount)
         {
             yield return new WaitForSeconds(enemyCountRecoveryRate);
@@ -191,7 +231,9 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
         var remainEnemiesHolder = remainingEnemies
             .Where(enemy => enemy != null &&
                             enemy.enemySpawnerTracker != null &&
-                            enemy.enemySpawnerTracker == this.gameObject.GetComponent<EnemySpawnerNewWithoutChasing>())
+                            enemy.enemySpawnerTracker == this.gameObject.GetComponent<EnemySpawnerNewWithoutChasing>()
+                            && enemy.enemyStateControl != EnemyBehavior.enemyStates.ChaseState
+                            && enemy.enemyStateControl != EnemyBehavior.enemyStates.AttackState)
             .ToList();
 
         //Collider[] colliders = Physics.OverlapBox(triggerZone.center, triggerZone.size / 2, triggerZone.transform.rotation);

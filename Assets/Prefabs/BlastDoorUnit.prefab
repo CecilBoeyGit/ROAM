@@ -157,8 +157,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.2567763, y: 0.92291427, z: 2.622627}
+  m_Center: {x: -0.12838887, y: -0.038542237, z: 0.81131434}
 --- !u!114 &3722079281765442867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,7 +348,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 0
@@ -536,7 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51a210d447523db4f8670f3923769252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDistance: 10
+  moveDistance: 15
   moveSpeed: 2
   canOpen: 0
   moveback: 0

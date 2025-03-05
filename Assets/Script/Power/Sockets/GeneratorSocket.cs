@@ -12,8 +12,10 @@ public class GeneratorSocket : PowerSockets
 
     [Header("--- UI ---")]
     [SerializeField] Image AmountIndicatorUI;
-    [SerializeField] Image BarImage;
-    Material BarMaterial;
+    [SerializeField] Image GeneratorGraphicUI;
+    //[SerializeField] Image BarImage;
+    //Material BarMaterial;
+    Material GeneratorIconMaterial;
 
     protected override void Start()
     {
@@ -21,16 +23,38 @@ public class GeneratorSocket : PowerSockets
 
         generatorParent = GetComponentInParent<Generators>();
         AmountIndicatorUI.GetComponent<Image>();
-        BarMaterial = BarImage.GetComponent<Image>().material;
+        GeneratorGraphicUI.GetComponentInParent<Image>();
+        GeneratorIconMaterial = GeneratorGraphicUI.material;
+        
+        GeneratorGraphicUI.color = Color.white;
+        if (GeneratorIconMaterial != null)
+            GeneratorIconMaterial.SetFloat("_UseFlicker", 0);
+
+        //BarMaterial = BarImage.GetComponent<Image>().material;
     }
     protected override void Update()
     {
         base.Update();
 
         float GenLerp = Mathf.InverseLerp(0, generatorParent.GeneratorMaxAmount, generatorParent.GeneratorPowerAmount);
-        BarMaterial.SetFloat("_SliceCoverage", GenLerp);
+        //BarMaterial.SetFloat("_SliceCoverage", GenLerp);
         if(AmountIndicatorUI != null)
             AmountIndicatorUI.fillAmount = GenLerp;
+
+        if (GeneratorIconMaterial == null)
+            return;
+        if (GenLerp <= 0f)
+        {
+            GeneratorGraphicUI.color = Color.red;
+            if (GeneratorIconMaterial != null)
+                GeneratorIconMaterial.SetFloat("_UseFlicker", 1);
+        }
+        else
+        {
+            GeneratorGraphicUI.color = Color.white;
+            if (GeneratorIconMaterial != null)
+                GeneratorIconMaterial.SetFloat("_UseFlicker", 0);
+        }
     }
     public override void PlayerInZoneActions()
     {
