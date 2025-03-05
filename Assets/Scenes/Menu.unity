@@ -849,6 +849,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2084597327035243317, guid: 8ef4b1da01962cd499b044753bbd5d77,
+        type: 3}
+      propertyPath: m_text
+      value: "Created By\n\nSiheng Chen (Sam)\nCecil Boey\n\nMusic By\nDaniel Taranto
+        \n\nWritter\nYue QIan(Zoe)\n\nAssistant Programmer \nYoubin Wang (Robin)"
+      objectReference: {fileID: 0}
     - target: {fileID: 3843188938986228435, guid: 8ef4b1da01962cd499b044753bbd5d77,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -919,12 +925,22 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 4436920180126799616, guid: 8ef4b1da01962cd499b044753bbd5d77,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 330
+      objectReference: {fileID: 0}
     - target: {fileID: 6313495931779836240, guid: 8ef4b1da01962cd499b044753bbd5d77,
         type: 3}
       propertyPath: m_Name
       value: CreditCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 6313495931779836240, guid: 8ef4b1da01962cd499b044753bbd5d77,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889869672951385323, guid: 8ef4b1da01962cd499b044753bbd5d77,
         type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1557,7 +1573,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 34.000008, y: 236}
+  m_AnchoredPosition: {x: 35.2, y: 236}
   m_SizeDelta: {x: 723.6821, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1470289149
@@ -1580,7 +1596,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Reserach, Observe, Allocation, Managment
+  m_text: 'Reserach, Observation, Allocation, Managment
 
 '
   m_isRightToLeft: 0
@@ -1610,8 +1626,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 32.6
+  m_fontSizeBase: 32.6
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
