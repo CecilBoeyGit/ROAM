@@ -3336,7 +3336,7 @@ PrefabInstance:
     - target: {fileID: 3440163134405990084, guid: 57632347d35383a408f924060dae7d58,
         type: 3}
       propertyPath: m_Name
-      value: IndicatorsGroup
+      value: InfoIndicatorsGroup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
