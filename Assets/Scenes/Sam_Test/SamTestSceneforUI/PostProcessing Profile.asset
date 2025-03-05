@@ -131,7 +131,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.439
+    m_Value: 0.465
   smoothness:
     m_OverrideState: 0
     m_Value: 0.2
@@ -153,13 +153,13 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   gaussianStart:
-    m_OverrideState: 0
-    m_Value: 10
+    m_OverrideState: 1
+    m_Value: 998.7
   gaussianEnd:
     m_OverrideState: 0
-    m_Value: 30
+    m_Value: 373.2
   gaussianMaxRadius:
     m_OverrideState: 0
     m_Value: 1
@@ -167,8 +167,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   focusDistance:
-    m_OverrideState: 0
-    m_Value: 10
+    m_OverrideState: 1
+    m_Value: 2.45
   aperture:
     m_OverrideState: 0
     m_Value: 5.6
@@ -205,7 +205,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.251
+    m_Value: 0.23
   clamp:
     m_OverrideState: 1
     m_Value: 0.05
@@ -224,16 +224,16 @@ MonoBehaviour:
   active: 1
   scanLineJitter:
     m_OverrideState: 1
-    m_Value: 0.384
+    m_Value: 0.01
   verticalJump:
     m_OverrideState: 1
-    m_Value: 0.201
+    m_Value: 0.026
   horizontalShake:
     m_OverrideState: 1
-    m_Value: 0.414
+    m_Value: 0
   colorDrift:
     m_OverrideState: 1
-    m_Value: 0.239
+    m_Value: 0.03
 --- !u!114 &6675953129822935603
 MonoBehaviour:
   m_ObjectHideFlags: 3
