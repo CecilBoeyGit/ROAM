@@ -285,6 +285,6 @@ public class TutorialSequence : MonoBehaviour
 
         // Start playing audio with subtitles
         audioSubtitlePlayer.PlayAudioWithSubtitles();
-        displayuitips.UpdateText("/. COMPLETE");
+        displayuitips.UpdateText("/. Return and step onto the Cockpit Lift");
     }
 }
