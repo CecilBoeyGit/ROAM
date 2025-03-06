@@ -5,11 +5,13 @@ using System.Collections;
 public class BlackScreenFadeOutScript : MonoBehaviour
 {
     [SerializeField] float fadeDuration = 1f; // Duration of the fade effect in seconds
-    [SerializeField] Image blackScreenImage; // Reference to the image component of the black screen
-    public string[] lines_Day1; // Array of lines to print
-    public string[] lines_Day2; // Array of lines to print
+    [SerializeField] Image blackScreenImage; // Reference to the black screen image
+    public string[] lines_Day1; // Text for different days
+    public string[] lines_Day2;
+
     private float currentAlpha = 0f; // Current alpha value
-    public GameObject blackscreentext;
+
+    [SerializeField] GameObject[] blackscreentexts; // Array of black screen texts
 
     Coroutine CO_FadeIn;
     Coroutine CO_FadeOut;
@@ -27,6 +29,7 @@ public class BlackScreenFadeOutScript : MonoBehaviour
         else
             Destroy(this);
     }
+
     private void Start()
     {
         LetterInstance = LetterByLetterWithPause.Instance;
@@ -35,7 +38,11 @@ public class BlackScreenFadeOutScript : MonoBehaviour
         {
             blackScreenImage.color = new Color(0f, 0f, 0f, 1f);
         }
+
+        // Ensure all black screen texts are initially disabled
+        SetBlackScreenTextsActive(false);
     }
+
     public void TriggerFadeIn(string LetterFunc)
     {
         if (CO_FadeIn != null)
@@ -43,9 +50,10 @@ public class BlackScreenFadeOutScript : MonoBehaviour
 
         CO_FadeIn = StartCoroutine(FadeIn(LetterFunc));
     }
+
     public void TriggerFadeOut()
     {
-        if (CO_FadeIn != null)
+        if (CO_FadeOut != null)
             StopCoroutine(CO_FadeOut);
 
         CO_FadeOut = StartCoroutine(FadeOut());
@@ -55,25 +63,20 @@ public class BlackScreenFadeOutScript : MonoBehaviour
     {
         float timer = 0f;
 
-        // While the timer is less than the fade duration
         while (timer < fadeDuration)
         {
-            // Increment the timer by the time elapsed since the last frame
             timer += Time.deltaTime;
-
-            // Calculate the normalized alpha value based on the current timer value and fade duration
             float normalizedAlpha = Mathf.InverseLerp(0, fadeDuration, timer);
-
-            // Update the alpha of the image
             blackScreenImage.color = new Color(0f, 0f, 0f, normalizedAlpha);
-
-            // Yield to the next frame
             yield return null;
         }
 
-        // Ensure the alpha is exactly 1 at the end of the fade
+        // Ensure the alpha is exactly 1
         blackScreenImage.color = new Color(0f, 0f, 0f, 1f);
-        blackscreentext.SetActive(true);
+
+        // Activate all blackscreentext objects
+        SetBlackScreenTextsActive(true);
+
         switch (LetterFunc)
         {
             case "End":
@@ -81,28 +84,35 @@ public class BlackScreenFadeOutScript : MonoBehaviour
                 break;
         }
     }
+
     IEnumerator FadeOut()
     {
         float timer = 0f;
 
-        // While the timer is less than the fade duration
+        // Deactivate all blackscreentext objects before fading out
+        SetBlackScreenTextsActive(false);
+
         while (timer < fadeDuration + 5)
         {
-            // Increment the timer by the time elapsed since the last frame
             timer += Time.deltaTime;
-
-            // Calculate the normalized alpha value based on the current timer value and fade duration
             float normalizedAlpha = Mathf.InverseLerp(fadeDuration + 5, 0, timer);
-
-            // Update the alpha of the image
             blackScreenImage.color = new Color(0f, 0f, 0f, normalizedAlpha);
-
-            // Yield to the next frame
             yield return null;
         }
 
-        // Ensure the alpha is exactly 1 at the end of the fade
         blackScreenImage.color = new Color(0f, 0f, 0f, 0f);
     }
 
+    // Helper function to activate/deactivate all black screen texts
+    private void SetBlackScreenTextsActive(bool state)
+    {
+        if (blackscreentexts != null)
+        {
+            foreach (GameObject textObject in blackscreentexts)
+            {
+                if (textObject != null)
+                    textObject.SetActive(state);
+            }
+        }
+    }
 }
