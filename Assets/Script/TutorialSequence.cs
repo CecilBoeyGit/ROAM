@@ -80,6 +80,11 @@ public class TutorialSequence : MonoBehaviour
         displayuitips.UpdateText("Maintain and Charge Generators till countdown completes");
     }
 
+    public void ReturnToElevator()
+    {
+        displayuitips.UpdateText("Rundown Completed - Return to elevator");
+    }
+
     public void PickUpPowerCore1() 
     {
         // Assign defined arrays to the AudioSubtitlePlayer
