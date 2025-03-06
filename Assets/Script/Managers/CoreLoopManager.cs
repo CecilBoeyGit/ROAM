@@ -26,6 +26,8 @@ public class CoreLoopManager : MonoBehaviour
     {
         IntegrityActivate,
         IntegritySuccess,
+        DisplayInterfaceSuccess,
+        DisplayInterfaceFailure,
         Fail
     }
     public DayStages Enum_DayStages;
@@ -41,6 +43,8 @@ public class CoreLoopManager : MonoBehaviour
     [SerializeField] GameObject Callisto01, Callisto02, Callisto03;
     //[SerializeField] GameObject GenIndicator01, GenIndicator02, GenIndicator03;
     [SerializeField] public int FirstTutorialGeneratorID, SecondTutorialGeneratorID;
+    GameObject elevatorTrigger;
+
     public static event Action SecondPowerCorePickedUp;
     public static event Action GeneratorCharged;
 
@@ -49,10 +53,13 @@ public class CoreLoopManager : MonoBehaviour
 
     bool Day_ActivateIntegrity = false;
 
+    public bool RundownSuccessful { get; private set; }
+
     PlayerController pcInstance;
     TutorialSequence TutorialSeqInstance;
     LetterByLetterWithPause LetterFuncInstance;
     BlackScreenFadeOutScript BlackScreenInstance;
+    IntegrityManager IntegrityInstance;
 
     public static CoreLoopManager Instance;
 
@@ -75,6 +82,8 @@ public class CoreLoopManager : MonoBehaviour
 
         Generators.Gen02Charging += Generator02ToComplete;
 
+        IntegrityManager.RundownSuccessAction += RundownSuccess;
+
         InitializationParameters();
     }
     private void OnDisable()
@@ -90,6 +99,8 @@ public class CoreLoopManager : MonoBehaviour
         EnemyBehavior.TutorialBotKilled -= TutorialBotKilled;
 
         Generators.Gen02Charging -= Generator02ToComplete;
+
+        IntegrityManager.RundownSuccessAction -= RundownSuccess;
     }
     void InitializationParameters()
     {
@@ -118,13 +129,27 @@ public class CoreLoopManager : MonoBehaviour
         Callisto01.SetActive(false);
         Callisto02.SetActive(false);
         Callisto03.SetActive(false);
+
+        elevatorTrigger = FindObjectOfType<ElevatorManager>()?.gameObject;
+        if (elevatorTrigger != null)
+            elevatorTrigger.SetActive(false);
     }
     void Start()
     {
+        RundownSuccessful = false;
+
         pcInstance = PlayerController.instance;
         TutorialSeqInstance = TutorialSequence.Instance;
         LetterFuncInstance = LetterByLetterWithPause.Instance;
         BlackScreenInstance = BlackScreenFadeOutScript.Instance;
+        IntegrityInstance = IntegrityManager.instance;
+    }
+    void RundownSuccess()
+    {
+        if (IsDayLoop)
+        {
+            Enum_DayStages = DayStages.IntegritySuccess;
+        }
     }
 
     #region ------ OnBoarding Stages ------
@@ -155,6 +180,9 @@ public class CoreLoopManager : MonoBehaviour
         {
             MetricManagerScript.instance.LogString("1st Generator Charged", Time.time.ToString());
         }
+
+        pcInstance.AbilitiesConstrained = false;
+
         Enum_OnboardingStages = OnboardingStages.ScanEnemy;
         Callisto02.SetActive(true);
     }
@@ -240,14 +268,24 @@ public class CoreLoopManager : MonoBehaviour
                         DayRegularBehaviours();
                         break;
                     case DayStages.IntegritySuccess:
-
+                        SuccessBehaviors();
+                        break;
+                    case DayStages.DisplayInterfaceSuccess:
+                        DisplaySuccess();
                         break;
                     case DayStages.Fail:
-
+                        Failedbehaviors();
+                        break;
+                    case DayStages.DisplayInterfaceFailure:
+                        DisplayFailed();
                         break;
                 }
                 break;
         }
+    }
+    public void DayStagesDisplayFailure()
+    {
+        Enum_DayStages = DayStages.DisplayInterfaceFailure;
     }
     void DayRegularBehaviours()
     {
@@ -258,6 +296,33 @@ public class CoreLoopManager : MonoBehaviour
             //GenIndicatorGroup.SetActive(true); GenIndicator02.SetActive(false);
             TutorialSeqInstance.DayLoop();
         }
+    }
+    void SuccessBehaviors()
+    {
+        RundownSuccessful = true;
+        TutorialSeqInstance.ReturnToElevator(); //Objective text set to Return To Elevator
+        if (elevatorTrigger != null)
+            elevatorTrigger.SetActive(true);
+    }
+    void DisplaySuccess()
+    {
+        if (pcInstance.PlayerConstrained) //Ensures this method only runs once after called
+            return;
+
+        BlackScreenInstance.TriggerFadeIn("Success"); //Display the rundown success interface
+        pcInstance.PlayerConstrained = true;
+    }
+    void Failedbehaviors()
+    {
+        RundownSuccessful = false;
+    }
+    void DisplayFailed()
+    {
+        if (pcInstance.PlayerConstrained) //Ensures this method only runs once after called
+            return;
+
+        BlackScreenInstance.TriggerFadeIn("Fail"); //Display the rundown failure interface
+        pcInstance.PlayerConstrained = true;
     }
 
     // --- ONBOARDING ------------------------
