@@ -65,7 +65,7 @@ MonoBehaviour:
     m_Value: 4
   intensity:
     m_OverrideState: 1
-    m_Value: 0.24
+    m_Value: 0.573
   response:
     m_OverrideState: 1
     m_Value: 0.722
@@ -222,7 +222,7 @@ MonoBehaviour:
     m_Value: 0.063
   verticalJump:
     m_OverrideState: 1
-    m_Value: 0.002
+    m_Value: 0.005
   horizontalShake:
     m_OverrideState: 0
     m_Value: 0

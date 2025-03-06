@@ -261,6 +261,17 @@
                 },
                 {
                     "name": "",
+                    "id": "324fb1e9-a91d-4699-874e-4b6a0e499761",
+                    "path": "<VirtualMouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "b280c07f-c472-4a07-8459-d7d5cabe84a4",
                     "path": "<VirtualMouse>/position",
                     "interactions": "",

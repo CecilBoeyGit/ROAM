@@ -227,7 +227,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 21423a29c9b0e8a48bd4838b51607b58, type: 3}
   - {fileID: 8300000, guid: 9b798e1ea8233954a817a9dcefaa76ad, type: 3}
   DEBUGBot: 0
-  DEBUGSTATUS: 1
+  DEBUGSTATUS: 0
   TutorialBot: 0
   TutorialDistanceThreshold: 10
   enemyStateControl: 0

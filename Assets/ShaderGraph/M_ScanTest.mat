@@ -53,7 +53,7 @@ Material:
     - _MaskHardness: 0.272
     - _MaskPower: 1
     - _MaskRadius: 0
-    - _OUTScanLineIntensity: 5
+    - _OUTScanLineIntensity: 1
     - _OUTScanLineP: 5
     - _OUTScanLinePower: 3
     - _OverallEffect: 0
@@ -64,5 +64,5 @@ Material:
     m_Colors:
     - _OUTScanLineColor: {r: 2.9960785, g: 0.0805694, b: 0, a: 0}
     - _Origin: {r: -27.767014, g: 9.516, b: -90.50733, a: 0}
-    - _ScanLineColor: {r: 3.0754716, g: 4, b: 4, a: 1}
+    - _ScanLineColor: {r: 9.214355, g: 11.984315, b: 11.984315, a: 1}
   m_BuildTextureStacks: []

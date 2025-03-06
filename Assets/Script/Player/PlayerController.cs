@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using Cinemachine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [ExecuteInEditMode]
 public class PlayerController : MonoBehaviour
@@ -124,7 +125,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = false;
+        if(SceneManager.GetActiveScene().name == "S_DayLoop")
+            Cursor.visible = false;
 
         mainCamera = Camera.main;
         vCam.GetComponent<CinemachineVirtualCamera>();

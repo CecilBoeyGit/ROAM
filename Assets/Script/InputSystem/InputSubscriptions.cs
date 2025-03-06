@@ -172,7 +172,10 @@ public class InputSubscriptions : MonoBehaviour
     {
         FireInput = ctx.started;
         if (ctx.canceled)
-            weaponBaseControlInstance.FireInputCanceled();
+        {
+            if(weaponBaseControlInstance != null)
+                weaponBaseControlInstance.FireInputCanceled();
+        }
     }
 
     void SetSonar(InputAction.CallbackContext ctx)

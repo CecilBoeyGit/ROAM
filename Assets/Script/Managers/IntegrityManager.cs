@@ -33,6 +33,10 @@ public class IntegrityManager : MonoBehaviour
     [SerializeField] Color MaxColor;
     [SerializeField] Color MinColor;
 
+    [Header("--- Audio ---")]
+    AudioSource ads;
+    [SerializeField] private AudioClip adcp;
+
     [Header("--- DEBUG ---")]
     [SerializeField] bool usingDEBUG = false;
 
@@ -67,6 +71,8 @@ public class IntegrityManager : MonoBehaviour
     {
         RundownSuccess = false;
         EnemiesPool = GameObject.Find("EnemiesPool")?.GetComponent<ObjectsPoolingDefault>();
+
+        ads = GetComponent<AudioSource>();
 
         UI_IntegrityMeter.GetComponent<Image>();
 
@@ -129,6 +135,8 @@ public class IntegrityManager : MonoBehaviour
     IEnumerator RundownSuccessBuffer(float duration)
     {
         RundownSuccessAction?.Invoke();
+
+        ads.Play();
 
         var allRemainingEnemies = FindObjectsByType<EnemyBehavior>(FindObjectsSortMode.None)
             .Where(g => g.isActiveAndEnabled)

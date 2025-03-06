@@ -37,6 +37,8 @@ public class ReloadAllScenes : MonoBehaviour
             // happens, just destroy this component.
             DestroyImmediate(this);
         }
+
+        UnityEngine.Rendering.DebugManager.instance.enableRuntimeUI = false;
     }
 
     private void Update()

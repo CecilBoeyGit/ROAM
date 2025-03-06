@@ -126,9 +126,12 @@ public class CoreLoopManager : MonoBehaviour
         IntegrityUI.SetActive(false);
         //GenIndicatorGroup.SetActive(false);
 
-        Callisto01.SetActive(false);
-        Callisto02.SetActive(false);
-        Callisto03.SetActive(false);
+        if (Callisto01 != null)
+        {
+            Callisto01.SetActive(false);
+            Callisto02.SetActive(false);
+            Callisto03.SetActive(false);
+        }
 
         elevatorTrigger = FindObjectOfType<ElevatorManager>()?.gameObject;
         if (elevatorTrigger != null)
@@ -158,7 +161,8 @@ public class CoreLoopManager : MonoBehaviour
         if (Enum_LoopStages == LoopStages.Onboarding)
         {
             Enum_OnboardingStages = OnboardingStages.PowerCores;
-            Callisto01.SetActive(true);
+            if (Callisto01 != null)
+                Callisto01.SetActive(true);
         }
         else if (Enum_DayStages == DayStages.IntegrityActivate)
         {
