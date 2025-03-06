@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4221127438557490556}
   - component: {fileID: 3679772226800940069}
   - component: {fileID: 909478261221166058}
-  - component: {fileID: 1917317034066756696}
+  - component: {fileID: 5275155066908894195}
   m_Layer: 5
   m_Name: Sequencial Audio
   m_TagString: Untagged
@@ -34,7 +34,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 24
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: -24.552, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -146,7 +146,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0c455ee3c0906e242b43fc86fb7d9d63, type: 3}
   - {fileID: 8300000, guid: 15376df08a7f5a14ab6a997817c0be29, type: 3}
   enableResetKey: 1
---- !u!114 &1917317034066756696
+--- !u!114 &5275155066908894195
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,7 +155,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6579799740905862668}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da803a420ed005c4988db5a029f9e8d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f64bffcd07a83b4e91dadc7d103fdc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToActivate: {fileID: 0}
+  targetObject: {fileID: 0}
+  isActivated: 1
+  playerTag: Player
