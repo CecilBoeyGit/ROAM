@@ -16,7 +16,7 @@ public class Tutorial_PickUpCore : MonoBehaviour
                 PowerCores powerCore = player.GetComponentInChildren<PowerCores>();
                 if (powerCore != null && powerCore.PCStates == PowerCores.PowerCoreState.Equipped)
                 {
-                    doorControlScriptTrigger.Day01Door = true;
+                    doorControlScriptTrigger.Door_PowerCore = true;
                 }
             }
         }

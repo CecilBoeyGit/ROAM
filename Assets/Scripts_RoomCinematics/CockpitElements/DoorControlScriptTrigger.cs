@@ -15,8 +15,8 @@ public class DoorControlScriptTrigger : MonoBehaviour
 
     [SerializeField] private List<bool> DoorConditions = new List<bool>();
 
-    [SerializeField] bool Door_PowerCore = false;
-    [SerializeField] bool Door_2F = false;
+    [SerializeField] public bool Door_PowerCore = false;
+    [SerializeField] public bool Door_2F = false;
     [SerializeField] bool Door_Enemy = false;
 
     void DoorTrueIndex()
