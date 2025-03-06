@@ -49,13 +49,13 @@ public class TransitionTrigger : MonoBehaviour
         {
             audioTransition.StartTransition(true);
 
-            print("Combat BGM");
+            //print("Combat BGM");
         }
         else
         {
             audioTransition.StartTransition(false);
 
-            print("Unsettling BGM");
+            //print("Unsettling BGM");
         }
     }
 }

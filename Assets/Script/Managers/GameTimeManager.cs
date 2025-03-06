@@ -16,7 +16,10 @@ public class GameTimeManager : MonoBehaviour
 
     public void SlowMotion()
     {
-        playerInstance.PlayerConstrained = true;
         Time.timeScale = 0.3f;
+    }
+    public void RegularMotion()
+    {
+        Time.timeScale = 1.0f;
     }
 }

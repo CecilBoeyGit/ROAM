@@ -322,6 +322,7 @@ public class CoreLoopManager : MonoBehaviour
             return;
 
         BlackScreenInstance.TriggerFadeIn("Fail"); //Display the rundown failure interface
+        print("TriggeredFadeIn ---");
         pcInstance.PlayerConstrained = true;
     }
 
