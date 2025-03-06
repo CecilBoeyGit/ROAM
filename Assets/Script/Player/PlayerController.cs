@@ -95,6 +95,12 @@ public class PlayerController : MonoBehaviour
     GamePadVibrationManager _GamePadVibInstance;
     //Constants ConstantsInstance;
     public static PlayerController instance;
+
+    private void Awake()
+    {
+        PlayerConstrained = false;
+        AbilitiesConstrained = false;
+    }
     private void OnEnable()
     {
         if (instance == null)
@@ -175,7 +181,7 @@ public class PlayerController : MonoBehaviour
             if(anim != null)
                 AnimationStates();
 
-            HealthNullAction();
+            HealthNullAction(false);
             //DebugSection();
         }
     }
@@ -328,29 +334,18 @@ public class PlayerController : MonoBehaviour
     }
     void RunningSFX()
     {
-        speed1 = charSpeed;
+        if (isScanning)
+            return;
+
         if (velocity != 0)
         {
             if (!isPlayingSFX)
             {
                 isPlayingSFX = true;
 
-                if (charSpeed == walkSpeed)
-                {
-                    ads.clip = adcp[0];
-                    ads.Play();
-                }
-                else
-                {
-                    ads.clip = adcp[1];
-                    ads.Play();
-                }
-            }
-
-            if (!ads.isPlaying)
+                ads.clip = adcp[1];
                 ads.Play();
-            isPlayingSFX = speed1 == speed2;
-            speed2 = speed1;
+            }
         }
         else
         {
@@ -543,9 +538,12 @@ public class PlayerController : MonoBehaviour
                 return (success: false, position: Vector3.zero);
         }
     }
-    void HealthNullAction()
+    public void HealthNullAction(bool forced)
     {
         if(healthPoint <= 0)
+            DeathTimeline.SetActive(true);
+
+        if(forced)
             DeathTimeline.SetActive(true);
     }
     public void ReloadSceneFunction()

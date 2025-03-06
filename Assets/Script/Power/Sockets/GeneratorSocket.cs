@@ -47,7 +47,10 @@ public class GeneratorSocket : PowerSockets
         {
             GeneratorGraphicUI.color = Color.red;
             if (GeneratorIconMaterial != null)
+            {
                 GeneratorIconMaterial.SetFloat("_UseFlicker", 1);
+                GeneratorIconMaterial.SetFloat("_FlickerFrequency", 8);
+            }
         }
         else
         {

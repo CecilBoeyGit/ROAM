@@ -11,6 +11,8 @@ public class LetterByLetterWithPause : MonoBehaviour
     public string[] EndScreen;
     public string[] OnboardingDay;
     public string[] Day01;
+    public string[] RundownSuccessText;
+    public string[] RundownFailedText;
 
     public float letterDelay = 0.1f; // Delay between each letter
     public float linePauseDuration = 1f; // Pause after text prints
@@ -24,6 +26,10 @@ public class LetterByLetterWithPause : MonoBehaviour
     [SerializeField] bool PrintEnd = false;
     [SerializeField] bool PrintOnboarding = false;
     [SerializeField] bool PrintDay01 = false;
+    public bool PrintSuccess = false;
+    public bool PrintFailure = false;
+
+    Animator InterfaceVolumeAnim;
 
     BlackScreenFadeOutScript BlackScreenInstance;
     PlayerController PlayerInstance;
@@ -42,6 +48,8 @@ public class LetterByLetterWithPause : MonoBehaviour
     {
         BlackScreenInstance = BlackScreenFadeOutScript.Instance;
         PlayerInstance = PlayerController.instance;
+
+        InterfaceVolumeAnim = GameObject.Find("InterfaceVolume")?.GetComponent<Animator>();
 
         isPrintingText = false;
 
@@ -63,6 +71,10 @@ public class LetterByLetterWithPause : MonoBehaviour
             StartCoroutine(PrintText(OnboardingDay, true));
         else if (PrintDay01)
             StartCoroutine(PrintText(Day01, true));
+        else if (PrintSuccess)
+            StartCoroutine(PrintText(RundownSuccessText, true));
+        else if (PrintFailure)
+            StartCoroutine(PrintText(RundownFailedText, true));
     }
 
     public void PrintEndScreen()
@@ -83,11 +95,25 @@ public class LetterByLetterWithPause : MonoBehaviour
             StartCoroutine(PrintText(Day01, true));
     }
 
+    public void PrintSuccessScreen()
+    {
+        if (!isPrintingText)
+            StartCoroutine(PrintText(RundownSuccessText, false));
+    }
+    public void PrintFailureScreen()
+    {
+        if (!isPrintingText)
+            StartCoroutine(PrintText(RundownFailedText, false));
+    }
+
     IEnumerator PrintText(string[] screentext, bool FadeBool)
     {
         isPrintingText = true;
         if (PlayerInstance != null)
             PlayerInstance.PlayerConstrained = true;
+
+        if (InterfaceVolumeAnim != null)
+            InterfaceVolumeAnim.SetTrigger("DisplayVolume");
 
         textMeshPro.text = ""; // Ensure text is cleared before printing
         string fullText = "";
@@ -116,6 +142,21 @@ public class LetterByLetterWithPause : MonoBehaviour
             if (SceneManager.GetActiveScene().name.Equals("S_LevelBlockout"))
                 SceneManager.LoadScene("S_DayLoop");
         }
+
+        if(screentext == RundownSuccessText)
+        {
+            if (SceneManager.GetActiveScene().name.Equals("S_DayLoop"))
+                SceneManager.LoadScene("Menu");
+        }
+        if (screentext == RundownFailedText)
+        {
+            if (SceneManager.GetActiveScene().name.Equals("S_DayLoop"))
+                SceneManager.LoadScene("S_DayLoop");
+        }
+
+
+        if (InterfaceVolumeAnim != null)
+            InterfaceVolumeAnim.SetTrigger("HideVolume");
 
         PlayerInstance.PlayerConstrained = false;
         isPrintingText = false; // Mark as complete so transition can happen

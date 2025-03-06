@@ -6,10 +6,6 @@ public class BlackScreenFadeOutScript : MonoBehaviour
 {
     [SerializeField] float fadeDuration = 1f; // Duration of the fade effect in seconds
     [SerializeField] Image blackScreenImage; // Reference to the black screen image
-    public string[] lines_Day1; // Text for different days
-    public string[] lines_Day2;
-
-    private float currentAlpha = 0f; // Current alpha value
 
     [SerializeField] GameObject[] blackscreentexts; // Array of black screen texts
 
@@ -81,6 +77,12 @@ public class BlackScreenFadeOutScript : MonoBehaviour
         {
             case "End":
                 LetterInstance.PrintEndScreen();
+                break;
+            case "Success":
+                LetterInstance.PrintSuccessScreen();
+                break;
+            case "Fail":
+                LetterInstance.PrintFailureScreen();
                 break;
         }
     }

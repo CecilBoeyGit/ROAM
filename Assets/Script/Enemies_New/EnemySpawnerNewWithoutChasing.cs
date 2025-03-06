@@ -30,6 +30,7 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
     private Coroutine CO_RecoverEnemyCount;
 
     IntegrityManager IntegrityInstance;
+    CoreLoopManager CLInstance;
 
     void PopulateSpawnPoints()
     {
@@ -53,6 +54,7 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
     private void Start()
     {
         IntegrityInstance = IntegrityManager.instance;
+        CLInstance = CoreLoopManager.Instance;
 
         EnemiesPool = GameObject.Find("EnemiesPool")?.GetComponent<ObjectsPoolingDefault>();
         
@@ -71,8 +73,12 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (CLInstance.RundownSuccessful) //If rundown is successfully completed, do not spawn more enemies
+            return;
+
         if (other.CompareTag("Player"))
         {
+            currentEnemyCount = EnemyCountProgressionByGameTime();
             // 检查当前 Trigger Zone 中的敌人数量
             int enemiesInZone = CountEnemiesInTriggerZone();
             // 计算需要生成的敌人数量
@@ -118,6 +124,9 @@ public class EnemySpawnerNewWithoutChasing : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (CLInstance.RundownSuccessful) //If rundown is successfully completed, do not spawn more enemies
+            return;
+
         if (other.CompareTag("Player"))
         {
             List<GameObject> enemiesInZone = GetEnemiesInTriggerZone();

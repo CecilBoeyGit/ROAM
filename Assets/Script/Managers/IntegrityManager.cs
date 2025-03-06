@@ -24,6 +24,7 @@ public class IntegrityManager : MonoBehaviour
     public bool RundownSuccess = false;
 
     [Header("--- VARIABLES COUNTDOWN ---")]
+    [SerializeField] float CountdownTimer = 100;
     public float TimerInitial;
     public float TimerMax;
     [SerializeField] float TimerDecrementMulti = 1.0f;
@@ -75,7 +76,7 @@ public class IntegrityManager : MonoBehaviour
         if (CLMInstance.Enum_LoopStages == CoreLoopManager.LoopStages.Onboarding)
             TimerMax = 5940f;
         else
-            TimerMax = 300f;
+            TimerMax = CountdownTimer;
 
         TimerInitial = TimerMax;
     }
@@ -189,7 +190,7 @@ public class IntegrityManager : MonoBehaviour
             if (!usingDEBUG)
                 MeterNull?.Invoke();
             else
-                ReloadInstance.ReloadInvoke();
+                PlayerController.instance.HealthNullAction(true);
         }
     }
 }

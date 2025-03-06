@@ -17,6 +17,7 @@ public class Generators : MonoBehaviour
     [SerializeField] public int GeneratorID;
     [Range(0.0f, 1.0f)]
     [SerializeField] float SonarBeamThreshold;
+    bool rundownSuccess = false;
 
     [Header("--- UI ---")]
     [SerializeField] Slider UI_GeneratorPower;
@@ -33,13 +34,25 @@ public class Generators : MonoBehaviour
 
     CoreLoopManager CLMInstance;
 
+    private void OnEnable()
+    {
+        IntegrityManager.RundownSuccessAction += RundownSuccess;
+    }
+    private void OnDisable()
+    {
+        IntegrityManager.RundownSuccessAction -= RundownSuccess;
+    }
     void Start()
     {
+        rundownSuccess = false;
         CLMInstance = CoreLoopManager.Instance;
     }
 
     void Update()
     {
+        if (rundownSuccess)
+            return;
+
         if (GeneratorPowerAmount >= GeneratorMaxAmount)
             GeneratorPowerAmount = GeneratorMaxAmount;
         else if (GeneratorPowerAmount <= 0)
@@ -57,6 +70,11 @@ public class Generators : MonoBehaviour
 
         if (DEBUG_UI)
             UI_Debug();
+    }
+    void RundownSuccess()
+    {
+        rundownSuccess = true;
+        GeneratorPowerAmount = GeneratorMaxAmount;
     }
     void GeneratorThreshold() //Triggering the Defensive Sonar Towers
     {

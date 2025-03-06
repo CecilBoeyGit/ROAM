@@ -3,54 +3,56 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 
 public class TransitionTrigger : MonoBehaviour
 {
     public MusicTransitionScript audioTransition;
-    private bool isTransitionToSource2 = false;
     public string objectTag;
 
     [SerializeField] List<GameObject> EnemyStayed = new List<GameObject>();
-    bool InCombat = false;
 
-    AnalogGlitchVolume _analogVolume;
+    Coroutine CO_CheckForEnemies;
+
+    private void OnDisable()
+    {
+        if (CO_CheckForEnemies != null)
+            StopCoroutine(CO_CheckForEnemies);
+    }
 
     private void Start()
     {
-        var volumeStack = VolumeManager.instance.stack;
-        _analogVolume = volumeStack.GetComponent<AnalogGlitchVolume>();
+        if (CO_CheckForEnemies != null)
+            StopCoroutine(CO_CheckForEnemies);
+        else
+            CO_CheckForEnemies = StartCoroutine(CheckForEnemies(0.1f));
     }
 
-    private void Update()
+    IEnumerator CheckForEnemies(float cooldown)
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 15);
-
-        EnemyStayed.Clear();
-
-        foreach (Collider collider in colliders)
+        while(true)
         {
-            if (collider.CompareTag(objectTag))
-            {
-                GameObject enemyObject = collider.gameObject;
-                EnemyStayed.Add(enemyObject);
-            }
-        }  
+            EnemyStayed = FindObjectsOfType<EnemyBehavior>()
+    .Where(enemy => enemy.enemyStateControl == EnemyBehavior.enemyStates.ChaseState
+    || enemy.enemyStateControl == EnemyBehavior.enemyStates.AttackState)
+    .Select(enemy => enemy.gameObject)
+    .ToList();
+
+            yield return new WaitForSeconds(cooldown);
+        }
     }
 
     private void LateUpdate()
     {
-        if (EnemyStayed.Count != 0 && !InCombat)
+        if (EnemyStayed.Count != 0)
         {
-            InCombat = true;
-            isTransitionToSource2 = true;
             audioTransition.StartTransition(true);
 
             print("Combat BGM");
         }
-        else if (EnemyStayed.Count == 0 && InCombat)
+        else
         {
-            InCombat = false;
-            isTransitionToSource2 = false;
             audioTransition.StartTransition(false);
 
             print("Unsettling BGM");

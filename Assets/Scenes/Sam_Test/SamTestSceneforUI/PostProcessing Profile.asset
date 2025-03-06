@@ -21,7 +21,7 @@ MonoBehaviour:
     m_Value: 1.08
   intensity:
     m_OverrideState: 1
-    m_Value: 11.31
+    m_Value: 27.18
   scatter:
     m_OverrideState: 0
     m_Value: 0.7
@@ -168,7 +168,7 @@ MonoBehaviour:
     m_Value: 0
   focusDistance:
     m_OverrideState: 1
-    m_Value: 2.45
+    m_Value: 2.26
   aperture:
     m_OverrideState: 0
     m_Value: 5.6
