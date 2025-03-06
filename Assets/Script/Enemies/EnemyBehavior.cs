@@ -51,6 +51,10 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     [Header("--- UI ---")]
     public Text StatusText;
 
+    [Header("--- Audio ---")]
+    AudioSource ads;
+    [SerializeField] private AudioClip[] adcp = new AudioClip[2];
+
     GamePadVibrationManager _GamePadVibInstance;
 
     [Header("--- SPECIAL CASES ---")]
@@ -94,6 +98,8 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 
         mrd = GetComponent<MeshRenderer>();
         nmAgent = GetComponent<NavMeshAgent>();
+
+        ads = GetComponent<AudioSource>();
 
         healthPoint = 3.0f;
         BooleanCollection();
@@ -348,6 +354,9 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
                 return;
             if (!TutorialBot)
                 nmAgent.destination = pcInstance.transform.position;
+
+            ads.clip = adcp[0];
+            ads.Play();
         }
         else
         {
@@ -401,6 +410,9 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     {
         //print("Death");
 
+        ads.clip = adcp[1];
+        ads.Play();
+
         MaterialDefault();
         Instantiate(ExploParticles, transform.position, Quaternion.identity);
         if (TutorialBot)
@@ -418,6 +430,8 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
 
         if (EnemiesPool != null)
             EnemiesPool.ReturnPooledObject(this.gameObject);
+        else
+            Destroy(gameObject);
     }
     IEnumerator AttackSpool(float spoolTime)
     {
