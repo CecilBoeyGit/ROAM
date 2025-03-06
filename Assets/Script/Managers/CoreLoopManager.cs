@@ -183,7 +183,7 @@ public class CoreLoopManager : MonoBehaviour
 
         pcInstance.AbilitiesConstrained = false;
 
-        Enum_OnboardingStages = OnboardingStages.ScanEnemy;
+        Enum_OnboardingStages = OnboardingStages.Complete;
         Callisto02.SetActive(true);
     }
     void SecondPowerCoreTrigger()
