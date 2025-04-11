@@ -43,8 +43,8 @@ Material:
     - _DissolveNoiseMovement: 1
     - _EmissiveIntensity: 2
     - _NoiseSize: 2
-    - _NoiseSpeed: 2
-    - _NoiseStrength: 0.4
+    - _NoiseSpeed: 8
+    - _NoiseStrength: 0.22
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:

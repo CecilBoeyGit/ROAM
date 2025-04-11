@@ -42,6 +42,7 @@ public class PowerCores : MonoBehaviour, IPlayerInterface
     private void Start()
     {
         LiquidMat = Liquid.GetComponent<MeshRenderer>().material;
+        LiquidVisuals();
 
         playerInstance = PlayerController.instance;
         poolInstance = PowerCorePooling.instance;

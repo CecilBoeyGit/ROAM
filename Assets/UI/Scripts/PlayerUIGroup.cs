@@ -8,7 +8,7 @@ public class PlayerUIGroup : MonoBehaviour
     [SerializeField] float InterpolateTime = 10.0f;
     [SerializeField] float offsetY;
     [SerializeField] float offsetX;[SerializeField] float offsetZ;
-    Vector3 initialOffset;
+    [SerializeField] Vector3 initialOffset;
 
     PlayerController playerInstance;
 
