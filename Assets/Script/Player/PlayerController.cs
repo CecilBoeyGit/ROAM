@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -370,10 +370,13 @@ public class PlayerController : MonoBehaviour
     }
     void OnPlayerMove()
     {
-        if(!usingAimUpdated)
+        if (!usingAimUpdated)
             Aim();
         else
-            AimUpdated();
+        {
+            //AimUpdated();
+            AimController();
+        }
 
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveZ = Input.GetAxisRaw("Vertical");
@@ -396,7 +399,7 @@ public class PlayerController : MonoBehaviour
             vCamNoise.m_FrequencyGain = 0;
         }
 
-        Jump();
+        //Jump();
 
         current_pos = transform.position;
         velocity = (current_pos - last_pos).magnitude / Time.deltaTime;
@@ -479,7 +482,7 @@ public class PlayerController : MonoBehaviour
             //TorsoRotation(direction);
         }
 
-        Debug.DrawLine(transform.position, position, Color.red);
+        //Debug.DrawLine(transform.position, position, Color.red);
     }
 
     Vector2 smoothedDirection = Vector2.zero;
@@ -502,6 +505,86 @@ public class PlayerController : MonoBehaviour
         }
 
         directionHolder = smoothedDirection;
+    }
+
+    [SerializeField] private float highSmoothSpeed = 10f;
+    [SerializeField] private float lowSmoothSpeed = 3f;
+    [SerializeField] private float inputChangeThreshold = 0.05f;
+
+    private List<float> magnitudeDeltas = new List<float>();
+    private float magnitudeLast = 0f;
+    private float sampleTimer = 0f;
+    [SerializeField] private float sampleInterval = 1f; // 1 second interval
+    private void UpdateAimSmoothSpeed(Vector2 rawInput)
+    {
+        float currentMagnitude = rawInput.magnitude;
+        float delta = Mathf.Abs(currentMagnitude - magnitudeLast);
+        magnitudeLast = currentMagnitude;
+
+        magnitudeDeltas.Add(delta);
+        sampleTimer += Time.deltaTime;
+
+        if (sampleTimer >= sampleInterval)
+        {
+            float averageDelta = 0f;
+            if (magnitudeDeltas.Count > 0)
+            {
+                foreach (var d in magnitudeDeltas)
+                    averageDelta += d;
+                averageDelta /= magnitudeDeltas.Count;
+            }
+
+            aimSmoothSpeed = averageDelta > inputChangeThreshold ? lowSmoothSpeed : highSmoothSpeed;
+
+            // Debug info
+            Debug.Log($"Avg ΔMag: {averageDelta:F3} → aimSmoothSpeed = {aimSmoothSpeed}");
+
+            // Reset for next interval
+            magnitudeDeltas.Clear();
+            sampleTimer = 0f;
+        }
+    }
+
+    [SerializeField] private float aimSmoothSpeed = 5f;
+    [SerializeField] private float aimDeadZone = 0.15f;
+    [SerializeField] private float verticalSensitivity = 0.8f;
+    private void AimController()
+    {
+        Vector2 rawInput = _InputSub.CursorInput;
+
+        // Apply deadzone
+        if (rawInput.magnitude < aimDeadZone)
+            rawInput = Vector2.zero;
+
+        // Adjust vertical axis sensitivity
+        rawInput.y *= verticalSensitivity;
+
+        if (rawInput == Vector2.zero)
+            rawInput = directionHolder;
+
+        // Apply non-linear curve (quadratic) for better low-end control
+        Vector2 curvedInput = new Vector2(
+            Mathf.Sign(rawInput.x) * rawInput.x * rawInput.x,
+            Mathf.Sign(rawInput.y) * rawInput.y * rawInput.y
+        );
+
+        smoothedDirection = Vector2.Lerp(smoothedDirection, curvedInput.normalized, Time.deltaTime * aimSmoothSpeed);
+
+        // Convert to XZ direction
+        Vector3 aimDirection = new Vector3(smoothedDirection.x, 0f, smoothedDirection.y);
+        //Vector3 aimDirection = new Vector3(curvedInput.normalized.x, 0f, curvedInput.normalized.y);
+
+        //Debug.DrawLine(transform.position, transform.position + aimDirection * 2f, Color.cyan);
+
+        //UpdateAimSmoothSpeed(rawInput);
+
+        if (aimDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(aimDirection);
+            //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(aimDirection), Time.deltaTime * aimSmoothSpeed);
+        }
+
+        directionHolder = rawInput;
     }
 
     void TorsoRotation(Vector3 direction)

@@ -8,6 +8,8 @@ using UnityEngine.InputSystem.Users;
 public class InputSubscriptions : MonoBehaviour
 {
 
+    [SerializeField] bool usingVirtualMouse = false;
+
     public Vector2 MoveInput { get; private set; } = Vector2.zero;
     public Vector2 CursorInput { get; private set; } = Vector2.zero;
     public float cursorSpeed = 1000f;
@@ -157,7 +159,9 @@ public class InputSubscriptions : MonoBehaviour
         SonarInput = _Input.PlayerInputs.SonarScan.WasPressedThisFrame();
         DashInput = _Input.PlayerInputs.Dash.WasPressedThisFrame();
         InteractInput = _Input.PlayerInputs.Interact.WasPressedThisFrame();
-        GamepadToMouse();
+
+        if(usingVirtualMouse)
+            GamepadToMouse();
     }
     void SetMovement(InputAction.CallbackContext ctx)
     {
