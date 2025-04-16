@@ -9,4 +9,9 @@ public class MenuController : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(defaultButton);
     }
+
+    public void OnReactive()
+    {
+        EventSystem.current.SetSelectedGameObject(defaultButton);
+    }
 }
