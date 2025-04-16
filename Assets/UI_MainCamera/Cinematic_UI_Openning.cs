@@ -10,15 +10,18 @@ public class Cinematic_UI_Openning : MonoBehaviour
 
     void Start()
     {
-        // Start the scale animation
+        // Start the vertical unfold animation
         StartCoroutine(ScaleImageOverTime());
     }
 
     IEnumerator ScaleImageOverTime()
     {
         float elapsedTime = 0f;
-        Vector3 initialScale = new Vector3(0f, 1f, 1f); // Starting scale (x: 0, y: 1, z: 1)
-        Vector3 targetScale = new Vector3(0.98f, 1f, 1f); // Target scale (x: 1, y: 1, z: 1)
+        // For vertical unfolding:
+        // - initialScale has full width (x = 1) but zero height (y = 0)
+        // - targetScale has full width and nearly full height (y = 0.98)
+        Vector3 initialScale = new Vector3(1f, 0f, 1f); // Starting scale (x: 1, y: 0, z: 1)
+        Vector3 targetScale = new Vector3(1f, 0.98f, 1f); // Target scale (x: 1, y: 0.98, z: 1)
 
         // Set initial scale
         image.rectTransform.localScale = initialScale;
@@ -40,11 +43,11 @@ public class Cinematic_UI_Openning : MonoBehaviour
             yield return null;
         }
 
-        // Ensure the scale reaches the exact target value
+        // Ensure the scale reaches the exact target value at the end of the animation
         image.rectTransform.localScale = targetScale;
     }
 
-    // Easing function: cubic easing out - decelerating to zero velocity
+    // Cubic easing out function for a decelerating effect
     float EaseOutCubic(float t)
     {
         t--;

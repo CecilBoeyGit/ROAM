@@ -32,19 +32,12 @@ public class TextPrintScript : MonoBehaviour
                 currentLetterIndex++;
                 timer = 0f;
             }
-            else if (currentLetterIndex >= originalText.Length)
+
+            // Once all letters have been printed, mark as finished without resetting
+            if (currentLetterIndex >= originalText.Length)
             {
                 isFinished = true;
-                // Optionally, add any additional behavior when the text finishes printing
             }
-        }
-        else
-        {
-            // Reset variables to start over
-            timer = 0f;
-            currentLetterIndex = 0;
-            displayedText = "";
-            isFinished = false;
         }
     }
 }
