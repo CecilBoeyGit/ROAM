@@ -1,11 +1,12 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
 public class LetterByLetterWithPause : MonoBehaviour
 {
-    public TMP_Text textMeshPro; // Reference to the TextMeshPro object
+    [Header("Text References")]
+    public TMP_Text textMeshPro;
     public string[] OpeningCut;
     public string[] OpeningButtonText;
     public string[] EndScreen;
@@ -14,13 +15,16 @@ public class LetterByLetterWithPause : MonoBehaviour
     public string[] RundownSuccessText;
     public string[] RundownFailedText;
 
-    public float letterDelay = 0.1f; // Delay between each letter
-    public float linePauseDuration = 1f; // Pause after text prints
-    public float textClearDelay = 2f; // Delay before clearing text
+    [Header("Timing")]
+    public float letterDelay = 0.1f;
+    public float linePauseDuration = 1f;
+    public float textClearDelay = 2f;
 
+    [Header("Play Settings")]
     [SerializeField] bool PlayOnStart = false;
     public bool isPrintingText = false;
 
+    [Header("Which To Print")]
     [SerializeField] bool OpeningCutScene = false;
     [SerializeField] bool OpeningButton = false;
     [SerializeField] bool PrintEnd = false;
@@ -29,8 +33,27 @@ public class LetterByLetterWithPause : MonoBehaviour
     public bool PrintSuccess = false;
     public bool PrintFailure = false;
 
-    Animator InterfaceVolumeAnim;
+    [Header("Success Activation")]
+    [Tooltip("Object to activate while success text is printing")]
+    public GameObject midSuccessActivationObject;
+    [Tooltip("Object to activate after success text disappears")]
+    public GameObject successActivationObject;
 
+    [Header("Failure Activation")]
+    [Tooltip("Object to activate while failure text is printing")]
+    public GameObject midFailActivationObject;
+    [Tooltip("Object to activate after failure text disappears")]
+    public GameObject failActivationObject;
+
+#if UNITY_EDITOR
+    [Header("Editor Testing")]
+    [Tooltip("Tick in Play Mode to trigger success text & activation")]
+    public bool testSuccess;
+    [Tooltip("Tick in Play Mode to trigger failure text")]
+    public bool testFailure;
+#endif
+
+    Animator InterfaceVolumeAnim;
     BlackScreenFadeOutScript BlackScreenInstance;
     PlayerController PlayerInstance;
 
@@ -38,72 +61,84 @@ public class LetterByLetterWithPause : MonoBehaviour
 
     private void OnEnable()
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(this);
+        if (Instance == null) Instance = this;
+        else Destroy(this);
     }
 
     private void Start()
     {
+        // Cache references
         BlackScreenInstance = BlackScreenFadeOutScript.Instance;
         PlayerInstance = PlayerController.instance;
-
         InterfaceVolumeAnim = GameObject.Find("InterfaceVolume")?.GetComponent<Animator>();
-
         isPrintingText = false;
 
-        if (PlayOnStart)
+        if (PlayOnStart) StartTextSequence();
+    }
+
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (testSuccess)
         {
-            StartTextSequence();
+            testSuccess = false;
+            TriggerSuccessSequence();
         }
+        if (testFailure)
+        {
+            testFailure = false;
+            TriggerFailureSequence();
+        }
+#endif
     }
 
     public void StartTextSequence()
     {
-        if (OpeningCutScene)
-            StartCoroutine(PrintText(OpeningCut, false));
-        else if (OpeningButton)
-            StartCoroutine(PrintText(OpeningButtonText, false));
-        else if (PrintEnd)
-            StartCoroutine(PrintText(EndScreen, false));
-        else if (PrintOnboarding)
-            StartCoroutine(PrintText(OnboardingDay, true));
-        else if (PrintDay01)
-            StartCoroutine(PrintText(Day01, true));
-        else if (PrintSuccess)
-            StartCoroutine(PrintText(RundownSuccessText, true));
-        else if (PrintFailure)
-            StartCoroutine(PrintText(RundownFailedText, true));
+        if (OpeningCutScene) StartCoroutine(PrintText(OpeningCut, false));
+        else if (OpeningButton) StartCoroutine(PrintText(OpeningButtonText, false));
+        else if (PrintEnd) StartCoroutine(PrintText(EndScreen, false));
+        else if (PrintOnboarding) StartCoroutine(PrintText(OnboardingDay, true));
+        else if (PrintDay01) StartCoroutine(PrintText(Day01, true));
+        else if (PrintSuccess) TriggerSuccessSequence();
+        else if (PrintFailure) TriggerFailureSequence();
     }
 
+    private void TriggerSuccessSequence()
+    {
+        if (!isPrintingText && BlackScreenInstance != null)
+            BlackScreenInstance.TriggerFadeIn("Success");
+    }
+
+    private void TriggerFailureSequence()
+    {
+        if (!isPrintingText && BlackScreenInstance != null)
+            BlackScreenInstance.TriggerFadeIn("Fail");
+    }
+
+    // These are called by the fader after fade‐in
     public void PrintEndScreen()
     {
-        if (!isPrintingText)
-            StartCoroutine(PrintText(EndScreen, false));
+        if (!isPrintingText) StartCoroutine(PrintText(EndScreen, false));
     }
 
     public void PrintOnBoarding()
     {
-        if (!isPrintingText)
-            StartCoroutine(PrintText(OnboardingDay, true));
+        if (!isPrintingText) StartCoroutine(PrintText(OnboardingDay, true));
     }
 
     public void PrintDayOne()
     {
-        if (!isPrintingText)
-            StartCoroutine(PrintText(Day01, true));
+        if (!isPrintingText) StartCoroutine(PrintText(Day01, true));
     }
 
     public void PrintSuccessScreen()
     {
-        if (!isPrintingText)
-            StartCoroutine(PrintText(RundownSuccessText, false));
+        if (!isPrintingText) StartCoroutine(PrintText(RundownSuccessText, false));
     }
+
     public void PrintFailureScreen()
     {
-        if (!isPrintingText)
-            StartCoroutine(PrintText(RundownFailedText, false));
+        if (!isPrintingText) StartCoroutine(PrintText(RundownFailedText, false));
     }
 
     IEnumerator PrintText(string[] screentext, bool FadeBool)
@@ -115,51 +150,58 @@ public class LetterByLetterWithPause : MonoBehaviour
         if (InterfaceVolumeAnim != null)
             InterfaceVolumeAnim.SetTrigger("DisplayVolume");
 
-        textMeshPro.text = ""; // Ensure text is cleared before printing
-        string fullText = "";
+        // --- mid‐sequence activations ---
+        if (screentext == RundownSuccessText && midSuccessActivationObject != null)
+            midSuccessActivationObject.SetActive(true);
+        if (screentext == RundownFailedText && midFailActivationObject != null)
+            midFailActivationObject.SetActive(true);
 
-        foreach (string line in screentext)
-        {
-            fullText += line + "\n"; // Concatenate lines
-        }
-
+        // Build & print letter by letter
+        textMeshPro.text = "";
+        string fullText = string.Join("\n", screentext) + "\n";
         foreach (char c in fullText)
         {
             textMeshPro.text += c;
             yield return new WaitForSeconds(letterDelay);
         }
 
-        yield return new WaitForSeconds(linePauseDuration); // Pause after full text prints
-        yield return new WaitForSeconds(textClearDelay); // Extra delay before transitioning
+        // Pause then clear
+        yield return new WaitForSeconds(linePauseDuration);
+        yield return new WaitForSeconds(textClearDelay);
+        textMeshPro.text = "";
 
-        textMeshPro.text = ""; // Clear text
+        // Deactivate mid‐sequence indicators
+        if (screentext == RundownSuccessText && midSuccessActivationObject != null)
+            midSuccessActivationObject.SetActive(false);
+        if (screentext == RundownFailedText && midFailActivationObject != null)
+            midFailActivationObject.SetActive(false);
 
-        if (FadeBool)
+        // --- final activations ---
+        if (screentext == RundownSuccessText && successActivationObject != null)
+            successActivationObject.SetActive(true);
+        if (screentext == RundownFailedText && failActivationObject != null)
+            failActivationObject.SetActive(true);
+
+        // Fade out if requested
+        if (FadeBool && BlackScreenInstance != null)
             BlackScreenInstance.TriggerFadeOut();
 
-        if (screentext == EndScreen)
+        // Scene transitions
+        if (screentext == EndScreen &&
+            SceneManager.GetActiveScene().name.Equals("S_LevelBlockout"))
         {
-            if (SceneManager.GetActiveScene().name.Equals("S_LevelBlockout"))
-                SceneManager.LoadScene("S_DayLoop");
+            SceneManager.LoadScene("S_DayLoop");
         }
 
-        if(screentext == RundownSuccessText)
-        {
-            if (SceneManager.GetActiveScene().name.Equals("S_DayLoop"))
-                SceneManager.LoadScene("Menu");
-        }
-        if (screentext == RundownFailedText)
-        {
-            if (SceneManager.GetActiveScene().name.Equals("S_DayLoop"))
-                SceneManager.LoadScene("S_DayLoop");
-        }
-
+       
 
         if (InterfaceVolumeAnim != null)
             InterfaceVolumeAnim.SetTrigger("HideVolume");
 
-        PlayerInstance.PlayerConstrained = false;
-        isPrintingText = false; // Mark as complete so transition can happen
+        if (PlayerInstance != null)
+            PlayerInstance.PlayerConstrained = false;
+
+        isPrintingText = false;
     }
 
     public bool IsTextFinished()
