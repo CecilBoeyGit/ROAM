@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4221127438557490556}
   - component: {fileID: 3679772226800940069}
   - component: {fileID: 909478261221166058}
+  - component: {fileID: 2633201866063710042}
   m_Layer: 5
   m_Name: Sequencial Audio
   m_TagString: Untagged
@@ -144,4 +145,133 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 96c021855e1828b4e984249e4880b8eb, type: 3}
   - {fileID: 8300000, guid: 0c455ee3c0906e242b43fc86fb7d9d63, type: 3}
   - {fileID: 8300000, guid: 15376df08a7f5a14ab6a997817c0be29, type: 3}
+  subtitles:
+  - "Routine check-in. Operator ID: 79853305. Power levels stable. Kenomorph activity\u2019s
+    low\u2014just scattered movement for now, but you never know"
+  - "The job is obviously tedious and life-threatening. But we\u2019re here to clean
+    this place up\u2014saving the world, right? Fire up the purification systems,
+    keep the infection under control."
+  - If we do this right, we will take back the facility, stopping it from spreading
+    and bringing everything back online.
+  - "ROAM\u2019s got us a solid deal. They called us in because we\u2019re the best."
+  - "Damn good pay, a decent war story to take home\u2014what\u2019s not to love?"
+  - "Bonus, better hours, and I finally get to build Lily\u2019s princess castle."
+  - "She\u2019s been on me about it for months. Not just any castle, she wants the
+    whole pink-and-gold fairy tale setup. Towers, flags, the works in the backyard."
+  - "Told her I\u2019d do it when I had the time. Well, maybe right after this mission."
+  - "Let\u2019s get these batteries delivered. Got a castle to build."
+  - "Something\u2019s wrong with the operation. All of it."
+  - "It\u2019s faster than it should. Faster than they said it would."
+  - "There were two hundred of us in this facility a week ago. Now? We\u2019re down
+    to what\u2026 eighty? Seventy? Maybe less. Doesn\u2019t matter."
+  - Some of them are still here. Just... not all in one place.
+  - "ROAM\u2019s not responding. No reinforcements. No emergency evac. Just an open
+    channel of silence.\u201D  \u201CIt feels like\u2026 they abandoned us\u2026"
+  - "No. They must have something else in mind\u2026 something worse. Something beyond
+    anything I can imagine."
+  - "Sooner or later, I\u2019ll just be another number lost. Another body they won\u2019t
+    even bother recovering\u2026"
+  - "Alright. The situation needs to look messy. Helmet cracked, visor shattered,
+    and a random burned body\u2026 they\u2019ll buy it."
+  - "When they check the records, it\u2019ll make sense."
+  - "Anyway. Lily\u2019s gonna love the castle."
+  subtitleText: {fileID: 6345925265545812356, guid: 195a078d548deff4eb9896baedd42bc7,
+    type: 3}
+  objectToDisable: {fileID: 0}
   enableResetKey: 1
+--- !u!82 &2633201866063710042
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6579799740905862668}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
