@@ -377,14 +377,15 @@ public class CoreLoopManager : MonoBehaviour
     {
         RundownSuccessful = false;
     }
-
+    bool FailedDisplayed = false;
     void DisplayFailed()
     {
-        if (pcInstance.PlayerConstrained)
+        if (FailedDisplayed) // Help to run this function only once
             return;
 
+        FailedDisplayed = true;
+        //pcInstance.PlayerConstrained = true;
         BlackScreenInstance.TriggerFadeIn("Fail");
         print("TriggeredFadeIn ---");
-        pcInstance.PlayerConstrained = true;
     }
 }

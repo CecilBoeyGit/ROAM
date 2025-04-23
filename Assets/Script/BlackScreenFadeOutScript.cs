@@ -61,6 +61,7 @@ public class BlackScreenFadeOutScript : MonoBehaviour
 
         while (timer < fadeDuration)
         {
+            print("FadeIn: " + timer);
             timer += Time.deltaTime;
             float normalizedAlpha = Mathf.InverseLerp(0, fadeDuration, timer);
             blackScreenImage.color = new Color(0f, 0f, 0f, normalizedAlpha);

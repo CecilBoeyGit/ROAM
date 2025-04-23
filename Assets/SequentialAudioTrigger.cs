@@ -35,6 +35,8 @@ public class SequentialLineTrigger : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false;
 
+        subtitleText = GameObject.Find("Subtitle").GetComponent<TextMeshProUGUI>();
+
         // Auto‑find subtitleText if you forgot to assign it
         if (subtitleText == null)
             subtitleText = GetComponentInChildren<TextMeshProUGUI>();
@@ -53,6 +55,24 @@ public class SequentialLineTrigger : MonoBehaviour
             Debug.LogWarning($"[{name}] subtitles.Count ({subtitles.Count}) != audioClips.Count ({audioClips.Count})");
     }
 
+    public void ShuffleBySegment(int initialIndex, int maxCount)
+    {
+        ShuffleList(audioClips, subtitles, initialIndex, maxCount);
+    }
+
+    void ShuffleList<T1, T2>(List<T1> list, List<T2> list2, int initialIndex, int maxCount)
+    {
+        for (int i = initialIndex; i < maxCount; i++)
+        {
+            int randomIndex = Random.Range(initialIndex, i + 1);
+
+            if(i < list.Count)
+                (list[i], list[randomIndex]) = (list[randomIndex], list[i]);
+            if(i < list2.Count)
+                (list2[i], list2[randomIndex]) = (list2[randomIndex], list2[i]);
+        }
+    }
+
     private void Update()
     {
         if (enableResetKey && Input.GetKeyDown(KeyCode.R))
@@ -68,8 +88,14 @@ public class SequentialLineTrigger : MonoBehaviour
             PlayLine();
     }
 
+    bool linePlaying = false;
+    Coroutine CO_PlayLine;
+
     private void PlayLine()
     {
+        if (linePlaying)
+            return;
+
         if (currentClipIndex >= audioClips.Count)
             return;
 
@@ -78,7 +104,9 @@ public class SequentialLineTrigger : MonoBehaviour
             ? subtitles[currentClipIndex]
             : "";
 
-        StartCoroutine(PlayLineRoutine(clip, subtitle));
+        if (CO_PlayLine != null)
+            StopCoroutine(CO_PlayLine);
+        CO_PlayLine = StartCoroutine(PlayLineRoutine(clip, subtitle));
 
         // Advance & save progress
         PlayerPrefs.SetInt(PREFS_CLIP_INDEX, currentClipIndex);
@@ -89,6 +117,9 @@ public class SequentialLineTrigger : MonoBehaviour
     {
         if (clip == null)
             yield break;
+
+
+        linePlaying = true;
 
         // Show subtitle & play audio
         subtitleText.text = subtitle;
@@ -105,7 +136,7 @@ public class SequentialLineTrigger : MonoBehaviour
             col.enabled = false;
 
         // Wait for clip to finish
-        yield return new WaitForSeconds(clip.length);
+        yield return new WaitForSeconds(clip.length);                                                                                                                           
 
         // Clear subtitle
         subtitleText.text = "";

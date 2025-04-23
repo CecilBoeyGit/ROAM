@@ -66,6 +66,11 @@ public class DataPersistenceManager : MonoBehaviour
         dataHandler.Save(gameData);
     }
 
+    public void ClearData()
+    {
+        gameData.ClearLocation();
+    }
+
     private void OnApplicationQuit()
     {
         //For now, do NOT save automatically everytime the game quits to prevent location duplicates

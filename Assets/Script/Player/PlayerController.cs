@@ -176,6 +176,11 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         dashingConsumption = PRMInstance.runningConsumption;
     }
 
+    public void ConstrainPlayer()
+    {
+        PlayerConstrained = true;
+    }
+
     void Update()
     {
         if (!Application.isPlaying)
@@ -414,7 +419,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
             vCamNoise.m_FrequencyGain = 0;
         }
 
-        //Jump();
+        Jump();
 
         current_pos = transform.position;
         velocity = (current_pos - last_pos).magnitude / Time.deltaTime;
@@ -643,15 +648,25 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         if (DoOnce)
             return;
 
-        if(healthPoint <= 0)
+        if (healthPoint <= 0)
+        {
             DeathTimeline.SetActive(true);
+            Debug.Log("Death Loc Saved!!! -----------------------------");
+            _DataPersistenceInstance.SaveData();
 
-        if(forced)
+            DoOnce = true;
+        }
+
+        if (forced)
+        {
             DeathTimeline.SetActive(true);
+            Debug.Log("Death Loc Saved!!! -----------------------------");
+            _DataPersistenceInstance.SaveData();
 
-        _DataPersistenceInstance.SaveData();
+            DoOnce = true;
+        }
 
-        DoOnce = true;
+
     }
     public void ReloadSceneFunction()
     {
