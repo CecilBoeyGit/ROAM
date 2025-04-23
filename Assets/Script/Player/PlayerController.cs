@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 [ExecuteInEditMode]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDataPersistence
 {
     private Camera mainCamera;
     public CinemachineVirtualCamera vCam;
@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 playerVelocity;
     private Vector3 pointToLook;
     private Vector2 directionHolder;
+
+    bool DoOnce = false;
 
     [Header("--- OVERRIDES ---")]
     public bool PlayerConstrained = false;
@@ -94,7 +96,9 @@ public class PlayerController : MonoBehaviour
     PowerCoreDrop PCDropInstance;
     InputSubscriptions _InputSub;
     GamePadVibrationManager _GamePadVibInstance;
+    DataPersistenceManager _DataPersistenceInstance;
     //Constants ConstantsInstance;
+
     public static PlayerController instance;
 
     private void Awake()
@@ -122,11 +126,19 @@ public class PlayerController : MonoBehaviour
         Mat_ScanLine.SetFloat("_MaskRadius", defaultVal);
         Mat_ScanLine.SetFloat("_ScanLineTiling", defaultVal);
     }
+    public void LoadData(GameData data)
+    {
+
+    }
+    public void SaveData(GameData data)
+    {
+        // Save the death location
+        data.AddLocation(this.transform.position);
+    }
 
     void Start()
-    {
-        if(SceneManager.GetActiveScene().name == "S_DayLoop")
-            Cursor.visible = false;
+    {  
+        Cursor.visible = false;
 
         mainCamera = Camera.main;
         vCam.GetComponent<CinemachineVirtualCamera>();
@@ -149,9 +161,12 @@ public class PlayerController : MonoBehaviour
         PCDropInstance = PowerCoreDrop.instance;
         _InputSub = InputSubscriptions.instance;
         _GamePadVibInstance = GamePadVibrationManager.instance;
+        _DataPersistenceInstance = DataPersistenceManager.instance;
         //ConstantsInstance = Constants.instance;
 
         SonarScannerClicked = 0;
+
+        DoOnce = false;
 
         DeathTimeline.SetActive(false);
     }
@@ -625,11 +640,18 @@ public class PlayerController : MonoBehaviour
     }
     public void HealthNullAction(bool forced)
     {
+        if (DoOnce)
+            return;
+
         if(healthPoint <= 0)
             DeathTimeline.SetActive(true);
 
         if(forced)
             DeathTimeline.SetActive(true);
+
+        _DataPersistenceInstance.SaveData();
+
+        DoOnce = true;
     }
     public void ReloadSceneFunction()
     {

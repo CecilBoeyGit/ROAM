@@ -27,7 +27,7 @@ public class SequentialLineTrigger : MonoBehaviour
     public bool enableResetKey = true;
 
     private AudioSource audioSource;
-    private int currentClipIndex = 0;
+    public int currentClipIndex = 0;
     private const string PREFS_CLIP_INDEX = "CurrentClipIndex";
 
     private void Start()
@@ -65,10 +65,10 @@ public class SequentialLineTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-            PlayNextLine();
+            PlayLine();
     }
 
-    private void PlayNextLine()
+    private void PlayLine()
     {
         if (currentClipIndex >= audioClips.Count)
             return;
@@ -81,7 +81,6 @@ public class SequentialLineTrigger : MonoBehaviour
         StartCoroutine(PlayLineRoutine(clip, subtitle));
 
         // Advance & save progress
-        currentClipIndex++;
         PlayerPrefs.SetInt(PREFS_CLIP_INDEX, currentClipIndex);
         PlayerPrefs.Save();
     }
