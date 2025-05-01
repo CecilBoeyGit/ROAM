@@ -26,7 +26,7 @@ public class GeneratorManager : MonoBehaviour
         generatorsGroup = gameObject.transform;
         foreach (Transform child in generatorsGroup)
         {
-            if(child.GetComponent<Generators>() != null)
+            if(child.GetComponent<Generators>() != null && child.gameObject.activeInHierarchy)
                 GenList.Add(child.GetComponent<Generators>());
         }
     }

@@ -15,6 +15,7 @@ public class BlackScreenFadeOutScript : MonoBehaviour
     [SerializeField] bool PlayOnStart = false;
 
     LetterByLetterWithPause LetterInstance;
+    PlayerController PlayerInstance;
 
     public static BlackScreenFadeOutScript Instance;
 
@@ -29,6 +30,7 @@ public class BlackScreenFadeOutScript : MonoBehaviour
     private void Start()
     {
         LetterInstance = LetterByLetterWithPause.Instance;
+        PlayerInstance = PlayerController.instance;
 
         if (PlayOnStart)
         {
@@ -58,6 +60,9 @@ public class BlackScreenFadeOutScript : MonoBehaviour
     IEnumerator FadeIn(string LetterFunc)
     {
         float timer = 0f;
+
+        if (PlayerInstance != null)
+            PlayerInstance.PlayerConstrained = true;
 
         while (timer < fadeDuration)
         {

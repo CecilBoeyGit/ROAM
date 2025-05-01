@@ -4034,7 +4034,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualToDisplay: 0
   lineToPlay: 0
+  initialIndex: 0
+  segmentIndex: 0
   Visuals: {fileID: 8063750925778508856}
+  visualsList: []
   sequentialLineComponent: {fileID: 3565869511835210413}
 --- !u!1 &2814068594557799083
 GameObject:
@@ -12644,7 +12647,7 @@ PrefabInstance:
     - target: {fileID: 1470504982834031819, guid: c29f568965036fe4e8e2dd2f4007317b,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -3.63
+      value: 0.91
       objectReference: {fileID: 0}
     - target: {fileID: 1470504982834031819, guid: c29f568965036fe4e8e2dd2f4007317b,
         type: 3}
@@ -12660,6 +12663,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2633201866063710042, guid: c29f568965036fe4e8e2dd2f4007317b,
+        type: 3}
+      propertyPath: Priority
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2633201866063710042, guid: c29f568965036fe4e8e2dd2f4007317b,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 10.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2633201866063710042, guid: c29f568965036fe4e8e2dd2f4007317b,
+        type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3679772226800940069, guid: c29f568965036fe4e8e2dd2f4007317b,
         type: 3}
@@ -12684,7 +12702,7 @@ PrefabInstance:
     - target: {fileID: 3679772226800940069, guid: c29f568965036fe4e8e2dd2f4007317b,
         type: 3}
       propertyPath: m_Center.y
-      value: 0.67766845
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3679772226800940069, guid: c29f568965036fe4e8e2dd2f4007317b,
         type: 3}

@@ -19,11 +19,18 @@ public class PlayRandomSound : MonoBehaviour
     [Header("Normal Mode")]
     public int clipDelay = 5;
 
+    [Header("If to restart OR transition to next scene")]
+    public bool restartCurrentScene = false;
+
     [Header("Check for Success Mode")]
     public bool success = false;
 
+    PlayerController PlayerInstance;
+
     void Start()
     {
+        PlayerInstance = PlayerController.instance;
+
         // clear any old subtitle
         subtitleText.text = "";
 
@@ -54,7 +61,7 @@ public class PlayRandomSound : MonoBehaviour
         int idx = Random.Range(0, audioSources.Length);
         PlayClipAtIndex(idx);
 
-        StartCoroutine(RestartAfterClip());
+        StartCoroutine(RestartAfterClip(restartCurrentScene));
     }
 
     // Shared logic to play a clip + show subtitle
@@ -74,12 +81,26 @@ public class PlayRandomSound : MonoBehaviour
         Invoke(nameof(ClearSubtitle), randomSound.clip.length);
     }
 
-    IEnumerator RestartAfterClip()
+    IEnumerator RestartAfterClip(bool restartCurrent)
     {
+        if (PlayerInstance != null)
+            PlayerInstance.PlayerConstrained = true;
+
         // wait until the clip is done
         yield return new WaitForSeconds(randomSound.clip.length);
-        // reload current scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int totalSceneIndex = SceneManager.sceneCountInBuildSettings;
+
+        if (restartCurrent)
+        {
+            // reload current scene
+            SceneManager.LoadScene(currentSceneIndex);
+        }
+        else
+        {
+            SceneManager.LoadScene((currentSceneIndex + 1) % totalSceneIndex);
+        }
     }
 
     void ClearSubtitle()

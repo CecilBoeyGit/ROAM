@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_ScanTest
-  m_Shader: {fileID: -6465566751694194690, guid: 11c6834e19ff0904d873d3943083cfd7,
+  m_Name: M_DepthBlack
+  m_Shader: {fileID: -6465566751694194690, guid: bdf70f3cbcf1cd64294450e902066013,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -32,10 +32,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SonarMaskTexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -50,19 +46,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _MaskHardness: 0.272
-    - _MaskPower: 1
-    - _MaskRadius: 0
-    - _OUTScanLineIntensity: 1
-    - _OUTScanLineP: 5
-    - _OUTScanLinePower: 3
-    - _OverallEffect: 0
-    - _ScanLinePower: 15
-    - _ScanLineRedIntensity: 10
-    - _ScanLineSpeed: 2
-    - _ScanLineTiling: 0
+    - _MaskHardness: 0.389
+    - _MaskIntensity: 1
+    - _MaskRadius: 25.4
     m_Colors:
-    - _OUTScanLineColor: {r: 2.9960785, g: 0.0805694, b: 0, a: 0}
-    - _Origin: {r: -30.117014, g: 14.365999, b: -91.227325, a: 0}
-    - _ScanLineColor: {r: 9.214355, g: 11.984315, b: 11.984315, a: 1}
+    - _Center: {r: 82.8, g: 0, b: 61.1, a: 0}
   m_BuildTextureStacks: []

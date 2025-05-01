@@ -191,12 +191,23 @@ public class IntegrityManager : MonoBehaviour
 
         MeterDecreAllHolder = condi ? MeterDecrementAllMulti : 0;
     }
+
+    bool meterNullTriggered = false;
+
     void MeterNullActions()
     {
+        //To ensure this function only gets called ONCE
+        if (meterNullTriggered)
+            return;
+
         if (MeterAmount <= 0 && TimerMax > 0)
         {
             if (!usingDEBUG)
+            {
                 MeterNull?.Invoke();
+                CLMInstance.IntegrityUI.SetActive(false);
+                meterNullTriggered = true;
+            }
             else
                 PlayerController.instance.HealthNullAction(true);
         }

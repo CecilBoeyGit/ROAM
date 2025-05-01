@@ -41,7 +41,7 @@ public class CoreLoopManager : MonoBehaviour
     [SerializeField] bool hasPickedUpPowerCore = false;
 
     [Header("--- REFERENCES ---")]
-    [SerializeField] GameObject HullIntegrity, IntegrityUI;
+    public GameObject HullIntegrity, IntegrityUI;
     [SerializeField] GameObject Callisto01, Callisto02, Callisto03;
     [SerializeField] public int FirstTutorialGeneratorID, SecondTutorialGeneratorID;
     [SerializeField] GameObject objectToEnableAfterFirstPowerCore; // <-- updated name!

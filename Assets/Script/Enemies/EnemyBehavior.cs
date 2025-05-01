@@ -31,7 +31,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     [SerializeField] float VisibilityDelayTime = 1.0f;
 
     [Header("--- AttackParameters ---")]
-    [SerializeField] float attackColliderRadius = 5.0f;
+    public float attackColliderRadius = 5.0f;
     [SerializeField] float attackDistanceThreshold = 5.0f;
     [SerializeField] float chaseDistanceThreshold = 10.0f;
     bool idleRangeSpooling = false;
@@ -208,6 +208,13 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         forcedVisibilityToggle = true; //If enemy is triggerd by WeaponSound, visibility is turned ON during the ChaseState
         enemyStateControl = enemyStates.ChaseState; //Immediately change to chasing behaviors when triggered by weapon firing sound
     }
+
+    public void ForceChaseState()
+    {
+        forcedVisibilityToggle = true;
+        enemyStateControl = enemyStates.ChaseState;
+    }
+
     void EnemyStatesMachine()
     {
         switch(enemyStateControl)

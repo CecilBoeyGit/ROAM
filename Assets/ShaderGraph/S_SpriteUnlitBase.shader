@@ -5,6 +5,8 @@ Shader "Custom/Sprite-Unlit-Base"
         _MainTex("Sprite Texture", 2D) = "white" {}
         _UseFlicker("Use Flicker", Float) = 0.0
         _FlickerFrequency("Flicker Frequency", Float) = 3.0
+        _UsePosterize("Use Posterize", Float) = 0.0
+        _PosterizeStep("_Posterize Step", Float) = 10.0
 
     // Legacy properties. They're here so that materials using this shader can gracefully fallback to the legacy sprite shader.
     [HideInInspector] _Color("Tint", Color) = (1,1,1,1)
@@ -50,6 +52,8 @@ Shader "Custom/Sprite-Unlit-Base"
             UNITY_INSTANCING_BUFFER_START(Props)
                UNITY_DEFINE_INSTANCED_PROP(float, _UseFlicker)
                UNITY_DEFINE_INSTANCED_PROP(float, _FlickerFrequency)
+               UNITY_DEFINE_INSTANCED_PROP(float, _UsePosterize)
+               UNITY_DEFINE_INSTANCED_PROP(float, _PosterizeStep)
             UNITY_INSTANCING_BUFFER_END(Props)
 
             struct Attributes
@@ -92,13 +96,21 @@ Shader "Custom/Sprite-Unlit-Base"
                 return o;
             }
 
+            float2 PosterizeUV(float2 uv, float stepValue)
+            {
+                return floor(uv * stepValue) / stepValue;
+            }
+
             float4 UnlitBaseFragment(Varyings i) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(i);
                 float useFlicker = UNITY_ACCESS_INSTANCED_PROP(Props, _UseFlicker);
                 float flickerFreq = UNITY_ACCESS_INSTANCED_PROP(Props, _FlickerFrequency);
+                float usePosterize = UNITY_ACCESS_INSTANCED_PROP(Props, _UsePosterize);
+                float stepSize = UNITY_ACCESS_INSTANCED_PROP(Props, _PosterizeStep);
 
-                float4 mainTex = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+                float2 posterizedUV = lerp(i.uv, PosterizeUV(i.uv, stepSize), usePosterize);
+                float4 mainTex = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, posterizedUV);
                 float Flickering = (sin(_Time.y * flickerFreq) + 1.0) * 0.5;
                 float alphaLerpVal = lerp(1.0, Flickering, useFlicker);
                 mainTex.a *= alphaLerpVal;

@@ -11,7 +11,7 @@ public class GlobalLightingManager : MonoBehaviour
     [SerializeField] Generators Generator01, Generator02;
     float Gen01Power, Gen02Power;
 
-    bool ForceLightsOn = false;
+    bool ForceLights = false;
 
     public static GlobalLightingManager instance;
 
@@ -25,14 +25,16 @@ public class GlobalLightingManager : MonoBehaviour
     private void OnEnable()
     {
         IntegrityManager.RundownSuccessAction += ForceAllLightsOn;
+        IntegrityManager.MeterNull += ForceAllLightsOff;
     }
     private void OnDisable()
     {
         IntegrityManager.RundownSuccessAction -= ForceAllLightsOn;
+        IntegrityManager.MeterNull -= ForceAllLightsOff;
     }
     void InitSettings()
     {
-        ForceLightsOn = false;
+        ForceLights = false;
 
         if (Generator01Lights == null || Generator02Lights == null)
         {
@@ -60,11 +62,13 @@ public class GlobalLightingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (ForceLightsOn)
+        if (ForceLights)
             return;
 
-        Gen01Power = Generator01.GeneratorPowerAmount;
-        Gen02Power = Generator02.GeneratorPowerAmount;
+        if(Generator01 != null)
+            Gen01Power = Generator01.GeneratorPowerAmount;
+        if (Generator02 != null)
+            Gen02Power = Generator02.GeneratorPowerAmount;
 
         if(Gen01Power <= 0)
         {
@@ -87,8 +91,14 @@ public class GlobalLightingManager : MonoBehaviour
 
     public void ForceAllLightsOn()
     {
-        ForceLightsOn = true;
+        ForceLights = true;
         Generator01Lights.SetActive(true);
         Generator02Lights.SetActive(true);
+    }
+    public void ForceAllLightsOff()
+    {
+        ForceLights = true;
+        Generator01Lights.SetActive(false);
+        Generator02Lights.SetActive(false);
     }
 }

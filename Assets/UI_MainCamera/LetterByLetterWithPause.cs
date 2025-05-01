@@ -106,13 +106,17 @@ public class LetterByLetterWithPause : MonoBehaviour
     private void TriggerSuccessSequence()
     {
         if (!isPrintingText && BlackScreenInstance != null)
+        {
             BlackScreenInstance.TriggerFadeIn("Success");
+        }
     }
 
     private void TriggerFailureSequence()
     {
         if (!isPrintingText && BlackScreenInstance != null)
+        {
             BlackScreenInstance.TriggerFadeIn("Fail");
+        }
     }
 
     // These are called by the fader after fade‐in
@@ -180,7 +184,9 @@ public class LetterByLetterWithPause : MonoBehaviour
         if (screentext == RundownSuccessText && successActivationObject != null)
             successActivationObject.SetActive(true);
         if (screentext == RundownFailedText && failActivationObject != null)
+        {
             failActivationObject.SetActive(true);
+        }
 
         // Fade out if requested
         if (FadeBool && BlackScreenInstance != null)
@@ -193,10 +199,12 @@ public class LetterByLetterWithPause : MonoBehaviour
             SceneManager.LoadScene("S_DayLoop");
         }
 
-       
-
-        if (InterfaceVolumeAnim != null)
-            InterfaceVolumeAnim.SetTrigger("HideVolume");
+        //Turn off InterfaceVolume only if black screen will fade out once it completes
+        if (FadeBool)
+        {
+            if (InterfaceVolumeAnim != null)
+                InterfaceVolumeAnim.SetTrigger("HideVolume");
+        }
 
         if (PlayerInstance != null)
             PlayerInstance.PlayerConstrained = false;
