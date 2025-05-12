@@ -15,7 +15,8 @@ public class Tutorial_Horror : MonoBehaviour
     private void Start()
     {
         objectCollider = GetComponent<Collider>();
-        targetRigidbody = targetObject.GetComponent<Rigidbody>();
+        if(targetObject != null)
+            targetRigidbody = targetObject.GetComponent<Rigidbody>();
 
         // Get or add an AudioSource component
         audioSource = GetComponent<AudioSource>();
@@ -41,6 +42,9 @@ public class Tutorial_Horror : MonoBehaviour
 
     private void DashForward()
     {
+        if (targetObject == null)
+            return;
+
         // Calculate force based on the target object's forward direction
         Vector3 force = targetObject.transform.forward * dashForce;
 

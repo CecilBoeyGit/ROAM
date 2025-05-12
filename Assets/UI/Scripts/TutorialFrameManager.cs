@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+[ExecuteAlways]
 public class TutorialFrameManager : MonoBehaviour
 {
 
@@ -41,18 +42,29 @@ public class TutorialFrameManager : MonoBehaviour
 
         isDisplayingTutorial = false;
 
+        tutorialContentParent = GetTutorialContentParent();
+        if (tutorialContentParent != null)
+        {
+            foreach (Transform child in tutorialContentParent.transform)
+            {
+                child.gameObject.SetActive(false); //To make sure that all child gameObjects are hidden when the game starts
+            }
+        }
+    }
+
+    public GameObject GetTutorialContentParent()
+    {
         foreach (Transform child in this.transform)
         {
             if (child.name.Equals(tutorialContentParentName))
             {
-                tutorialContentParent = child.gameObject;
-                foreach (Transform contentChild in child)
-                    contentChild.gameObject.SetActive(false);
-
-                return;
+                return child.gameObject;
             }
         }
+
+        return null;
     }
+
     private void OnEnable()
     {
         Init();

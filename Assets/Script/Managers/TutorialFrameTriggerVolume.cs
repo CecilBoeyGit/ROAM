@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Events;
 
+[ExecuteAlways]
 public class TutorialFrameTriggerVolume : MonoBehaviour
 {
     [Header("Trigger Settings")]
@@ -14,9 +15,11 @@ public class TutorialFrameTriggerVolume : MonoBehaviour
     Vector3 objectFramePositionHolder;
 
     GameObject tutorialVolumeSelf;
-    [SerializeField] GameObject contentObject;
+    public GameObject contentObject;
 
     public GameObject virtualCamera;
+
+    GameObject visualizerChild;
 
     [HideInInspector]
     public int selectedChildIndex = 0;
@@ -27,7 +30,7 @@ public class TutorialFrameTriggerVolume : MonoBehaviour
     [Header("On Trigger Enter Event")]
     public GameObjectEvent onTriggerEnter;
 
-    private List<GameObject> frameChildren = new List<GameObject>();
+    [SerializeField] List<GameObject> frameChildren = new List<GameObject>();
 
     TutorialFrameManager tutorialFrameInstance;
 
@@ -35,20 +38,43 @@ public class TutorialFrameTriggerVolume : MonoBehaviour
     {
         virtualCamera.SetActive(false);
         tutorialVolumeSelf = transform.gameObject;
-    }
+        foreach(Transform child in transform)
+        {
+            visualizerChild = child.gameObject;
+            break;
+        }
 
+        if (!Application.isPlaying)
+            return;
+
+        if(visualizerChild != null)
+            visualizerChild.SetActive(false);
+    }
     private void Start()
     {
         tutorialFrameInstance = TutorialFrameManager.instance;
         objectFramePositionHolder = ObjectToFrame == null ? Vector3.zero : ObjectToFrame.transform.position;
-        contentObject = tutorialFrameInstance.tutorialContentParent;
-        UpdateChildList();
+        //contentObject = tutorialFrameInstance.tutorialContentParent;
+        //UpdateChildList();
+    }
+    private void Update()
+    {
+    /*    if(!Application.isPlaying)
+        {
+            tutorialFrameInstance = TutorialFrameManager.instance;
+            objectFramePositionHolder = ObjectToFrame == null ? Vector3.zero : ObjectToFrame.transform.position;
+            contentObject = tutorialFrameInstance.tutorialContentParent;
+            UpdateChildList();
+        }*/
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        print("entered");
         if (other.CompareTag(targetTag) && frameChildren.Count > selectedChildIndex)
         {
+            print("Player entered");
+
             GameObject selectedChild = frameChildren[selectedChildIndex];
             if (selectedChild != null)
             {
@@ -76,6 +102,7 @@ public class TutorialFrameTriggerVolume : MonoBehaviour
     public List<string> GetChildNames()
     {
         UpdateChildList();
+
         List<string> names = new List<string>();
         foreach (var child in frameChildren)
         {

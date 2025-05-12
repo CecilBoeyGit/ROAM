@@ -63,6 +63,6 @@ Material:
     - _ScanLineTiling: 0
     m_Colors:
     - _OUTScanLineColor: {r: 2.9960785, g: 0.0805694, b: 0, a: 0}
-    - _Origin: {r: 17.69, g: 3.1460001, b: -75.22, a: 0}
+    - _Origin: {r: 17.201683, g: 7.552033, b: -147.32378, a: 0}
     - _ScanLineColor: {r: 9.214355, g: 11.984315, b: 11.984315, a: 1}
   m_BuildTextureStacks: []

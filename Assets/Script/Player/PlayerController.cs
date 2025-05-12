@@ -105,15 +105,14 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     {
         PlayerConstrained = false;
         AbilitiesConstrained = false;
-    }
-    private void OnEnable()
-    {
+
         if (instance == null)
             instance = this;
         else
             Destroy(gameObject);
-
-
+    }
+    private void OnEnable()
+    {
         fovController = GetComponent<FieldOfView>();
 
         healthPoint = 150;

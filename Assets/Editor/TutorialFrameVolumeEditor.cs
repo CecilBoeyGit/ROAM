@@ -10,8 +10,8 @@ public class TutorialFrameVolumeEditor : Editor
 
         TutorialFrameTriggerVolume TutorialVolume = (TutorialFrameTriggerVolume)target;
 
-        if(TutorialVolume != null)
-        {
+        if (TutorialVolume != null)
+        {       
             var options = TutorialVolume.GetChildNames();
             if(options.Count > 0)
             {
