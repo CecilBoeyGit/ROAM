@@ -57,13 +57,15 @@ Material:
     m_Floats:
     - _AtlasIndex: 0
     - _BackgroundIntensity: 0
-    - _EmissiveIntensity: 1
+    - _EmissiveIntensity: 3
+    - _Flicker: 0
+    - _FlickerSpeed: 3
     - _PanTime: -0.1
     - _Posterize: 1
     - _PosterizeSteps: 100
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _BackgroundColor: {r: 1, g: 1, b: 1, a: 0}
+    - _BackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissiveColor: {r: 0.6289308, g: 1, b: 0.9822679, a: 0}
   m_BuildTextureStacks: []

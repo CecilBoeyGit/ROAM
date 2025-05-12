@@ -35,7 +35,7 @@ public class IntegrityManager : MonoBehaviour
 
     [Header("--- Audio ---")]
     AudioSource ads;
-    [SerializeField] private AudioClip adcp;
+    [SerializeField] private List<AudioClip> adcp = new List<AudioClip>();
 
     [Header("--- DEBUG ---")]
     [SerializeField] bool usingDEBUG = false;
@@ -136,6 +136,7 @@ public class IntegrityManager : MonoBehaviour
     {
         RundownSuccessAction?.Invoke();
 
+        ads.clip = adcp[0];
         ads.Play();
 
         var allRemainingEnemies = FindObjectsByType<EnemyBehavior>(FindObjectsSortMode.None)
@@ -168,6 +169,35 @@ public class IntegrityManager : MonoBehaviour
             MeterAmount = MeterMax;
         else if (MeterAmount <= 0)
             MeterAmount = 0;
+    }
+
+    [SerializeField] float alarmThreshold = 0.15f;
+    bool alarmPlaying = false;
+
+    void MeterAlarmWarningThreshold()
+    {
+        float thresholdCalc = MeterAmount *= alarmThreshold;
+        if(MeterAmount <= thresholdCalc)
+        {
+            if (alarmPlaying)
+                return;
+
+            if (MeterDecreAnyHolder != 0 || MeterDecreAllHolder != 0)
+            {
+                ads.clip = adcp[2];
+                ads.Play();
+
+                alarmPlaying = true;
+            }
+        }
+        else
+        {
+            if (!alarmPlaying)
+                return;
+
+            ads.Stop();
+            alarmPlaying = false;
+        }
     }
     void MeterDecrement()
     {
@@ -207,6 +237,9 @@ public class IntegrityManager : MonoBehaviour
                 MeterNull?.Invoke();
                 CLMInstance.IntegrityUI.SetActive(false);
                 meterNullTriggered = true;
+
+                ads.clip = adcp[1];
+                ads.Play();
             }
             else
                 PlayerController.instance.HealthNullAction(true);

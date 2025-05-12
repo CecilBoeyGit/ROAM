@@ -82,6 +82,9 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     [SerializeField] Slider UI_healthPoint;
     [SerializeField] Slider UI_powerAmount;
 
+    [Header("--- VFX ---")]
+    [SerializeField] ParticleSystem ghostingParticles;
+
     [Header("--- DEBUG ---")]
     [SerializeField] private bool usingPlaneCast = false;
     [SerializeField] private bool usingAimUpdated = true;
@@ -445,6 +448,8 @@ public class PlayerController : MonoBehaviour, IDataPersistence
     {
         //print("Is Dashing ---");
 
+        ghostingParticles.Play();
+
         isDashing = true;
         canDash = false;
 
@@ -462,6 +467,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
         isDashing = false;
         PRMInstance.isConsumingWeaponAmount = false;
+        ghostingParticles.Stop();
 
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;

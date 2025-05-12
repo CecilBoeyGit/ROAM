@@ -9,6 +9,8 @@ public class EnemySwarmSpawner : MonoBehaviour
     [SerializeField] float numberToSpawn = 10;
     [SerializeField] float radius = 5;
     [SerializeField] float navMeshCheckDistance = 1;
+    [SerializeField] float delayTime = 3;
+    float mainTimer = 0;
 
     ObjectsPoolingDefault EnemiesPool;
 
@@ -37,6 +39,8 @@ public class EnemySwarmSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mainTimer = 0;
+
         PlayerInstance = PlayerController.instance;
 
         EnemiesPool = GameObject.Find("EnemiesPool")?.GetComponent<ObjectsPoolingDefault>();
@@ -44,6 +48,13 @@ public class EnemySwarmSpawner : MonoBehaviour
 
     public void SpawnSwarm()
     {
+
+        if(mainTimer < delayTime)
+        {
+            mainTimer += Time.deltaTime;
+            return;
+        }
+
         Vector3 playerCurrentPos = PlayerInstance.transform.position;
 
         if (prefabToSpawn == null || playerCurrentPos == null)

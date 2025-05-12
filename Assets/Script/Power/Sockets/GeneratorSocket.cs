@@ -17,9 +17,16 @@ public class GeneratorSocket : PowerSockets
     //Material BarMaterial;
     Material GeneratorIconMaterial;
 
+    [Header("--- GRAPHICS ---")]
+    [SerializeField] GameObject SocketCanvas;
+
+    GeneratorsSFX genSFXInstance;
+
     protected override void Start()
     {
         base.Start();
+
+        genSFXInstance = GeneratorsSFX.instance;
 
         generatorParent = GetComponentInParent<Generators>();
         AmountIndicatorUI.GetComponent<Image>();
@@ -73,6 +80,11 @@ public class GeneratorSocket : PowerSockets
                     PRMInstance.currentPowerCore = null;
                     generatorParent.isCharging = true;
 
+                    SocketCanvas.SetActive(false);
+
+                    if(genSFXInstance != null)
+                        genSFXInstance.PlayOnAudio();
+
                     if (CO_GeneratorCharing != null)
                         StopCoroutine(CO_GeneratorCharing);
                     CO_GeneratorCharing = StartCoroutine(PowerCoreCharging(2.0f));
@@ -100,6 +112,7 @@ public class GeneratorSocket : PowerSockets
         ads.clip = adcp[0];
         ads.Play();
         powerCoreChild.gameObject.SetActive(false);
+        SocketCanvas.SetActive(true);
     }
 
     public override void UIGroupManager()

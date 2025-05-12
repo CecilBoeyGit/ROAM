@@ -9,12 +9,12 @@ public class Generators : MonoBehaviour
 
     public bool isCharging = false;
     public float PowerIncrementMultiplier = 100;
-    [SerializeField] public float GeneratorPowerAmount;
-    [SerializeField] public float GeneratorMaxAmount;
+    public float GeneratorPowerAmount;
+    public float GeneratorMaxAmount;
     [SerializeField] float PowerDecrement;
 
     [Header("--- VIARIABLES ---")]
-    [SerializeField] public int GeneratorID;
+    public int GeneratorID;
     [Range(0.0f, 1.0f)]
     [SerializeField] float SonarBeamThreshold;
     bool rundownSuccess = false;
@@ -35,6 +35,7 @@ public class Generators : MonoBehaviour
     public static event Action Gen02Charging;
 
     CoreLoopManager CLMInstance;
+    GeneratorsSFX genSFXInstance;
 
     private void OnEnable()
     {
@@ -61,8 +62,13 @@ public class Generators : MonoBehaviour
         rundownSuccess = false;
         rundownFailed = false;
         canStartPowerDecre = false;
+        PowerZeroCapped = false;
+
         CLMInstance = CoreLoopManager.Instance;
+        genSFXInstance = GeneratorsSFX.instance;
     }
+
+    bool PowerZeroCapped = false;
 
     void Update()
     {
@@ -76,7 +82,18 @@ public class Generators : MonoBehaviour
             GeneratorPowerAmount = GeneratorMaxAmount;
         else if (GeneratorPowerAmount <= 0)
         {
+            if (PowerZeroCapped)
+                return;
+
             GeneratorPowerAmount = 0;
+            if (genSFXInstance != null)
+                genSFXInstance.PlayOffAudio();
+
+            PowerZeroCapped = true;
+        }
+        else
+        {
+            PowerZeroCapped = false;
         }
 
         if (!isCharging)
