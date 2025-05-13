@@ -385,7 +385,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generatorMain: {fileID: 5477732402833627525}
-  generatorSocket: {fileID: 3554821629056010245}
   warningStrips: {fileID: 7005953402158378416}
   Color_Online: {r: 0.627451, g: 1, b: 0.98039216, a: 0}
   Color_Offline: {r: 1, g: 0.067182444, b: 0, a: 0}
@@ -1597,7 +1596,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d1cb37d99d5fd7a4fbd9cee8273d1f7f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e2bf8e626c753b240bf503dbd91d5550, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1706,18 +1705,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5710573093160439320}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3554821629056010245 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9085243239131842077, guid: 5bf827882b9288d459d22faa66859606,
-    type: 3}
-  m_PrefabInstance: {fileID: 5710573093160439320}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ad8b31e73a8b8044bb642208b7415d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8559022534765952677
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1789,17 +1776,17 @@ PrefabInstance:
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}
       propertyPath: groundRayHitPos.x
-      value: 46.717457
+      value: 46.717453
       objectReference: {fileID: 0}
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}
       propertyPath: groundRayHitPos.y
-      value: 0.6003305
+      value: 0.6662185
       objectReference: {fileID: 0}
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}
       propertyPath: groundRayHitPos.z
-      value: 21.10025
+      value: 21.100254
       objectReference: {fileID: 0}
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}
@@ -1809,7 +1796,7 @@ PrefabInstance:
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}
       propertyPath: zeroOffsetHeight.y
-      value: 0.9003305
+      value: 0.96621853
       objectReference: {fileID: 0}
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}
@@ -1898,17 +1885,17 @@ PrefabInstance:
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}
       propertyPath: groundRayHitPos.x
-      value: 30.297276
+      value: 30.29728
       objectReference: {fileID: 0}
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}
       propertyPath: groundRayHitPos.y
-      value: 0.0001
+      value: 5.240997
       objectReference: {fileID: 0}
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}
       propertyPath: groundRayHitPos.z
-      value: 31.790571
+      value: 31.79057
       objectReference: {fileID: 0}
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}
@@ -1918,7 +1905,7 @@ PrefabInstance:
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}
       propertyPath: zeroOffsetHeight.y
-      value: 0.3001
+      value: 5.540997
       objectReference: {fileID: 0}
     - target: {fileID: 5366940302698807141, guid: f94013bc8b3c8224682e568795513c84,
         type: 3}

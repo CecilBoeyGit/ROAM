@@ -22,6 +22,7 @@ public class InputSubscriptions : MonoBehaviour
     public bool SonarInput { get; private set; } = false;
     public bool DashInput { get; private set; } = false;
     public bool InteractInput { get; private set; } = false;
+    public bool MenuInput { get; private set; } = false;
 
     private Mouse virtualMouse;
     private PlayerInput playerInput;
@@ -159,8 +160,9 @@ public class InputSubscriptions : MonoBehaviour
         SonarInput = _Input.PlayerInputs.SonarScan.WasPressedThisFrame();
         DashInput = _Input.PlayerInputs.Dash.WasPressedThisFrame();
         InteractInput = _Input.PlayerInputs.Interact.WasPressedThisFrame();
+        MenuInput = _Input.PlayerInputs.Menu.WasPressedThisFrame();
 
-        if(usingVirtualMouse)
+        if (usingVirtualMouse)
             GamepadToMouse();
     }
     void SetMovement(InputAction.CallbackContext ctx)

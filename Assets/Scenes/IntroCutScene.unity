@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1477,6 +1477,12 @@ MonoBehaviour:
   PrintDay01: 0
   PrintSuccess: 0
   PrintFailure: 0
+  midSuccessActivationObject: {fileID: 0}
+  successActivationObject: {fileID: 0}
+  midFailActivationObject: {fileID: 0}
+  failActivationObject: {fileID: 0}
+  testSuccess: 0
+  testFailure: 0
 --- !u!114 &582352260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1787,7 +1793,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hold "B" to Skip
+  m_text: Hold "A" to Skip
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5101,3 +5107,9 @@ MonoBehaviour:
   PrintDay01: 0
   PrintSuccess: 0
   PrintFailure: 0
+  midSuccessActivationObject: {fileID: 0}
+  successActivationObject: {fileID: 0}
+  midFailActivationObject: {fileID: 0}
+  failActivationObject: {fileID: 0}
+  testSuccess: 0
+  testFailure: 0

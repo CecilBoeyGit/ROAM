@@ -41,7 +41,9 @@ public class CoreLoopManager : MonoBehaviour
     [SerializeField] bool hasPickedUpPowerCore = false;
 
     [Header("--- REFERENCES ---")]
-    public GameObject HullIntegrity, IntegrityUI;
+    public GameObject HullIntegrity;
+    public GameObject IntegrityUI;
+    public GameObject EscapeSignUI;
     [SerializeField] public int FirstTutorialGeneratorID, SecondTutorialGeneratorID;
     [SerializeField] GameObject objectToEnableAfterFirstPowerCore; // Assigned in Inspector
     GameObject elevatorTrigger;
@@ -99,6 +101,7 @@ public class CoreLoopManager : MonoBehaviour
     void InitializationParameters()
     {
         PlayerInZoneForTutorialBot = false;
+        EscapeSignUI.SetActive(false);
 
         if (IsDayLoop)
         {
@@ -268,7 +271,8 @@ public class CoreLoopManager : MonoBehaviour
 
     public void DayStagesDisplayFailure() { Enum_DayStages = DayStages.DisplayInterfaceFailure; }
     void DayRegularBehaviours() { if (Day_ActivateIntegrity) { HullIntegrity.SetActive(true); IntegrityUI.SetActive(true); TutorialSeqInstance.DayLoop(); } }
-    void SuccessBehaviors() { RundownSuccessful = true; TutorialSeqInstance.ReturnToElevator(); if (elevatorTrigger != null) elevatorTrigger.SetActive(true); }
+    void SuccessBehaviors() { RundownSuccessful = true; TutorialSeqInstance.ReturnToElevator(); if (elevatorTrigger != null) elevatorTrigger.SetActive(true);
+        if (EscapeSignUI != null) EscapeSignUI.SetActive(true); }
     void DisplaySuccess() { if (!pcInstance.PlayerConstrained) { BlackScreenInstance.TriggerFadeIn("Success"); pcInstance.PlayerConstrained = true; } }
     void FailedBehaviors() { RundownSuccessful = false; }
     bool FailedDisplayed = false;

@@ -52,7 +52,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     public Text StatusText;
 
     [Header("--- Audio ---")]
-    AudioSource ads;
+    [SerializeField] AudioSource ads;
     [SerializeField] private AudioClip[] adcp = new AudioClip[2];
 
     GamePadVibrationManager _GamePadVibInstance;
@@ -99,7 +99,8 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         mrd = GetComponent<MeshRenderer>();
         nmAgent = GetComponent<NavMeshAgent>();
 
-        ads = GetComponent<AudioSource>();
+        ads.GetComponent<AudioSource>();
+        isPlayingSound = false;
 
         healthPoint = 3.0f;
         BooleanCollection();
@@ -340,6 +341,9 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     {
         takenPatrolPoints.Remove(index);
     }
+
+    bool isPlayingSound = false;
+
     void ChaseBehaviors()
     {
         //print("Chasing");
@@ -361,9 +365,6 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
                 return;
             if (!TutorialBot)
                 nmAgent.destination = pcInstance.transform.position;
-
-            ads.clip = adcp[0];
-            ads.Play();
         }
         else
         {
@@ -379,6 +380,15 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
                 enemyStateControl = enemyStates.AttackState;
             }
         }
+
+        if (isPlayingSound)
+            return;
+        
+        ads.clip = adcp[0];
+        ads.loop = true;
+        ads.Play();
+
+        isPlayingSound = true;
     }
 
     public float AttackSpoolTime = 0.3f;
@@ -461,6 +471,10 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
     }  
     IEnumerator Attacking(float attackTime)
     {
+        ads.clip = adcp[2];
+        ads.loop = false;
+        ads.Play();
+
         float timer = 0;
         while (timer < attackTime)
         {         

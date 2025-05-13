@@ -132,7 +132,7 @@ public class WeaponBaseControl : MonoBehaviour
         {
             IWeaponSoundInterface _weaponSoundInterface = enemy.GetComponent<IWeaponSoundInterface>();
             if (_weaponSoundInterface == null)
-                return;
+                continue;
             _weaponSoundInterface.WeaponSoundTriggered();
         }
     }

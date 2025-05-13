@@ -11,6 +11,8 @@ public class InjuredVolumeManager : MonoBehaviour
 
     Animator Anim;
 
+    AudioSource ads;
+
     private void OnEnable()
     {
         MeleeAttackTrigger.Attacked += AttackTriggered;
@@ -30,12 +32,16 @@ public class InjuredVolumeManager : MonoBehaviour
     private void Start()
     {
         Anim = GetComponent<Animator>();
+        ads = GetComponent<AudioSource>();
     }
 
     void AttackTriggered()
     {
-        if(InjuredVol)
+        if (InjuredVol)
+        {
             Anim.SetTrigger("VolumeTriggered");
+            ads.Play();
+        }
     }
     void WeaponTriggered()
     {

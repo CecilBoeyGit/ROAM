@@ -25,7 +25,7 @@ public class NextLevelLoader : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.JoystickButton1))  // B 键持续
+        if (Input.GetKey(KeyCode.JoystickButton0))
         {
             holdTimer += Time.deltaTime;
             // 计算进度 [0,1]

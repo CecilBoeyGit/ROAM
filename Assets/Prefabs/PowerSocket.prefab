@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d1cb37d99d5fd7a4fbd9cee8273d1f7f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e2bf8e626c753b240bf503dbd91d5550, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -847,7 +847,7 @@ Transform:
   - {fileID: 6389281966702661157}
   - {fileID: 5901761015691919790}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -35}
 --- !u!33 &6675879177317132091
 MeshFilter:
@@ -911,6 +911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4486e3e1abf6a8b46a658cb36ba25e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  socketSpawntime: 3.5
   distanceThreshold: 6
   playerInZoneThreshold: -0.6
   socketForwardTransform: {fileID: 355874961402911414}
