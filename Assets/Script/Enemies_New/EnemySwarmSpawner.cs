@@ -6,11 +6,13 @@ using UnityEngine.AI;
 public class EnemySwarmSpawner : MonoBehaviour
 {
     public GameObject prefabToSpawn;
+    [SerializeField] GameObject ManualSpawnPointsParent;
+    List<Transform> manualSpawnPoints = new List<Transform>();
+
     [SerializeField] float numberToSpawn = 10;
     [SerializeField] float radius = 5;
     [SerializeField] float navMeshCheckDistance = 1;
     [SerializeField] float delayTime = 3;
-    float mainTimer = 0;
 
     ObjectsPoolingDefault EnemiesPool;
 
@@ -39,22 +41,23 @@ public class EnemySwarmSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mainTimer = 0;
-
         PlayerInstance = PlayerController.instance;
 
         EnemiesPool = GameObject.Find("EnemiesPool")?.GetComponent<ObjectsPoolingDefault>();
+
+        if (ManualSpawnPointsParent != null)
+        {
+            foreach (Transform child in ManualSpawnPointsParent.transform)
+            {
+                manualSpawnPoints.Add(child);
+            }
+        }
     }
+
+    Coroutine CO_SpawnSwarm;
 
     public void SpawnSwarm()
     {
-
-        if(mainTimer < delayTime)
-        {
-            mainTimer += Time.deltaTime;
-            return;
-        }
-
         Vector3 playerCurrentPos = PlayerInstance.transform.position;
 
         if (prefabToSpawn == null || playerCurrentPos == null)
@@ -62,6 +65,17 @@ public class EnemySwarmSpawner : MonoBehaviour
             Debug.LogWarning("Prefab or CenterPoint not assigned.");
             return;
         }
+
+        if (CO_SpawnSwarm != null)
+            StopCoroutine(CO_SpawnSwarm);
+        else
+            CO_SpawnSwarm = StartCoroutine(StartSpawningSwarm(delayTime, playerCurrentPos));    
+    }
+
+    IEnumerator StartSpawningSwarm(float delayTime, Vector3 playerCurrentPos)
+    {
+
+        yield return new WaitForSeconds(delayTime);
 
         float angleStep = 360f / numberToSpawn;
 
@@ -87,6 +101,22 @@ public class EnemySwarmSpawner : MonoBehaviour
             }
             else
             {
+                int randomSpawnPos = Mathf.RoundToInt(Random.Range(0, manualSpawnPoints.Count));
+
+                if(randomSpawnPos < manualSpawnPoints.Count)
+                {
+                    GameObject enemyObj = EnemiesPool.GetPooledObject(manualSpawnPoints[randomSpawnPos].position, Quaternion.identity);
+                    EnemyBehavior enemyBhv = enemyObj.GetComponent<EnemyBehavior>();
+                    if (enemyBhv != null)
+                    {
+                        enemyBhv.ForceChaseState();
+                        enemyBhv.AttackSpoolTime = 0;
+                        enemyBhv.attackColliderRadius = 10;
+                        enemyBhv.nmAgent.speed = 15;
+                        enemyBhv.nmAgent.acceleration = 12;
+                    }
+                }
+
                 Debug.Log($"Skipped spawn at {spawnPos} — not on NavMesh.");
             }
         }

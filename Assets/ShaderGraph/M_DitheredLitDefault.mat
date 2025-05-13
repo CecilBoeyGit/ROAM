@@ -7,14 +7,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_ScanTest
-  m_Shader: {fileID: -6465566751694194690, guid: 11c6834e19ff0904d873d3943083cfd7,
+  m_Name: M_DitheredLitDefault
+  m_Shader: {fileID: -6465566751694194690, guid: 7a774b99060dd45498a7c1f0a1c49806,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -24,15 +24,19 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTexture:
+    - _ARMA:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _MaskedTexture:
+    - _BaseColor:
+        m_Texture: {fileID: 2800000, guid: ddfca2341c740334caf93bccbd9f754c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emissive:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SonarMaskTexture:
+    - _Normal:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -50,19 +54,30 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _MaskHardness: 0.272
-    - _MaskPower: 1
-    - _MaskRadius: 0
-    - _OUTScanLineIntensity: 1
-    - _OUTScanLineP: 5
-    - _OUTScanLinePower: 3
-    - _OverallEffect: 0
-    - _ScanLinePower: 15
-    - _ScanLineRedIntensity: 10
-    - _ScanLineSpeed: 2
-    - _ScanLineTiling: 0
+    - _Dither: 1
+    - _DitherSize: 1
+    - _DitheringDistance: 15
+    - _EmissiveIntensity: 0
+    - _NormalStrength: 1
+    - _Posterize: 0
+    - _PosterizeSteps: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _Smoothness_Max: 0
+    - _Smoothness_Min: 0
     m_Colors:
-    - _OUTScanLineColor: {r: 2.9960785, g: 0.0805694, b: 0, a: 0}
-    - _Origin: {r: -29.76, g: 11.405999, b: -90.34, a: 0}
-    - _ScanLineColor: {r: 9.214355, g: 11.984315, b: 11.984315, a: 1}
+    - _EmissiveColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
+--- !u!114 &7912640086396778478
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7

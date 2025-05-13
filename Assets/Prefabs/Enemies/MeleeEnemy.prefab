@@ -346,7 +346,7 @@ MonoBehaviour:
   detectionTime: 0.5
   VisibilityDelayTime: 1
   attackColliderRadius: 10
-  attackDistanceThreshold: 4
+  attackDistanceThreshold: 5
   chaseDistanceThreshold: 12
   forcedVisibilityToggle: 0
   detectionParticles: {fileID: 4890610499351165716}
@@ -363,7 +363,7 @@ MonoBehaviour:
   TutorialDistanceThreshold: 10
   enemyStateControl: 0
   PatrolWaitDuration: 15
-  AttackSpoolTime: 0.3
+  AttackSpoolTime: 0.5
   beingScanned: 0
   DissolveTime: 0
 --- !u!136 &2675795064877396532
@@ -385,7 +385,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.8
+  m_Radius: 1
   m_Height: 2.56
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}

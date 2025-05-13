@@ -11,13 +11,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/IntroCutScene.unity
     guid: 04afdcd61a982834785782ffada4fa09
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Sam_Test/Sam_TutorialLevel.unity
     guid: 2d2680be986e5f44a93ba9713758108e
+  - enabled: 1
+    path: Assets/Scenes/S_DayLoopLight.unity
+    guid: cc6f8bfcd10f9064ba4cffebfcd5b0b1
   - enabled: 1
     path: Assets/Scenes/S_DayLoop.unity
     guid: a11f0e7722fa69243a1d24861101fd25
   - enabled: 0
     path: Assets/Scenes/S_LevelBlockout.unity
     guid: 969d3c16eb551d741a552886a7b424e7
+  - enabled: 1
+    path: Assets/Scenes/TY.unity
+    guid: 493abaf1fbd22a9409e07f0cf98c9634
   m_configObjects: {}

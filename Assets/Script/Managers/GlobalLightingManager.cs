@@ -65,40 +65,46 @@ public class GlobalLightingManager : MonoBehaviour
         if (ForceLights)
             return;
 
-        if(Generator01 != null)
+        if (Generator01 != null)
+        {
             Gen01Power = Generator01.GeneratorPowerAmount;
+            if (Gen01Power <= 0)
+            {
+                Generator01Lights.SetActive(false);
+            }
+            else
+            {
+                Generator01Lights.SetActive(true);
+            }
+        }
         if (Generator02 != null)
+        {
             Gen02Power = Generator02.GeneratorPowerAmount;
-
-        if(Gen01Power <= 0)
-        {
-            Generator01Lights.SetActive(false);
-        }
-        else
-        {
-            Generator01Lights.SetActive(true);
-        }
-
-        if (Gen02Power <= 0)
-        {
-            Generator02Lights.SetActive(false);
-        }
-        else
-        {
-            Generator02Lights.SetActive(true);
+            if (Gen02Power <= 0)
+            {
+                Generator02Lights.SetActive(false);
+            }
+            else
+            {
+                Generator02Lights.SetActive(true);
+            }
         }
     }
 
     public void ForceAllLightsOn()
     {
         ForceLights = true;
-        Generator01Lights.SetActive(true);
-        Generator02Lights.SetActive(true);
+        if (Generator01 != null)
+            Generator01Lights.SetActive(true);
+        if (Generator02 != null)
+            Generator02Lights.SetActive(true);
     }
     public void ForceAllLightsOff()
     {
         ForceLights = true;
-        Generator01Lights.SetActive(false);
-        Generator02Lights.SetActive(false);
+        if (Generator01 != null)
+            Generator01Lights.SetActive(false);
+        if (Generator02 != null)
+            Generator02Lights.SetActive(false);
     }
 }

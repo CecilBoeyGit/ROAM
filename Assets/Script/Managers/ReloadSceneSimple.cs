@@ -26,7 +26,7 @@ public class ReloadSceneSimple : MonoBehaviour
         }
     }
 
-    void ReloadCurrentScene()
+    public void ReloadCurrentScene()
     {
         // Get the name of the current scene
         string currentSceneName = SceneManager.GetActiveScene().name;

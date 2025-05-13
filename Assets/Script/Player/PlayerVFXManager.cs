@@ -40,7 +40,11 @@ public class PlayerVFXManager : MonoBehaviour
         if (playerInstance == null)
             return;
 
-        if(playerInstance.healthPoint == 100)
+        if(playerInstance.healthPoint > 100)
+        {
+            ElectricityVFX.gameObject.SetActive(false);
+        }
+        else if(playerInstance.healthPoint == 100)
         {
             var particleEmission = ElectricityVFX.emission;
             particleEmission.rateOverTime = 5;

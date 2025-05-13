@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
     void Start()
     {  
-        Cursor.visible = false;
+       // Cursor.visible = false;
 
         mainCamera = Camera.main;
         vCam.GetComponent<CinemachineVirtualCamera>();
@@ -190,6 +190,8 @@ public class PlayerController : MonoBehaviour, IDataPersistence
             DrawCircle(transform.position, scannerRadiusMax, 20, Color.green);
             return;
         }
+
+        HealthCap();
 
         if (!PlayerConstrained)
         {
@@ -647,6 +649,12 @@ public class PlayerController : MonoBehaviour, IDataPersistence
             else
                 return (success: false, position: Vector3.zero);
         }
+    }
+
+    void HealthCap()
+    {
+        if (healthPoint >= maxHealthPoint)
+            healthPoint = maxHealthPoint;
     }
     public void HealthNullAction(bool forced)
     {

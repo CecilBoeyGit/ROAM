@@ -35,7 +35,10 @@ public class IntegrityManager : MonoBehaviour
 
     [Header("--- Audio ---")]
     AudioSource ads;
+    [SerializeField] AudioSource alarm_ads;
+    [SerializeField] AudioSource voiceLine_ads;
     [SerializeField] private List<AudioClip> adcp = new List<AudioClip>();
+    [SerializeField] private AudioClip RundownCompleteVoiceLine;
 
     [Header("--- DEBUG ---")]
     [SerializeField] bool usingDEBUG = false;
@@ -70,9 +73,12 @@ public class IntegrityManager : MonoBehaviour
     private void Start()
     {
         RundownSuccess = false;
+        alarmPlaying = false;
         EnemiesPool = GameObject.Find("EnemiesPool")?.GetComponent<ObjectsPoolingDefault>();
 
         ads = GetComponent<AudioSource>();
+        alarm_ads.GetComponent<AudioSource>();
+        voiceLine_ads.GetComponent<AudioSource>();
 
         UI_IntegrityMeter.GetComponent<Image>();
 
@@ -88,7 +94,7 @@ public class IntegrityManager : MonoBehaviour
     }
     private void Update()
     {
-        if (RundownSuccess)
+        if (RundownSuccess || meterNullTriggered)
             return;
 
         MeterDecrement();
@@ -97,6 +103,8 @@ public class IntegrityManager : MonoBehaviour
 
         CountDownManager();
         CountDownNull();
+
+        MeterAlarmWarningThreshold();
     }
     void ConvertSeconds(float seconds, out int minutes, out int secondsRemain)
     {
@@ -130,6 +138,18 @@ public class IntegrityManager : MonoBehaviour
         }
     }
 
+    public void WipeAllEnemies()
+    {
+        var allRemainingEnemies = FindObjectsByType<EnemyBehavior>(FindObjectsSortMode.None)
+        .Where(g => g.isActiveAndEnabled)
+        .ToList();
+
+        foreach (EnemyBehavior enemy in allRemainingEnemies)
+        {
+            enemy.enemyStateControl = EnemyBehavior.enemyStates.DeathState;
+        }
+    }
+
     Coroutine CO_RundownSuccessBuffer;
 
     IEnumerator RundownSuccessBuffer(float duration)
@@ -139,13 +159,13 @@ public class IntegrityManager : MonoBehaviour
         ads.clip = adcp[0];
         ads.Play();
 
-        var allRemainingEnemies = FindObjectsByType<EnemyBehavior>(FindObjectsSortMode.None)
-            .Where(g => g.isActiveAndEnabled)
-            .ToList();
-        foreach(EnemyBehavior enemy in allRemainingEnemies)
-        {
-            enemy.enemyStateControl = EnemyBehavior.enemyStates.DeathState;
-        }
+        alarm_ads.clip = adcp[2]; //Temporarily using alarm AudioSource to play a second SFX when rundown is successful
+        alarm_ads.Play();
+
+        voiceLine_ads.clip = RundownCompleteVoiceLine;
+        voiceLine_ads.Play();
+
+        WipeAllEnemies();
 
         float time = 0;
         while(time < duration)
@@ -176,7 +196,7 @@ public class IntegrityManager : MonoBehaviour
 
     void MeterAlarmWarningThreshold()
     {
-        float thresholdCalc = MeterAmount *= alarmThreshold;
+        float thresholdCalc = TimerInitial * alarmThreshold;
         if(MeterAmount <= thresholdCalc)
         {
             if (alarmPlaying)
@@ -184,8 +204,8 @@ public class IntegrityManager : MonoBehaviour
 
             if (MeterDecreAnyHolder != 0 || MeterDecreAllHolder != 0)
             {
-                ads.clip = adcp[2];
-                ads.Play();
+                alarm_ads.clip = adcp[2];
+                alarm_ads.Play();
 
                 alarmPlaying = true;
             }
@@ -195,7 +215,7 @@ public class IntegrityManager : MonoBehaviour
             if (!alarmPlaying)
                 return;
 
-            ads.Stop();
+            alarm_ads.Stop();
             alarmPlaying = false;
         }
     }
@@ -237,6 +257,8 @@ public class IntegrityManager : MonoBehaviour
                 MeterNull?.Invoke();
                 CLMInstance.IntegrityUI.SetActive(false);
                 meterNullTriggered = true;
+
+                alarm_ads.Stop();
 
                 ads.clip = adcp[1];
                 ads.Play();

@@ -582,7 +582,7 @@ public class EnemyBehavior : MonoBehaviour, IWeaponSoundInterface
         beingScanned = true;
 
         //detectionParticles.Play(); //print(gameObject.name + "VFX Playing");
-        mat.SetFloat("_Dissolve", 0.6f);
+        mat.SetFloat("_Dissolve", 0.45f);
         float timer = 0;
         while (timer < time)
         {

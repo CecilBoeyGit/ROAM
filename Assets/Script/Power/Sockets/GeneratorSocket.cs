@@ -21,12 +21,14 @@ public class GeneratorSocket : PowerSockets
     [SerializeField] GameObject SocketCanvas;
 
     GeneratorsSFX genSFXInstance;
+    CoreLoopManager CLMInstance;
 
     protected override void Start()
     {
         base.Start();
 
         genSFXInstance = GeneratorsSFX.instance;
+        CLMInstance = CoreLoopManager.Instance;
 
         generatorParent = GetComponentInParent<Generators>();
         AmountIndicatorUI.GetComponent<Image>();
@@ -68,6 +70,9 @@ public class GeneratorSocket : PowerSockets
     }
     public override void PlayerInZoneActions()
     {
+        if (CLMInstance.RundownSuccessful) //DISABLE ALL interactions with the generator socket when the rundown is successful
+            return;
+
         if (_InputSub.InteractInput)
         {
             if (!powerCoreChild.isActiveAndEnabled) //If the generator has no PowerCore charging
@@ -75,6 +80,9 @@ public class GeneratorSocket : PowerSockets
                 if (PRMInstance.currentPowerCore != null && PRMInstance.isEquiped) //If the player is equiped with a PowerCore
                 {
                     powerCoreChild.gameObject.SetActive(true);
+
+                    playerInstance.healthPoint += 50;
+
                     ads.clip = adcp[1];
                     ads.Play();
                     PRMInstance.currentPowerCore = null;
